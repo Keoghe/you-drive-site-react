@@ -18,6 +18,8 @@ export default function Header() {
           <Link to="/realizadas">Aulas Realizadas</Link>
           <Link to="/conta">Minha Conta</Link>
           <Link to="/contato">Fale Conosco</Link>
+          <Link to="/login">Login</Link>
+
         </nav>
 
       </div>

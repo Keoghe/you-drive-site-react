@@ -16,6 +16,18 @@
   justify-content: space-between;
   align-items: center;
 }
+/*Geral pagina*/
+
+
+html, body, #root {
+  height: 100%;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
 /* LOGO */
 
@@ -240,3 +252,221 @@ body {
   font-size: 14px;
   color: #555;
 }
+
+
+/* TELA LOGIN  - INICIO*/
+
+.login-container {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BOX */
+
+.login-box {
+  background: #111;
+  padding: 30px;
+  border-radius: 10px;
+  width: 350px;
+
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+/* TÍTULO */
+
+.login-box h2 {
+  color: #00c853;
+  margin-bottom: 20px;
+}
+
+/* FORM */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* INPUTS */
+
+.login-form input {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* BOTÃO */
+
+.login-form button {
+  background: #00c853;
+  color: #000;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.login-form button:hover {
+  background: #00e676;
+}
+/* TELA LOGIN  - FIM*/
+
+/* DOTS DO CALENDÁRIO - INICIO*/
+
+.agenda-container {
+  max-width: 800px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+/* DOTS DO CALENDÁRIO */
+
+.react-calendar {
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+
+.react-calendar__tile {
+  padding: 10px 0;
+}
+
+
+.agenda-container {
+  text-align: center;
+}
+
+
+/* DIAS DO MÊS (TEXTO) */
+
+
+/* DIAS NORMAIS */
+.react-calendar__month-view__days__day {
+  color: #fff;
+}
+
+.react-calendar__month-view__days__day:hover {
+  color: #0a0a0a;
+}
+/* DIAS FORA DO MÊS (cinza mais suave) */
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #666;
+}
+
+/* FIM DE SEMANA */
+.react-calendar__month-view__days__day--weekend {
+  color: #ff5252;
+}
+
+
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: auto;
+  margin-top: 4px;
+}
+
+.red {
+  background: red;
+}
+
+.green {
+  background: #00c853;
+}
+
+/* LISTA DE AULAS */
+
+.aulas-dia {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.aula-card {
+  background: #111;
+  color: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-left: 5px solid #00c853;
+  border-radius: 5px;
+}
+
+/* CALENDAR MODERNO */
+
+.react-calendar {
+  width: 100%;
+  max-width: 700px;
+  background: #111;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* CABEÇALHO (MÊS) */
+
+.react-calendar__navigation {
+  margin-bottom: 10px;
+}
+
+.react-calendar__navigation button {
+  color: #00c853;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.react-calendar__navigation button:hover {
+  color: white;
+}
+
+/* DIAS DA SEMANA */
+
+.react-calendar__month-view__weekdays {
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #ccc;
+}
+
+/* DIAS */
+
+.react-calendar__tile {
+  background: transparent;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+/* HOVER */
+
+.react-calendar__tile:hover {
+  background: rgba(0, 200, 83, 0.2);
+}
+
+/* DIA ATUAL */
+
+.react-calendar__tile--now {
+  background: rgba(0, 200, 83, 0.3);
+  border-radius: 8px;
+}
+
+/* DIA SELECIONADO */
+
+.react-calendar__tile--active {
+  background: #00c853 !important;
+  color: black;
+  border-radius: 8px;
+}
+
+/* FINAL DE SEMANA */
+
+.react-calendar__month-view__days__day--weekend {
+  color: #ff5252;
+}
+/* DOTS DO CALENDÁRIO - FIM*/
