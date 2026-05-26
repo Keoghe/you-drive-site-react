@@ -15,7 +15,7 @@ export default function Header() {
         <nav className="nav-menu">
           <Link to="/">Home</Link>
           <Link to="/agendadas">Aulas Agendadas</Link>
-          <Link to="/realizadas">Aulas Realizadas</Link>
+          <Link to="/agendarAula">Agendar Aula</Link>
           <Link to="/conta">Minha Conta</Link>
           <Link to="/contato">Fale Conosco</Link>
           <Link to="/login">Login</Link>

@@ -470,3 +470,101 @@ body {
   color: #ff5252;
 }
 /* DOTS DO CALENDÁRIO - FIM*/
+
+/* CSS PARA A TELA DE AGENDAR AULAS FOCADO NO MAPA - INICIO*/
+.mapa-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+
+.marker-online {
+  border: 2px solid #00c853;
+  border-radius: 50%;
+}
+
+.leaflet-marker-icon {
+  transition: transform 0.2s;
+}
+
+.leaflet-marker-icon:hover {
+  transform: scale(1.2);
+}
+
+
+
+.leaflet-marker-icon {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+/* MAPA */
+
+.map {
+  height: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* CARD DO INSTRUTOR */
+
+.card-instrutor {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.card-instrutor img {
+  width: 60px;
+  height: 60px;;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.card-instrutor h4 {
+  margin-bottom: 5px;
+  color: #00c853;
+}
+
+.card-instrutor p {
+  margin: 3px 0;
+  font-size: 14px;
+}
+
+/*CEP*/
+.busca-cep {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.busca-cep input {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 200px;
+}
+
+.busca-cep button {
+  background: #00c853;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.busca-cep button:hover {
+  background: #00e676;
+}
+
+/*ICONE DO USUÁRIO PESQUISA*/
+.leaflet-marker-icon {
+  transition: transform 0.2s;
+}
+
+.leaflet-marker-icon:hover {
+  transform: scale(1.2);
+}
+
+/* CSS PARA A TELA DE AGENDAR AULAS FOCADO NO MAPA - FIM*/
