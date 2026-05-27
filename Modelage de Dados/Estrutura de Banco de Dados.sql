@@ -9,39 +9,13 @@ USUARIOS → INSTRUTORES → VEICULOS
 USUARIOS → AULAS → INSTRUTORES
                   → VALORES_AULA
                   → PROMOCOES
-
--- =========================================
--- PERMISSOES
--- =========================================
-CREATE TABLE permissoes (
-    id INT IDENTITY PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    descricao VARCHAR(255),
-    excluido BIT DEFAULT 0
-);
-
--- =========================================
--- ENDERECOS
--- =========================================
-CREATE TABLE enderecos (
-    id INT IDENTITY PRIMARY KEY,
-    cep VARCHAR(10),
-    logradouro VARCHAR(150),
-    numero VARCHAR(20),
-    complemento VARCHAR(100),
-    bairro VARCHAR(100),
-    cidade VARCHAR(100),
-    estado VARCHAR(2),
-    excluido BIT DEFAULT 0
-);
-
+				  
+				  
 -- =========================================
 -- USUARIOS
 -- =========================================
 CREATE TABLE usuarios (
     id INT IDENTITY PRIMARY KEY,
-    permissao_id INT,
-    endereco_id INT,
 
     nome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL,
@@ -54,20 +28,61 @@ CREATE TABLE usuarios (
     saldo DECIMAL(10,2) DEFAULT 0,
     data_cadastro DATETIME DEFAULT GETDATE(),
 
-    excluido BIT DEFAULT 0,
-
-    FOREIGN KEY (permissao_id) REFERENCES permissoes(id),
-    FOREIGN KEY (endereco_id) REFERENCES enderecos(id)
+    excluido BIT DEFAULT 0
 );
 
 -- =========================================
--- INSTRUTORES
+-- ENDERECOS (1:N)
+-- =========================================
+CREATE TABLE enderecos (
+    id INT IDENTITY PRIMARY KEY,
+    usuario_id INT,
+
+    cep VARCHAR(10),
+    logradouro VARCHAR(150),
+    numero VARCHAR(20),
+    complemento VARCHAR(100),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    estado VARCHAR(2),
+
+    excluido BIT DEFAULT 0,
+
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- =========================================
+-- PERMISSOES
+-- =========================================
+CREATE TABLE permissoes (
+    id INT IDENTITY PRIMARY KEY,
+    nome VARCHAR(50),
+    descricao VARCHAR(255),
+    excluido BIT DEFAULT 0
+);
+
+-- =========================================
+-- USUARIO_PERMISSAO (N:N)
+-- =========================================
+CREATE TABLE usuario_permissao (
+    id INT IDENTITY PRIMARY KEY,
+    usuario_id INT,
+    permissao_id INT,
+
+    excluido BIT DEFAULT 0,
+
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (permissao_id) REFERENCES permissoes(id)
+);
+
+-- =========================================
+-- INSTRUTORES (baseado em usuario)
 -- =========================================
 CREATE TABLE instrutores (
     id INT IDENTITY PRIMARY KEY,
     usuario_id INT,
 
-    avaliacao DECIMAL(2,1) DEFAULT 0,
+    avaliacao DECIMAL(2,1),
     valor_hora DECIMAL(10,2),
 
     latitude DECIMAL(10,6),
@@ -103,6 +118,7 @@ CREATE TABLE valores_aula (
     descricao VARCHAR(100),
     valor DECIMAL(10,2),
     duracao_minutos INT,
+
     excluido BIT DEFAULT 0
 );
 
@@ -124,7 +140,7 @@ CREATE TABLE promocoes (
 );
 
 -- =========================================
--- AULAS
+-- AULAS (RELACIONAMENTO CORRETO)
 -- =========================================
 CREATE TABLE aulas (
     id INT IDENTITY PRIMARY KEY,
@@ -137,8 +153,8 @@ CREATE TABLE aulas (
     data_aula DATE,
     hora_inicio TIME,
     hora_fim TIME,
-
     status VARCHAR(20),
+
     valor_final DECIMAL(10,2),
 
     excluido BIT DEFAULT 0,
@@ -150,7 +166,7 @@ CREATE TABLE aulas (
 );
 
 -- =========================================
--- CARTOES
+-- CARTOES (1:N)
 -- =========================================
 CREATE TABLE cartoes (
     id INT IDENTITY PRIMARY KEY,
@@ -167,16 +183,15 @@ CREATE TABLE cartoes (
 );
 
 -- =========================================
--- FINANCEIRO USUARIO
+-- FINANCEIRO
 -- =========================================
 CREATE TABLE financeiro_usuario (
     id INT IDENTITY PRIMARY KEY,
 
     usuario_id INT,
 
-    tipo VARCHAR(20), -- CREDITO, DEBITO, PLATAFORMA
+    tipo VARCHAR(20),
     descricao VARCHAR(255),
-
     valor DECIMAL(10,2),
 
     data_movimento DATETIME DEFAULT GETDATE(),
@@ -193,6 +208,7 @@ CREATE TABLE contatos (
     id INT IDENTITY PRIMARY KEY,
 
     usuario_id INT NULL,
+
     email VARCHAR(150),
     mensagem TEXT,
 

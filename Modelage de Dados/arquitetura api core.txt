@@ -1,0 +1,9 @@
+AutoEscola.API
+│
+├── Controllers/
+├── Models/
+├── Data/
+├── DTOs/
+├── Services/
+├── Repositories/
+├── Mappings/
