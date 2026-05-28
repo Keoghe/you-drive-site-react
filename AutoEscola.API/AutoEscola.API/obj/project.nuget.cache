@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VaBLnJjbsu4=",
+  "dgSpecHash": "iasoxbwuM0M=",
   "success": true,
-  "projectFilePath": "E:\\PROJETOS OSAS\\repositorio\\IntegracaoVinhedo\\AutoEscola.API\\AutoEscola.API\\AutoEscola.API.csproj",
+  "projectFilePath": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\AutoEscola.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\joelm\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\joelm\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

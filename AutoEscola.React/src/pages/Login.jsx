@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,12 +15,12 @@ export default function Login() {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
-          senha
-        })
+          senha,
+        }),
       });
 
       const data = await response.json();
@@ -33,7 +34,6 @@ export default function Login() {
 
       // ✅ redirecionar (futuro)
       alert("Login realizado com sucesso!");
-
     } catch (error) {
       setErro(error.message);
     }
@@ -42,13 +42,11 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-
         <img src="/images/logo.png" alt="Logo" className="login-logo" />
 
         <h2>Entrar na sua conta</h2>
 
         <form className="login-form" onSubmit={handleLogin}>
-
           <label>Email</label>
           <input
             type="email"
@@ -69,8 +67,11 @@ export default function Login() {
 
           <button type="submit">Entrar</button>
 
+          {/* ✅ NOVO LINK */}
+          <p className="login-link">
+            Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
+          </p>
         </form>
-
       </div>
     </div>
   );

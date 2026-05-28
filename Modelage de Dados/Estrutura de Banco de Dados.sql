@@ -218,3 +218,7 @@ CREATE TABLE contatos (
 
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+melhoria no cadastros, ajustar mensagem de retorno quando já tiver dados cadastrados no banco chave primária.
+Verificar a questão do contexto deixar de forma a injetar o contexto no metodos todo
+criar método para criptografar a senha no banco

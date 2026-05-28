@@ -1,3 +1,19 @@
+
+html, body, #root {
+  height: 100%;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+
 /* HEADER MODERNO */
 
 .header {
@@ -256,12 +272,16 @@ body {
 
 /* TELA LOGIN  - INICIO*/
 
+
 .login-container {
-  height: 80vh;
+  min-height: calc(100vh - 120px); /* desconta header e footer */
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
+
 
 /* BOX */
 
@@ -315,6 +335,28 @@ body {
 .login-form button:hover {
   background: #00e676;
 }
+
+
+.login-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ffffff; /* ✅ texto principal branco */
+  text-align: center;
+}
+
+.login-link a {
+  color: #00c853; /* ✅ link verde */
+  text-decoration: none;
+  font-weight: 600;
+  
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+
+
 /* TELA LOGIN  - FIM*/
 
 /* DOTS DO CALENDÁRIO - INICIO*/
@@ -713,3 +755,44 @@ body {
   text-decoration: underline;
 }
 /*CONTATO.JSX - TELA DE FALE CONOSCO - FIM*/
+/*CADASTRO.JSX - INICIO*/
+  
+.login-form label {
+  font-size: 14px;
+  color: #ccc;
+  text-align: left;
+}
+
+
+.cadastro-box {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.cadastro-box::-webkit-scrollbar {
+  width: 5px;
+}
+
+.cadastro-box::-webkit-scrollbar-thumb {
+  background: #00c853;
+  border-radius: 10px;
+}
+
+
+.erro {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+
+
+.input-error {
+  border: 1px solid #ff5252 !important;
+  box-shadow: 0 0 3px #ff5252;
+}
+
+
+
+/*CADASTRO.JSX - INICIO*/

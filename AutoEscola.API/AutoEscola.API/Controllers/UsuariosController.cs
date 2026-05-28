@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoEscola.API.BLL;
 using AutoEscola.API.Data;
 using AutoEscola.API.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AutoEscola.API.Controllers
 {
@@ -28,28 +29,21 @@ namespace AutoEscola.API.Controllers
         [HttpPost]
         public IActionResult CriarUsuario(UsuarioDTO novoUsuario)
         {
-
-            var usuario = new Usuario
+            try
             {
-                Nome = novoUsuario.Nome,
-                Cpf = novoUsuario.Cpf,
-                Cnh = novoUsuario.Cnh,
-                DataNascimento = novoUsuario.DataNascimento,
-                Email = novoUsuario.Email,
-                Senha = novoUsuario.Senha,
-                Saldo = novoUsuario.Saldo,
-                DataCadastro = DateTime.Now,
-                Excluido = false
-            };
+                var usuarioBll = new UsuariosBLL(_context);
 
+                var usuario = usuarioBll.CriarUsuario(novoUsuario);
 
-            usuario.DataCadastro = DateTime.Now;
-            usuario.Excluido = false;
+                return Ok(usuario);
+            }
+            catch (Exception)
+            {
 
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges();
+                throw;
+            }
 
-            return Ok(usuario);
+            
         }
     }
 }
