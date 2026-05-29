@@ -1,6 +1,8 @@
 ﻿using AutoEscola.API.BLL;
+using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
-using AutoEscola.API.Models;
+using AutoEscola.API.Models.DTO;
+using AutoEscola.API.Models.ViewModel.Usuario;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoEscola.API.Controllers
@@ -10,14 +12,20 @@ namespace AutoEscola.API.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IUsuarios _usuariosBll;
 
-        public UsuariosController(AppDbContext context)
+        public UsuariosController(IUsuarios usuariosBll)
         {
-            _context = context;
+            _usuariosBll = usuariosBll;
         }
 
+        //public UsuariosController(AppDbContext context)
+        //{
+        //    _context = context;
+        //}
+
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult BuscarUsuario()
         {
             var usuarios = _context.Usuarios
                 .Where(u => !u.Excluido)
@@ -27,23 +35,31 @@ namespace AutoEscola.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CriarUsuario(UsuarioDTO novoUsuario)
+        public async Task<IActionResult> CriarUsuario(UsuarioDTO cadastroUsuario)
         {
             try
-            {
-                var usuarioBll = new UsuariosBLL(_context);
+            {  
+                var usuario = await _usuariosBll.CriarUsuario(cadastroUsuario);
 
-                var usuario = usuarioBll.CriarUsuario(novoUsuario);
+                var novoUsuario = new UsuarioViewModel
+                {
+                    Id = usuario.Id,
+                    Nome = usuario.Nome,
+                    Cnh = usuario.Cnh,
+                    Cpf = usuario.Cpf,
+                    DataNascimento = usuario.DataNascimento,    
+                    Email = usuario.Email,
+                    Login = usuario.Login,
+                    Saldo = usuario.Saldo
+                };
 
-                return Ok(usuario);
+                return Ok(novoUsuario);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return BadRequest(ex.Message);
             }
 
-            
         }
     }
 }

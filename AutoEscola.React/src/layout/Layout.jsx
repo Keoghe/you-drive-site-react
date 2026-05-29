@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import MobileMenu from "../components/MobileMenu";
 
 export default function Layout() {
   return (
@@ -8,10 +9,13 @@ export default function Layout() {
       <Header />
 
       <main className="main-content">
-        <Outlet />
+        <div className="container"> 
+          <Outlet />
+        </div>
       </main>
 
       <Footer />
+      <MobileMenu />
     </div>
   );
 }

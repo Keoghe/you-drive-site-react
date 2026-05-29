@@ -82,8 +82,15 @@ export default function Cadastro() {
       }).then(() => {
         window.location.href = "/login";
       });
-    } catch (error) {
-      alert("Erro: " + error.message);
+    } catch (error) { 
+      Swal.fire({
+        title: "Alerta",
+        text: error.message,
+        icon: "info",
+        confirmButtonColor: "#00c853",
+      }).then(() => {
+        
+      });
     }
   }
 

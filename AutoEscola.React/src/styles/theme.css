@@ -1,6 +1,10 @@
-
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
+  margin: 0; /* ✅ remove borda branca */
+  padding: 0;
+  overflow-x: hidden; /* ✅ evita scroll lateral */
 }
 
 .app-container {
@@ -11,12 +15,104 @@ html, body, #root {
 
 .main-content {
   flex: 1;
+  padding: 20px 0;
 }
 
+.container {
+  max-width: 1200px; /* ✅ limita largura */
+  margin: 0 auto; /* ✅ centraliza */
+  padding: 0 20px; /* ✅ espaço nas laterais */
+  box-sizing: border-box;
+}
+
+/* MOBILE - Inicio*/
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+    max-width: 100%; /* ✅ ocupa toda largura */
+    padding: 0 10px; /* ✅ menor padding */
+  }
+
+  .header {
+    padding: 15px 0;
+  }
+
+  @media (max-width: 768px) {
+    .nav-menu {
+      flex-wrap: wrap; /* ✅ quebra linha */
+      gap: 10px;
+      justify-content: center;
+    }
+  }
+}
+
+/* ✅ só aparece no mobile */
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    background: #000;
+    border-top: 2px solid #00c853;
+
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 1000;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none !important;
+  }
+  .footer {
+    display: none !important;
+  }
+}
+
+.mobile-menu a {
+  color: #00c853 !important; /* ✅ verde */ /* cor icone*/
+}
+
+@media (max-width: 768px) {
+  /* Icone Login mobile parte superior*/
+  .login-mobile {
+    display: block; 
+    margin-left: 10px;
+    margin-right: 50px; /* ✅ cria espaço da borda */
+    padding-right: 5px;
+  }
+
+  .login-mobile a {
+    color: #00c853;
+    font-size: 22px;
+    background: rgba(0, 200, 83, 0.15);
+    padding: 8px;
+    border-radius: 20%;
+  }
+
+  .login-mobile a:hover {
+    color: white;
+    background: #00c853;
+  }
+
+  
+.login-mobile a svg {
+  transform: translateY(2px);
+}
+
+}
+
+/* MOBILE - Fim*/
 
 /* HEADER MODERNO */
 
 .header {
+  width: 100%;
   background: #000; /* preto */
   color: #fff;
   padding: 0;
@@ -27,15 +123,16 @@ html, body, #root {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0.8rem 1.5rem;
-
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 /*Geral pagina*/
 
-
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -82,14 +179,12 @@ html, body, #root {
 .nav-menu a:hover {
   color: #00c853;
 }
- 
+
 .header {
   position: sticky;
   top: 0;
   z-index: 1000;
 }
-
-
 
 .nav-menu a {
   transition: all 0.3s ease;
@@ -168,7 +263,6 @@ html, body, #root {
   right: 10px;
 }
 
-
 .footer {
   background: #000;
   color: #fff;
@@ -210,7 +304,7 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* CONTAINER PRINCIPAL */
@@ -247,7 +341,7 @@ body {
   width: 250px;
   border-radius: 10px;
 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
 }
 
@@ -269,9 +363,7 @@ body {
   color: #555;
 }
 
-
 /* TELA LOGIN  - INICIO*/
-
 
 .login-container {
   min-height: calc(100vh - 120px); /* desconta header e footer */
@@ -282,7 +374,6 @@ body {
   box-sizing: border-box;
 }
 
-
 /* BOX */
 
 .login-box {
@@ -291,7 +382,7 @@ body {
   border-radius: 10px;
   width: 350px;
 
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   text-align: center;
 }
 
@@ -336,7 +427,6 @@ body {
   background: #00e676;
 }
 
-
 .login-link {
   margin-top: 15px;
   font-size: 14px;
@@ -348,14 +438,11 @@ body {
   color: #00c853; /* ✅ link verde */
   text-decoration: none;
   font-weight: 600;
-  
 }
 
 .login-link a:hover {
   text-decoration: underline;
 }
-
-
 
 /* TELA LOGIN  - FIM*/
 
@@ -370,21 +457,18 @@ body {
 /* DOTS DO CALENDÁRIO */
 
 .react-calendar {
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
 }
 
 .react-calendar__tile {
   padding: 10px 0;
 }
 
-
 .agenda-container {
   text-align: center;
 }
 
-
 /* DIAS DO MÊS (TEXTO) */
-
 
 /* DIAS NORMAIS */
 .react-calendar__month-view__days__day {
@@ -403,8 +487,6 @@ body {
 .react-calendar__month-view__days__day--weekend {
   color: #ff5252;
 }
-
-
 
 .dot {
   width: 8px;
@@ -448,7 +530,7 @@ body {
   border-radius: 12px;
   padding: 15px;
   color: white;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* CABEÇALHO (MÊS) */
@@ -520,7 +602,6 @@ body {
   text-align: center;
 }
 
-
 .marker-online {
   border: 2px solid #00c853;
   border-radius: 50%;
@@ -534,10 +615,8 @@ body {
   transform: scale(1.2);
 }
 
-
-
 .leaflet-marker-icon {
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
 /* MAPA */
@@ -552,12 +631,12 @@ body {
 
 .card-instrutor {
   text-align: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .card-instrutor img {
   width: 60px;
-  height: 60px;;
+  height: 60px;
   border-radius: 50%;
   margin-bottom: 5px;
 }
@@ -617,7 +696,7 @@ body {
 .conta-container {
   max-width: 1000px;
   margin: 40px auto;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* SALDO */
@@ -674,7 +753,7 @@ body {
   max-width: 1000px;
   margin: 40px auto;
   text-align: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* GRID */
@@ -756,13 +835,12 @@ body {
 }
 /*CONTATO.JSX - TELA DE FALE CONOSCO - FIM*/
 /*CADASTRO.JSX - INICIO*/
-  
+
 .login-form label {
   font-size: 14px;
   color: #ccc;
   text-align: left;
 }
-
 
 .cadastro-box {
   max-height: 90vh;
@@ -778,7 +856,6 @@ body {
   border-radius: 10px;
 }
 
-
 .erro {
   color: red;
   font-size: 14px;
@@ -786,13 +863,9 @@ body {
   text-align: center;
 }
 
-
-
 .input-error {
   border: 1px solid #ff5252 !important;
   box-shadow: 0 0 3px #ff5252;
 }
-
-
 
 /*CADASTRO.JSX - INICIO*/

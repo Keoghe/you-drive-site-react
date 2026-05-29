@@ -1,3 +1,5 @@
+using AutoEscola.API.BLL;
+using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +28,8 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod();
         });
 });
+
+builder.Services.AddScoped<IUsuarios, UsuariosBLL>();
 
 
 var app = builder.Build();

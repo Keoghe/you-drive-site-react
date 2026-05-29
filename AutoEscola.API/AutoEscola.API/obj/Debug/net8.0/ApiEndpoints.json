@@ -1,7 +1,7 @@
 [
   {
     "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
-    "Method": "Get",
+    "Method": "BuscarUsuario",
     "RelativePath": "api/Usuarios",
     "HttpMethod": "GET",
     "IsController": true,
@@ -18,8 +18,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "novoUsuario",
-        "Type": "AutoEscola.API.Models.UsuarioDTO",
+        "Name": "cadastroUsuario",
+        "Type": "AutoEscola.API.Models.DTO.UsuarioDTO",
         "IsRequired": true
       }
     ],
