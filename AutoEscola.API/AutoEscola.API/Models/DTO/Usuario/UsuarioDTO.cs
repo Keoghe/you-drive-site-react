@@ -1,4 +1,4 @@
-﻿namespace AutoEscola.API.Models.DTO
+﻿namespace AutoEscola.API.Models.DTO.Usuario
 {
     public class UsuarioDTO 
     {

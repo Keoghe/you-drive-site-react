@@ -281,3 +281,5 @@ E:\PROJETOS OSAS\repositorio\PROJETO-YOU-DRIVE\AutoEscola.API\AutoEscola.API\obj
 E:\PROJETOS OSAS\repositorio\PROJETO-YOU-DRIVE\AutoEscola.API\AutoEscola.API\obj\Debug\net8.0\AutoEscola.API.pdb
 E:\PROJETOS OSAS\repositorio\PROJETO-YOU-DRIVE\AutoEscola.API\AutoEscola.API\obj\Debug\net8.0\AutoEscola.API.genruntimeconfig.cache
 E:\PROJETOS OSAS\repositorio\PROJETO-YOU-DRIVE\AutoEscola.API\AutoEscola.API\obj\Debug\net8.0\ref\AutoEscola.API.dll
+E:\PROJETOS OSAS\repositorio\PROJETO-YOU-DRIVE\AutoEscola.API\AutoEscola.API\bin\Debug\net8.0\BCrypt-Net-Next.dll
+E:\PROJETOS OSAS\repositorio\PROJETO-YOU-DRIVE\AutoEscola.API\AutoEscola.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

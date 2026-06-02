@@ -1,9 +1,13 @@
 ﻿using AutoEscola.API.BLL;
 using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
-using AutoEscola.API.Models.DTO;
+using AutoEscola.API.Models.DTO.Login;
+using AutoEscola.API.Models.DTO.Usuario;
 using AutoEscola.API.Models.ViewModel.Usuario;
+using AutoEscola.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoEscola.API.Controllers
 {
@@ -24,6 +28,23 @@ namespace AutoEscola.API.Controllers
         //    _context = context;
         //}
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO loginDTO,  [FromServices] JwtService jwtService)
+        {
+            try
+            {
+                var resultado = await _usuariosBll.ValidarLogin(loginDTO, jwtService);
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);  
+            }
+
+        }
+
+        [Authorize]
         [HttpGet]
         public IActionResult BuscarUsuario()
         {
@@ -38,7 +59,7 @@ namespace AutoEscola.API.Controllers
         public async Task<IActionResult> CriarUsuario(UsuarioDTO cadastroUsuario)
         {
             try
-            {  
+            {
                 var usuario = await _usuariosBll.CriarUsuario(cadastroUsuario);
 
                 var novoUsuario = new UsuarioViewModel
@@ -47,7 +68,7 @@ namespace AutoEscola.API.Controllers
                     Nome = usuario.Nome,
                     Cnh = usuario.Cnh,
                     Cpf = usuario.Cpf,
-                    DataNascimento = usuario.DataNascimento,    
+                    DataNascimento = usuario.DataNascimento,
                     Email = usuario.Email,
                     Login = usuario.Login,
                     Saldo = usuario.Saldo

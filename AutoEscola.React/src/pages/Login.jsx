@@ -1,78 +1,102 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import API_BASE_URL from "../config/api";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const [form, setForm] = useState({
+    login: "",
+    senha: "",
+  });
+
+  function handleChange(e) {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  }
 
   async function handleLogin(e) {
     e.preventDefault();
-
-    setErro("");
-
+    setLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
-          senha,
+          login: form.login,
+          senha: form.senha,
         }),
       });
 
-      const data = await response.json();
+      if (!response.ok) { 
 
-      if (!response.ok) {
-        throw new Error(data.message || "Erro ao fazer login");
+        const erro = await response.text();
+        throw new Error(erro || "Login inválido");
       }
 
-      // ✅ salvar token
+      const data = await response.json();
+
+      // ✅ SALVAR TOKEN
       localStorage.setItem("token", data.token);
 
-      // ✅ redirecionar (futuro)
-      alert("Login realizado com sucesso!");
+      // ✅ SALVAR USUÁRIO (opcional)
+      localStorage.setItem("usuario", JSON.stringify(data));
+
+      // ✅ ALERT SUCESSO
+      Swal.fire({
+        title: "Sucesso!",
+        text: "Login realizado com sucesso",
+        icon: "success",
+        confirmButtonColor: "#00c853",
+      }).then(() => {
+        navigate("/agendadas"); // ✅ redireciona
+      });
     } catch (error) {
-      setErro(error.message);
+      Swal.fire({
+        title: "Erro!",
+        text: error.message,
+        icon: "error",
+        confirmButtonColor: "#ff5252",
+      });
+    } finally {
+      setLoading(false); // ✅ libera botão
     }
   }
 
   return (
     <div className="login-container">
       <div className="login-box">
-        <img src="/images/logo.png" alt="Logo" className="login-logo" />
+        <h2>Entrar</h2>
 
-        <h2>Entrar na sua conta</h2>
-
-        <form className="login-form" onSubmit={handleLogin}>
-          <label>Email</label>
+        <form onSubmit={handleLogin} className="login-form">
+          <label>Login</label>
           <input
-            type="email"
-            placeholder="Digite seu e-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            name="login"
+            value={form.login}
+            onChange={handleChange}
+            required
           />
 
           <label>Senha</label>
           <input
             type="password"
-            placeholder="Digite sua senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
+            name="senha"
+            value={form.senha}
+            onChange={handleChange}
+            required
           />
 
-          {erro && <p className="login-error">{erro}</p>}
-
           <button type="submit">Entrar</button>
-
-          {/* ✅ NOVO LINK */}
-          <p className="login-link">
-            Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
-          </p>
         </form>
       </div>
     </div>
   );
 }
+``;

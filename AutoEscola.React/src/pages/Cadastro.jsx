@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import API_BASE_URL from "../config/api";
+
 
 export default function Cadastro() {
   const [form, setForm] = useState({
@@ -53,7 +55,7 @@ export default function Cadastro() {
     try {
       // ✅ VALIDAÇÃO
 
-      const response = await fetch("https://localhost:7095/api/usuarios", {
+      const response = await fetch(`${API_BASE_URL}/usuarios/usuarios`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

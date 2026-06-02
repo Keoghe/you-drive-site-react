@@ -19,7 +19,23 @@
     "Parameters": [
       {
         "Name": "cadastroUsuario",
-        "Type": "AutoEscola.API.Models.DTO.UsuarioDTO",
+        "Type": "AutoEscola.API.Models.DTO.Usuario.UsuarioDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
+    "Method": "Login",
+    "RelativePath": "api/Usuarios/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginDTO",
+        "Type": "AutoEscola.API.Models.DTO.Login.LoginDTO",
         "IsRequired": true
       }
     ],

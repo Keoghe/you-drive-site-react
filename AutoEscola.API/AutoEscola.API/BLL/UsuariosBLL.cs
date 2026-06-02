@@ -1,6 +1,9 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
-using AutoEscola.API.Models.DTO;
+using AutoEscola.API.Models.DTO.Login;
+using AutoEscola.API.Models.DTO.Usuario;
+using AutoEscola.API.Models.ViewModel.Login;
+using AutoEscola.API.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoEscola.API.BLL
@@ -22,6 +25,14 @@ namespace AutoEscola.API.BLL
         public Task<Usuario> BuscarUsuarioPorId(int usuarioId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Usuario>> BuscarUsuarios()
+        {
+            var usuarios = await _context.Usuarios
+                .Where(u => !u.Excluido).ToListAsync();
+
+            return usuarios;
         }
 
         public Task<List<Usuario>> BuscarUsuariosPorId(List<int> usuarioId)
@@ -62,7 +73,7 @@ namespace AutoEscola.API.BLL
                 Cnh = novoUsuario.Cnh,
                 DataNascimento = novoUsuario.DataNascimento,
                 Email = novoUsuario.Email,
-                Senha = novoUsuario.Senha,
+                Senha = BCrypt.Net.BCrypt.HashPassword(novoUsuario.Senha),
                 Saldo = novoUsuario.Saldo,
                 DataCadastro = DateTime.Now,
                 Excluido = false
@@ -77,6 +88,32 @@ namespace AutoEscola.API.BLL
             return usuario;
         }
 
+        public async Task<LoginViewModel> ValidarLogin(LoginDTO login, JwtService jwtService)
+        {
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Login == login.Login);
+
+            if (usuario == null)
+                throw new Exception("Usuário não encontrado");
+             
+
+            bool senhaValida = BCrypt.Net.BCrypt.Verify(
+                login.Senha,
+                usuario.Senha
+            );
+
+            if (!senhaValida)
+                throw new Exception("Senha inválida");
+
+            var token = jwtService.GerarToken(usuario);
+
+            return new LoginViewModel
+            {
+                Token = token,
+                Email = usuario.Email,
+                Nome = usuario.Nome
+            };
+        }
         
     }
 }
