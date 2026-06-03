@@ -1,9 +1,7 @@
-﻿namespace AutoEscola.API.Models.Entidade
+﻿namespace AutoEscola.API.Models.DTO.Aula
 {
-    public class Aula
+    public class AulaDTO
     {
-        public int Id { get; set; }
-
         public int UsuarioId { get; set; }
 
         public int InstrutorId { get; set; }
@@ -23,14 +21,5 @@
         public decimal? ValorFinal { get; set; }
 
         public bool Excluido { get; set; }
-
-        // Navegação
-        public virtual Usuario Usuario { get; set; } = null!;
-
-        public virtual Usuario Instrutor { get; set; } = null!;
-
-        public virtual ValoresAula ValorAula { get; set; } = null!;
-
-        public virtual Promocoes Promocao { get; set; } = null!;
     }
 }

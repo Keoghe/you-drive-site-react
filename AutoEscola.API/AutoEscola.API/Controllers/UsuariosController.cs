@@ -28,34 +28,40 @@ namespace AutoEscola.API.Controllers
         //    _context = context;
         //}
 
+
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO loginDTO,  [FromServices] JwtService jwtService)
+        public async Task<IActionResult> Login(LoginDTO loginDTO)
         {
             try
             {
-                var resultado = await _usuariosBll.ValidarLogin(loginDTO, jwtService);
+                var resultado = await _usuariosBll.ValidarLogin(loginDTO);
 
                 return Ok(resultado);
             }
             catch (Exception ex)
             {
-                return Unauthorized(ex.Message);  
+                return Unauthorized(ex.Message);
             }
 
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult BuscarUsuario()
+        public async Task<IActionResult> BuscarUsuario()
         {
-            var usuarios = _context.Usuarios
-                .Where(u => !u.Excluido)
-                .ToList();
+            try
+            {
+                var resultado = await _usuariosBll.BuscarUsuarios();
 
-            return Ok(usuarios);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
         }
 
-        [HttpPost]
+        [HttpPost("cadastrar")]
         public async Task<IActionResult> CriarUsuario(UsuarioDTO cadastroUsuario)
         {
             try

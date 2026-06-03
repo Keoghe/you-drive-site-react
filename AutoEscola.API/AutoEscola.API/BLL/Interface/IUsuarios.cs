@@ -12,10 +12,7 @@ namespace AutoEscola.API.BLL.Interface
         Task<List<Usuario>> BuscarUsuariosPorId(List<int> usuarioId);
         Task<List<Usuario>> BuscarUsuarios();
         Task<bool> AtualizarUsuarioPorId(List<int> usuarioId); 
-        Task<LoginViewModel> ValidarLogin(LoginDTO login, JwtService jwtService);
-
-
-
+        Task<LoginViewModel> ValidarLogin(LoginDTO login); 
 
     }
 }

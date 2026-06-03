@@ -11,10 +11,14 @@ namespace AutoEscola.API.BLL
     public class UsuariosBLL : IUsuarios
     {
         private readonly AppDbContext _context;
+        private readonly JwtService _jwtService;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public UsuariosBLL(AppDbContext context)
+        public UsuariosBLL(AppDbContext context, JwtService jwtService, IHttpContextAccessor httpContext)
         {
             _context = context;
+            _jwtService = jwtService;
+            _httpContext = httpContext;
         }
 
         public Task<bool> AtualizarUsuarioPorId(List<int> usuarioId)
@@ -29,6 +33,10 @@ namespace AutoEscola.API.BLL
 
         public async Task<List<Usuario>> BuscarUsuarios()
         {
+
+            var usuarioId = _httpContext.HttpContext.User
+                .FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
             var usuarios = await _context.Usuarios
                 .Where(u => !u.Excluido).ToListAsync();
 
@@ -77,7 +85,7 @@ namespace AutoEscola.API.BLL
                 Saldo = novoUsuario.Saldo,
                 DataCadastro = DateTime.Now,
                 Excluido = false
-            };  
+            };
 
             usuario.DataCadastro = DateTime.Now;
             usuario.Excluido = false;
@@ -88,14 +96,14 @@ namespace AutoEscola.API.BLL
             return usuario;
         }
 
-        public async Task<LoginViewModel> ValidarLogin(LoginDTO login, JwtService jwtService)
+        public async Task<LoginViewModel> ValidarLogin(LoginDTO login)
         {
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.Login == login.Login);
 
             if (usuario == null)
                 throw new Exception("Usuário não encontrado");
-             
+
 
             bool senhaValida = BCrypt.Net.BCrypt.Verify(
                 login.Senha,
@@ -105,7 +113,7 @@ namespace AutoEscola.API.BLL
             if (!senhaValida)
                 throw new Exception("Senha inválida");
 
-            var token = jwtService.GerarToken(usuario);
+            var token = _jwtService.GerarToken(usuario);
 
             return new LoginViewModel
             {
@@ -114,6 +122,6 @@ namespace AutoEscola.API.BLL
                 Nome = usuario.Nome
             };
         }
-        
+
     }
 }

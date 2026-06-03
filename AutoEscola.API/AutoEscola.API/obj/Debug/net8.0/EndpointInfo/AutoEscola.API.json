@@ -5,6 +5,49 @@
     "version": "v1"
   },
   "paths": {
+    "/api/Aulas/cadastrar": {
+      "post": {
+        "tags": [
+          "Aulas"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AulaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AulaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AulaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Aulas": {
+      "get": {
+        "tags": [
+          "Aulas"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Usuarios/login": {
       "post": {
         "tags": [
@@ -46,7 +89,9 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/Usuarios/cadastrar": {
       "post": {
         "tags": [
           "Usuarios"
@@ -76,49 +121,59 @@
           }
         }
       }
-    },
-    "/WeatherForecast": {
-      "get": {
-        "tags": [
-          "WeatherForecast"
-        ],
-        "operationId": "GetWeatherForecast",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "AulaDTO": {
+        "type": "object",
+        "properties": {
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "instrutorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valorAulaId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "promocaoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAula": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "horaInicio": {
+            "type": "string",
+            "format": "time",
+            "nullable": true
+          },
+          "horaFim": {
+            "type": "string",
+            "format": "time",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "valorFinal": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "excluido": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginDTO": {
         "type": "object",
         "properties": {
@@ -167,29 +222,6 @@
           "saldo": {
             "type": "number",
             "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "WeatherForecast": {
-        "type": "object",
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "temperatureC": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "temperatureF": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "summary": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

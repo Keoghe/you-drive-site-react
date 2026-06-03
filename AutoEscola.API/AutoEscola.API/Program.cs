@@ -93,9 +93,11 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddHttpContextAccessor();
 
 //TABELAS BANCO PARA INJEÇÃO DE DEPENDENCIA
 builder.Services.AddScoped<IUsuarios, UsuariosBLL>();
+builder.Services.AddScoped<IAulas, AulasBLL>();
 
 var app = builder.Build();
 

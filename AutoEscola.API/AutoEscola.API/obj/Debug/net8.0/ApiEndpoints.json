@@ -1,5 +1,31 @@
 [
   {
+    "ContainingType": "AutoEscola.API.Controllers.AulasController",
+    "Method": "BuscarUsuario",
+    "RelativePath": "api/Aulas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.AulasController",
+    "Method": "CadastrarAula",
+    "RelativePath": "api/Aulas/cadastrar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "aulaDTO",
+        "Type": "AutoEscola.API.Models.DTO.Aula.AulaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
     "Method": "BuscarUsuario",
     "RelativePath": "api/Usuarios",
@@ -12,7 +38,7 @@
   {
     "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
     "Method": "CriarUsuario",
-    "RelativePath": "api/Usuarios",
+    "RelativePath": "api/Usuarios/cadastrar",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -40,26 +66,5 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoEscola.API.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[AutoEscola.API.WeatherForecast, AutoEscola.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ],
-    "EndpointName": "GetWeatherForecast"
   }
 ]

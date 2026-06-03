@@ -21,6 +21,8 @@ namespace AutoEscola.API.Data
         public DbSet<Aula> Aulas { get; set; }
         public DbSet<Instrutor> Instrutores { get; set; }
         public DbSet<Veiculo> Veiculos { get; set; }
+        public DbSet<ValoresAula> ValoresAula { get; set; }
+        public DbSet<Promocoes> Promocoes { get; set; }
 
         // =========================================
         // MAPPINGS (FLUENT API)
@@ -38,6 +40,8 @@ namespace AutoEscola.API.Data
             modelBuilder.ApplyConfiguration(new AulaMap());
             modelBuilder.ApplyConfiguration(new InstrutorMap());
             modelBuilder.ApplyConfiguration(new VeiculoMap());
+            modelBuilder.ApplyConfiguration(new ValoresAulaMap());
+            modelBuilder.ApplyConfiguration(new PromocoesMap());
 
             base.OnModelCreating(modelBuilder);
         }
