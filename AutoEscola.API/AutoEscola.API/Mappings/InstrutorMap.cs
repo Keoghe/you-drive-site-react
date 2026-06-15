@@ -20,6 +20,10 @@ namespace AutoEscola.API.Mappings
             builder.Property(i => i.Ativo).HasColumnName("ativo");
             builder.Property(i => i.Excluido).HasColumnName("excluido");
 
+
+            builder.Property(i => i.UsuarioId)
+                .HasColumnName("usuario_id"); 
+
             builder.HasOne(i => i.Usuario)
                 .WithOne(u => u.Instrutor)
                 .HasForeignKey<Instrutor>(i => i.UsuarioId);

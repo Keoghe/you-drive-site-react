@@ -1,6 +1,8 @@
 ﻿using AutoEscola.API.BLL;
 using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
+using AutoEscola.API.Enum;
+using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.DTO.Login;
 using AutoEscola.API.Models.DTO.Usuario;
 using AutoEscola.API.Models.ViewModel.Usuario;
@@ -17,10 +19,12 @@ namespace AutoEscola.API.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IUsuarios _usuariosBll;
+        private readonly IInstrutor _instrutorBll;
 
-        public UsuariosController(IUsuarios usuariosBll)
+        public UsuariosController(IUsuarios usuariosBll, IInstrutor instrutorBll)
         {
             _usuariosBll = usuariosBll;
+            _instrutorBll = instrutorBll;
         }
 
         //public UsuariosController(AppDbContext context)
@@ -77,8 +81,19 @@ namespace AutoEscola.API.Controllers
                     DataNascimento = usuario.DataNascimento,
                     Email = usuario.Email,
                     Login = usuario.Login,
-                    Saldo = usuario.Saldo
+                    Saldo = usuario.Saldo,
                 };
+
+                if (cadastroUsuario.TipoUsuario == (int)TipoUsuario.Instrutor)
+                {
+
+                    var novoInstrutor = new InstrutorDTO
+                    {
+                        UsuarioId = usuario.Id
+                    };
+
+                    await _instrutorBll.CriarInstrutor(novoInstrutor);
+                }
 
                 return Ok(novoUsuario);
             }

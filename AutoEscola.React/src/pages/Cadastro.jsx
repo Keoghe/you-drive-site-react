@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import API_BASE_URL from "../config/api";
 
-
 export default function Cadastro() {
   const [form, setForm] = useState({
     nome: "",
@@ -13,6 +12,7 @@ export default function Cadastro() {
     login: "",
     senha: "",
     confirmarSenha: "",
+    tipoUsuario: "1",
   });
 
   const [erro, setErro] = useState("");
@@ -55,7 +55,7 @@ export default function Cadastro() {
     try {
       // ✅ VALIDAÇÃO
 
-      const response = await fetch(`${API_BASE_URL}/usuarios/usuarios`, {
+      const response = await fetch(`${API_BASE_URL}/usuarios/cadastrar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,6 +68,7 @@ export default function Cadastro() {
           email: form.email,
           login: form.login,
           senha: form.senha,
+          tipoUsuario: form.tipoUsuario  
         }),
       });
 
@@ -84,15 +85,13 @@ export default function Cadastro() {
       }).then(() => {
         window.location.href = "/login";
       });
-    } catch (error) { 
+    } catch (error) {
       Swal.fire({
         title: "Alerta",
         text: error.message,
         icon: "info",
         confirmButtonColor: "#00c853",
-      }).then(() => {
-        
-      });
+      }).then(() => {});
     }
   }
 
@@ -130,6 +129,15 @@ export default function Cadastro() {
             value={form.cnh}
             onChange={handleChange}
           />
+          <label className="cadastro-usuario">Tipo de usuário</label>
+          <select
+            name="tipoUsuario"
+            value={form.tipoUsuario}
+            onChange={handleChange}
+          >
+            <option value="1">Condutor</option>
+            <option value="2">Instrutor</option>
+          </select>
 
           <label className="cadastro-usuario">Data de nascimento</label>
           <input

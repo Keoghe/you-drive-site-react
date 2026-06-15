@@ -98,6 +98,7 @@ builder.Services.AddHttpContextAccessor();
 //TABELAS BANCO PARA INJEÇÃO DE DEPENDENCIA
 builder.Services.AddScoped<IUsuarios, UsuariosBLL>();
 builder.Services.AddScoped<IAulas, AulasBLL>();
+builder.Services.AddScoped<IInstrutor, InstrutorBLL>();
 
 var app = builder.Build();
 

@@ -19,6 +19,7 @@ export default function Header() {
           <Link to="/conta">Minha Conta</Link>
           <Link to="/contato">Fale Conosco</Link>
           <Link to="/login">Login</Link>
+          <Link to="/cadastro">Cadastre-se</Link>
         </nav> 
 
         {/* ✅ LOGIN MOBILE */}

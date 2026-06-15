@@ -10,6 +10,7 @@
         public string Login { get; set; }
         public string Senha { get; set; }
         public decimal Saldo { get; set; }
+        public int TipoUsuario { get; set; }
     }
 
 }

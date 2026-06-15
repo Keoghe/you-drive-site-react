@@ -22,6 +22,7 @@ export default function Login() {
   async function handleLogin(e) {
     e.preventDefault();
     setLoading(true);
+    if (loading) return;
     try {
       const response = await fetch(`${API_BASE_URL}/usuarios/login`, {
         method: "POST",
@@ -34,8 +35,7 @@ export default function Login() {
         }),
       });
 
-      if (!response.ok) { 
-
+      if (!response.ok) {
         const erro = await response.text();
         throw new Error(erro || "Login inválido");
       }

@@ -222,6 +222,10 @@
           "saldo": {
             "type": "number",
             "format": "double"
+          },
+          "tipoUsuario": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

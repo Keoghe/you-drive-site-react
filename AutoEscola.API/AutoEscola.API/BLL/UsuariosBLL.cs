@@ -91,7 +91,7 @@ namespace AutoEscola.API.BLL
             usuario.Excluido = false;
 
             await _context.Usuarios.AddAsync(usuario);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); 
 
             return usuario;
         }
