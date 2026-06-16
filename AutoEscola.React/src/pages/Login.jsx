@@ -41,12 +41,12 @@ export default function Login() {
       }
 
       const data = await response.json();
-
-      // ✅ SALVAR TOKEN
-      localStorage.setItem("token", data.token);
-
-      // ✅ SALVAR USUÁRIO (opcional)
+ 
+      // ✅ SALVAR USUÁRIO
       localStorage.setItem("usuario", JSON.stringify(data));
+
+      // ✅ força atualização do Header
+      window.dispatchEvent(new Event("storage"));
 
       // ✅ ALERT SUCESSO
       Swal.fire({

@@ -117,6 +117,7 @@ namespace AutoEscola.API.BLL
 
             return new LoginViewModel
             {
+                usuarioId = usuario.Id,
                 Token = token,
                 Email = usuario.Email,
                 Nome = usuario.Nome

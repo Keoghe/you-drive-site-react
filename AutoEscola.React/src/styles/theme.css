@@ -27,6 +27,16 @@ body,
 
 /* MOBILE - Inicio*/
 
+.mobile-menu {
+  display: none;
+}
+
+
+.login-mobile {
+  display: none;
+}
+
+
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
@@ -107,9 +117,18 @@ body,
 
 }
 
+.nav-menu a {
+  transition: 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #00c853;
+}
+
+
 /* MOBILE - Fim*/
 
-/* HEADER MODERNO */
+/* HEADER MODERNO INICIO */
 
 .header {
   width: 100%;
@@ -128,6 +147,26 @@ body,
   justify-content: space-between;
   align-items: center;
 }
+
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #00c853;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  color: #fff;
+}
+
 /*Geral pagina*/
 
 html,

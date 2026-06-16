@@ -37,6 +37,22 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
+    "Method": "BuscarUsuario",
+    "RelativePath": "api/Usuarios/buscar-usuario/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
     "Method": "CriarUsuario",
     "RelativePath": "api/Usuarios/cadastrar",
     "HttpMethod": "POST",

@@ -7,6 +7,8 @@ import Conta from "./pages/Conta";
 import Contato from "./pages/Contato";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
+import AtivarConta from "./pages/AtivarConta";
+
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
           <Route path="contato" element={<Contato />} />
           <Route path="login" element={<Login />} />
           <Route path="cadastro" element={<Cadastro />} />
+          <Route path="ativar-conta" element={<AtivarConta />} />
+          
         </Route>
       </Routes>
     </BrowserRouter>
