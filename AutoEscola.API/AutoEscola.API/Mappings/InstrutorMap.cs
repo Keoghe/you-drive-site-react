@@ -11,7 +11,9 @@ namespace AutoEscola.API.Mappings
             builder.ToTable("instrutores");
 
             builder.HasKey(i => i.Id);
-
+            builder.Property(x => x.Id)
+               .HasColumnName("id")
+               .ValueGeneratedOnAdd();
             builder.Property(i => i.Avaliacao).HasColumnName("avaliacao");
             builder.Property(i => i.ValorHora).HasColumnName("valor_hora").HasColumnType("decimal(10,2)");
             builder.Property(i => i.Latitude).HasColumnName("latitude");

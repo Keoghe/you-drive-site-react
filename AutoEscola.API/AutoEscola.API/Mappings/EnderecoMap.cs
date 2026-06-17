@@ -12,6 +12,10 @@ namespace AutoEscola.API.Mappings
 
             builder.HasKey(e => e.Id);
 
+            builder.Property(x => x.Id)
+               .HasColumnName("id")
+               .ValueGeneratedOnAdd();
+
             builder.Property(e => e.Cep).HasColumnName("cep").HasMaxLength(10);
             builder.Property(e => e.Logradouro).HasColumnName("logradouro").HasMaxLength(150);
             builder.Property(e => e.Numero).HasColumnName("numero").HasMaxLength(20);

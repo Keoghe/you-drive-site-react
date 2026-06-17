@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoEscola.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260528110035_AdicionarColunaLoginTabelaUsuario")]
-    partial class AdicionarColunaLoginTabelaUsuario
+    [Migration("20260617111503_CriacaoTabelasBase")]
+    partial class CriacaoTabelasBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,47 +29,55 @@ namespace AutoEscola.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DataAula")
-                        .HasColumnType("datetime2")
+                    b.Property<DateOnly?>("DataAula")
+                        .HasColumnType("date")
                         .HasColumnName("data_aula");
 
                     b.Property<bool>("Excluido")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("excluido");
 
-                    b.Property<TimeSpan>("HoraFim")
+                    b.Property<TimeOnly?>("HoraFim")
                         .HasColumnType("time")
                         .HasColumnName("hora_fim");
 
-                    b.Property<TimeSpan>("HoraInicio")
+                    b.Property<TimeOnly?>("HoraInicio")
                         .HasColumnType("time")
                         .HasColumnName("hora_inicio");
 
                     b.Property<int>("InstrutorId")
+                        .HasColumnType("int")
+                        .HasColumnName("instrutor_id");
+
+                    b.Property<int>("InstrutorId1")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PromocaoId")
-                        .HasColumnType("int");
+                    b.Property<int>("PromocaoId")
+                        .HasColumnType("int")
+                        .HasColumnName("promocao_id");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("status");
 
                     b.Property<int>("UsuarioId")
+                        .HasColumnType("int")
+                        .HasColumnName("usuario_id");
+
+                    b.Property<int?>("UsuarioId1")
                         .HasColumnType("int");
 
                     b.Property<int>("ValorAulaId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("valor_aula_id");
 
-                    b.Property<decimal>("ValorFinal")
+                    b.Property<decimal?>("ValorFinal")
                         .HasColumnType("decimal(10,2)")
                         .HasColumnName("valor_final");
 
@@ -77,7 +85,15 @@ namespace AutoEscola.API.Migrations
 
                     b.HasIndex("InstrutorId");
 
+                    b.HasIndex("InstrutorId1");
+
+                    b.HasIndex("PromocaoId");
+
                     b.HasIndex("UsuarioId");
+
+                    b.HasIndex("UsuarioId1");
+
+                    b.HasIndex("ValorAulaId");
 
                     b.ToTable("aulas", (string)null);
                 });
@@ -86,7 +102,8 @@ namespace AutoEscola.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -130,11 +147,63 @@ namespace AutoEscola.API.Migrations
                     b.ToTable("cartoes", (string)null);
                 });
 
+            modelBuilder.Entity("AutoEscola.API.Models.Entidade.Documento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CaminhoArquivo")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("caminho_arquivo");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("data_criacao");
+
+                    b.Property<int>("Excluido")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("excluido");
+
+                    b.Property<string>("NomeOriginal")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("nome_original");
+
+                    b.Property<int>("Status")
+                        .HasMaxLength(100)
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.Property<int>("TipoDocumentoId")
+                        .HasColumnType("int")
+                        .HasColumnName("tipo_documento_id");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int")
+                        .HasColumnName("usuario_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("documentos", (string)null);
+                });
+
             modelBuilder.Entity("AutoEscola.API.Models.Entidade.Endereco", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -200,7 +269,8 @@ namespace AutoEscola.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -225,7 +295,8 @@ namespace AutoEscola.API.Migrations
                         .HasColumnName("longitude");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("usuario_id");
 
                     b.Property<decimal>("ValorHora")
                         .HasColumnType("decimal(10,2)")
@@ -239,11 +310,88 @@ namespace AutoEscola.API.Migrations
                     b.ToTable("instrutores", (string)null);
                 });
 
+            modelBuilder.Entity("AutoEscola.API.Models.Entidade.Promocoes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Ativa")
+                        .HasColumnType("bit")
+                        .HasColumnName("ativa");
+
+                    b.Property<DateTime?>("DataFim")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("data_fim");
+
+                    b.Property<DateTime?>("DataInicio")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("data_inicio");
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(150)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("descricao");
+
+                    b.Property<bool>("Excluido")
+                        .HasColumnType("bit")
+                        .HasColumnName("excluido");
+
+                    b.Property<decimal?>("PercentualDesconto")
+                        .HasColumnType("decimal(5,2)")
+                        .HasColumnName("percentual_desconto");
+
+                    b.Property<decimal?>("ValorDesconto")
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("valor_desconto");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("promocoes", "dbo");
+                });
+
+            modelBuilder.Entity("AutoEscola.API.Models.Entidade.ValoresAula", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("descricao");
+
+                    b.Property<int?>("DuracaoMinutos")
+                        .HasColumnType("int")
+                        .HasColumnName("duracao_minutos");
+
+                    b.Property<bool>("Excluido")
+                        .HasColumnType("bit")
+                        .HasColumnName("excluido");
+
+                    b.Property<decimal?>("Valor")
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("valor");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("valores_aula", "dbo");
+                });
+
             modelBuilder.Entity("AutoEscola.API.Models.Entidade.Veiculo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -283,7 +431,8 @@ namespace AutoEscola.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -352,27 +501,64 @@ namespace AutoEscola.API.Migrations
 
             modelBuilder.Entity("AutoEscola.API.Models.Entidade.Aula", b =>
                 {
-                    b.HasOne("AutoEscola.API.Models.Entidade.Instrutor", "Instrutor")
-                        .WithMany("Aulas")
+                    b.HasOne("Usuario", "Instrutor")
+                        .WithMany()
                         .HasForeignKey("InstrutorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AutoEscola.API.Models.Entidade.Instrutor", null)
+                        .WithMany("Aulas")
+                        .HasForeignKey("InstrutorId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AutoEscola.API.Models.Entidade.Promocoes", "Promocao")
+                        .WithMany()
+                        .HasForeignKey("PromocaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Usuario", "Usuario")
-                        .WithMany("Aulas")
+                        .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Usuario", null)
+                        .WithMany("Aulas")
+                        .HasForeignKey("UsuarioId1");
+
+                    b.HasOne("AutoEscola.API.Models.Entidade.ValoresAula", "ValorAula")
+                        .WithMany()
+                        .HasForeignKey("ValorAulaId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Instrutor");
 
+                    b.Navigation("Promocao");
+
                     b.Navigation("Usuario");
+
+                    b.Navigation("ValorAula");
                 });
 
             modelBuilder.Entity("AutoEscola.API.Models.Entidade.Cartao", b =>
                 {
                     b.HasOne("Usuario", "Usuario")
                         .WithMany("Cartoes")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("AutoEscola.API.Models.Entidade.Documento", b =>
+                {
+                    b.HasOne("Usuario", "Usuario")
+                        .WithMany("Documentos")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -426,10 +612,11 @@ namespace AutoEscola.API.Migrations
 
                     b.Navigation("Cartoes");
 
+                    b.Navigation("Documentos");
+
                     b.Navigation("Enderecos");
 
-                    b.Navigation("Instrutor")
-                        .IsRequired();
+                    b.Navigation("Instrutor");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,11 +31,9 @@ body,
   display: none;
 }
 
-
 .login-mobile {
   display: none;
 }
-
 
 @media (max-width: 768px) {
   .container {
@@ -91,7 +89,7 @@ body,
 @media (max-width: 768px) {
   /* Icone Login mobile parte superior*/
   .login-mobile {
-    display: block; 
+    display: block;
     margin-left: 10px;
     margin-right: 50px; /* ✅ cria espaço da borda */
     padding-right: 5px;
@@ -110,11 +108,9 @@ body,
     background: #00c853;
   }
 
-  
-.login-mobile a svg {
-  transform: translateY(2px);
-}
-
+  .login-mobile a svg {
+    transform: translateY(2px);
+  }
 }
 
 .nav-menu a {
@@ -124,7 +120,6 @@ body,
 .nav-menu a:hover {
   color: #00c853;
 }
-
 
 /* MOBILE - Fim*/
 
@@ -881,14 +876,12 @@ body {
   text-align: left;
 }
 
-
 .login-form select {
   padding: 10px;
   border-radius: 5px;
   border: none;
   outline: none;
 }
-
 
 .cadastro-box {
   max-height: 90vh;
@@ -917,3 +910,64 @@ body {
 }
 
 /*CADASTRO.JSX - INICIO*/
+
+/*ATIVAR CONTA.JSX - INICIO*/
+
+.plan-card {
+  background: #fff;
+  padding: 20px;
+  width: 250px;
+  border-radius: 10px;
+}
+
+.plan-card input {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.btn-enviar {
+  margin-top: 20px;
+  background: #00c853;
+  border: none;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.btn-enviar:hover { 
+
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* ✅ sombra */
+
+  transform: translateY(-2px); /* ✅ leve "subida" bonita */
+}
+
+
+.upload-btn {
+  display: inline-block;
+  background: #00c853;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+
+  transition: 0.3s;
+}
+
+/* ✅ Hover igual botão enviar */
+.upload-btn:hover {
+  background: #00a844;
+  border: 2px solid black;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+}
+
+/* ✅ esconder input feio */
+.upload-btn input {
+  display: none;
+}
+
+
+/*ATIVAR CONTA.JSX - FIM*/

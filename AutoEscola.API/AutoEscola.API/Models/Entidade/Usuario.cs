@@ -23,5 +23,6 @@ public class Usuario
     public List<Endereco>? Enderecos { get; set; }
     public List<Cartao>? Cartoes { get; set; }
     public List<Aula>? Aulas { get; set; }
-    public Instrutor Instrutor { get; set; }
+    public Instrutor? Instrutor { get; set; } = new Instrutor();
+    public List<Documento>? Documentos { get; set; } = new List<Documento>();
 }

@@ -10,10 +10,11 @@ namespace AutoEscola.API.Mappings
         {
             builder.ToTable("aulas");
 
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Id); 
 
             builder.Property(x => x.Id)
-                .HasColumnName("id");
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd();
 
             builder.Property(x => x.UsuarioId)
                 .HasColumnName("usuario_id")

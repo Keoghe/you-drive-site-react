@@ -13,7 +13,9 @@ namespace AutoEscola.API.Mappings
 
             // PK
             builder.HasKey(u => u.Id);
-
+            builder.Property(x => x.Id)
+               .HasColumnName("id")
+               .ValueGeneratedOnAdd();
             // Campos
             builder.Property(u => u.Nome)
                 .HasColumnName("nome")

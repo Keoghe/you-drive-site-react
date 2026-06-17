@@ -11,6 +11,9 @@ namespace AutoEscola.API.Mappings
             builder.ToTable("veiculos");
 
             builder.HasKey(v => v.Id);
+            builder.Property(x => x.Id)
+               .HasColumnName("id")
+               .ValueGeneratedOnAdd();
 
             builder.Property(v => v.Modelo).HasColumnName("modelo").HasMaxLength(100);
             builder.Property(v => v.Cor).HasColumnName("cor").HasMaxLength(50);
