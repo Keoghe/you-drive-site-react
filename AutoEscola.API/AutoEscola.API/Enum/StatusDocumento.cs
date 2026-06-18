@@ -1,6 +1,6 @@
 ﻿namespace AutoEscola.API.Enum
 {
-    public enum StatuDocumento
+    public enum StatusDocumento
     {
         Pendente = 0,
         Aprovado = 1,

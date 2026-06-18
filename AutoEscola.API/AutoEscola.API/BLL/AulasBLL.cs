@@ -71,7 +71,7 @@ namespace AutoEscola.API.BLL
                 //verificar se existe promoção ativa para aplicar o desconto no valor hora final
 
                 var usuarioExistente = await _context.Usuarios
-                    .Where(u => !u.Excluido && u.Id == novaAula.UsuarioId)
+                    .Where(u => u.Excluido == 0 && u.Id == novaAula.UsuarioId)
                     .FirstOrDefaultAsync();
                 if (novaAula == null)
                 {

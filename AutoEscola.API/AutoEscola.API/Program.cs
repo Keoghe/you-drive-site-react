@@ -99,6 +99,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUsuarios, UsuariosBLL>();
 builder.Services.AddScoped<IAulas, AulasBLL>();
 builder.Services.AddScoped<IInstrutor, InstrutorBLL>();
+builder.Services.AddScoped<IDocumento, DocumentoBLL>(); 
 
 var app = builder.Build();
 

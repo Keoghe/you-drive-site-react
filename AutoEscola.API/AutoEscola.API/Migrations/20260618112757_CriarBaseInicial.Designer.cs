@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoEscola.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260617111503_CriacaoTabelasBase")]
-    partial class CriacaoTabelasBase
+    [Migration("20260618112757_CriarBaseInicial")]
+    partial class CriarBaseInicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -462,10 +462,10 @@ namespace AutoEscola.API.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("email");
 
-                    b.Property<bool>("Excluido")
+                    b.Property<int>("Excluido")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
                         .HasColumnName("excluido");
 
                     b.Property<string>("Login")

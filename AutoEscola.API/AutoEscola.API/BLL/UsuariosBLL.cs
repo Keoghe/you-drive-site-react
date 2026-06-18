@@ -1,5 +1,6 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
+using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Login;
 using AutoEscola.API.Models.DTO.Usuario;
 using AutoEscola.API.Models.ViewModel.Login;
@@ -38,7 +39,7 @@ namespace AutoEscola.API.BLL
                 .FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
             var usuarios = await _context.Usuarios
-                .Where(u => !u.Excluido).ToListAsync();
+                .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO).ToListAsync();
 
             return usuarios;
         }
@@ -54,7 +55,7 @@ namespace AutoEscola.API.BLL
             // ✅ VALIDAÇÃO DE DUPLICIDADE
 
             var usuarioExistente = await _context.Usuarios
-                .Where(u => !u.Excluido &&
+                .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO &&
                            (u.Login == novoUsuario.Login ||
                             u.Cpf == novoUsuario.Cpf ||
                             u.Email == novoUsuario.Email))
@@ -84,12 +85,11 @@ namespace AutoEscola.API.BLL
                 Senha = BCrypt.Net.BCrypt.HashPassword(novoUsuario.Senha),
                 Saldo = novoUsuario.Saldo,
                 DataCadastro = DateTime.Now,
-                Excluido = false
+                Excluido = (int)StatusContaUsuario.ATIVO
             };
 
             usuario.DataCadastro = DateTime.Now;
-            usuario.Excluido = false;
-
+            usuario.Excluido = (int)StatusContaUsuario.ATIVO;   
             await _context.Usuarios.AddAsync(usuario);
             await _context.SaveChangesAsync(); 
 

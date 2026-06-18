@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AutoEscola.API.Migrations
 {
     /// <inheritdoc />
-    public partial class CriacaoTabelasBase : Migration
+    public partial class CriarBaseInicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,7 +49,7 @@ namespace AutoEscola.API.Migrations
                     senha = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     saldo = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     data_cadastro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    excluido = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    excluido = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {

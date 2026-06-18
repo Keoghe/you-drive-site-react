@@ -1,6 +1,7 @@
 ﻿using AutoEscola.API.BLL;
 using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
+using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Aula;
 using AutoEscola.API.Models.DTO.Login;
 using AutoEscola.API.Services;
@@ -43,7 +44,7 @@ namespace AutoEscola.API.Controllers
         public IActionResult BuscarUsuario()
         {
             var usuarios = _context.Usuarios
-                .Where(u => !u.Excluido)
+                .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO)
                 .ToList();
 
             return Ok(usuarios);

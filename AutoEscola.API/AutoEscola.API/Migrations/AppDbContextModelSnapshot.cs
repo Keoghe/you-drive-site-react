@@ -459,10 +459,10 @@ namespace AutoEscola.API.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("email");
 
-                    b.Property<bool>("Excluido")
+                    b.Property<int>("Excluido")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
                         .HasColumnName("excluido");
 
                     b.Property<string>("Login")

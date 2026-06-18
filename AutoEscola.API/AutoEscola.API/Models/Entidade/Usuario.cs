@@ -17,7 +17,7 @@ public class Usuario
     public decimal Saldo { get; set; }
     public DateTime DataCadastro { get; set; }
 
-    public bool Excluido { get; set; }
+    public int Excluido { get; set; } = 0;
 
     // ✅ RELACIONAMENTOS
     public List<Endereco>? Enderecos { get; set; }
