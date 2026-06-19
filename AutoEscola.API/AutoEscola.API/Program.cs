@@ -100,6 +100,8 @@ builder.Services.AddScoped<IUsuarios, UsuariosBLL>();
 builder.Services.AddScoped<IAulas, AulasBLL>();
 builder.Services.AddScoped<IInstrutor, InstrutorBLL>();
 builder.Services.AddScoped<IDocumento, DocumentoBLL>(); 
+builder.Services.AddScoped<IStorage, StorageBLL>();
+builder.Services.AddScoped<ITiposDocumento, TiposDocumentoBLL>();
 
 var app = builder.Build();
 

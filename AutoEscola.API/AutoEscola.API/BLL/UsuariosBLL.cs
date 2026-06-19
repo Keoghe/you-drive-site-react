@@ -55,7 +55,7 @@ namespace AutoEscola.API.BLL
             // ✅ VALIDAÇÃO DE DUPLICIDADE
 
             var usuarioExistente = await _context.Usuarios
-                .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO &&
+                .Where(u => 
                            (u.Login == novoUsuario.Login ||
                             u.Cpf == novoUsuario.Cpf ||
                             u.Email == novoUsuario.Email))

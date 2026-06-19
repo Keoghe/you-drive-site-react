@@ -2,7 +2,7 @@
 {
     public enum StatusContaUsuario
     {
-       ATIVO = 1,
-       INATIVO = 0
+       ATIVO = 0,
+       INATIVO = 1
     }
 }

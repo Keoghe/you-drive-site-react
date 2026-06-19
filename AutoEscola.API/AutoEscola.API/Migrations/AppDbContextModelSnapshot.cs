@@ -351,6 +351,80 @@ namespace AutoEscola.API.Migrations
                     b.ToTable("promocoes", "dbo");
                 });
 
+            modelBuilder.Entity("AutoEscola.API.Models.Entidade.Storage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Caminho")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("caminho");
+
+                    b.Property<int>("Excluido")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("excluido");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("storage", (string)null);
+                });
+
+            modelBuilder.Entity("AutoEscola.API.Models.Entidade.TiposDocumento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataAlteracao")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("data_alteracao");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("data_criacao")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("descricao");
+
+                    b.Property<int>("Excluido")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("excluido");
+
+                    b.Property<int>("Obrigatorio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1)
+                        .HasColumnName("obrigatorio");
+
+                    b.Property<int>("TipoUsuarioId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1)
+                        .HasColumnName("tipo_usuario_id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tipos_documento", (string)null);
+                });
+
             modelBuilder.Entity("AutoEscola.API.Models.Entidade.ValoresAula", b =>
                 {
                     b.Property<int>("Id")

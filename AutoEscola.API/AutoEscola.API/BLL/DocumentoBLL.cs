@@ -4,6 +4,8 @@ using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Documento;
 using AutoEscola.API.Models.ViewModel.Documento;
 using AutoEscola.API.Services;
+using System.Buffers.Text;
+using System.IO;
 
 namespace AutoEscola.API.BLL
 {
@@ -12,12 +14,15 @@ namespace AutoEscola.API.BLL
         private readonly AppDbContext _context;
         private readonly JwtService _jwtService;
         private readonly IHttpContextAccessor _httpContext;
-
-        public DocumentoBLL(AppDbContext context, JwtService jwtService, IHttpContextAccessor httpContext)
+        private readonly IStorage _storageBLL;
+        private readonly ITiposDocumento _tiposDocumentoBLL;
+        public DocumentoBLL(AppDbContext context, JwtService jwtService, IHttpContextAccessor httpContext, IStorage storageBLL, ITiposDocumento tiposDocumentoBLL)
         {
             _context = context;
             _jwtService = jwtService;
             _httpContext = httpContext;
+            _storageBLL = storageBLL;
+            _tiposDocumentoBLL = tiposDocumentoBLL;
         }
         public Task<DownloadArquivoViewModel> BaixarArquivo(int documentoId)
         {
@@ -41,12 +46,15 @@ namespace AutoEscola.API.BLL
 
         public async Task<List<DocumentoViewModel>> UploadAtivarContaInstrutor(List<DocumentoDTO> listaArquivos)
         {
-            ValidarArquivoEnviados(listaArquivos);
 
             try
             {
+                await ValidarDocumentoObrigatorios(listaArquivos, (int)TipoUsuario.Instrutor);
+                listaArquivos = await ValidarArquivosEnviados(listaArquivos, (int)TipoUsuario.Instrutor);
+
                 var entidades = listaArquivos.Select(a => new Models.Entidade.Documento
                 {
+                    UsuarioId = a.usuarioId,
                     NomeOriginal = a.NomeOriginal,
                     CaminhoArquivo = a.CaminhoArquivo,
                     TipoDocumentoId = a.TipoDocumentoId,
@@ -56,9 +64,9 @@ namespace AutoEscola.API.BLL
 
                 // ✅ adiciona no contexto
                 _context.Documentos.AddRange(entidades);
-                 
+
                 await _context.SaveChangesAsync();
-                 
+
                 var resultado = entidades.Select(e => new DocumentoViewModel
                 {
                     Id = e.Id,
@@ -71,35 +79,46 @@ namespace AutoEscola.API.BLL
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao importar arquivos: " + ex.Message);
+                throw new Exception(ex.Message);
             }
         }
 
-        private void ValidarArquivoEnviados(List<DocumentoDTO> listaArquivos)
+        private async Task<List<DocumentoDTO>> ValidarArquivosEnviados(List<DocumentoDTO> listaArquivos, int tipoUsuarioId)
         {
-            var cpf = _context.Usuarios
+
+            var usuario = _context.Usuarios
                 .Where(u => u.Id == listaArquivos.FirstOrDefault().usuarioId && u.Excluido == (int)StatusContaUsuario.ATIVO)
-                .Select(u => u.Cpf).FirstOrDefault();
+                .FirstOrDefault();
 
             if (listaArquivos != null && listaArquivos.Count > 0)
             {
                 foreach (var arquivo in listaArquivos)
                 {
+                    var nomeArquivo = $"";
+
                     switch (arquivo.TipoDocumentoId)
                     {
                         case (int)TipoAnexo.CNH:
+
+                            nomeArquivo = "CNH";
                             if (arquivo.Base64 == null || arquivo.Base64.Length == 0)
                                 throw new Exception("Documento CNH não foi enviado");
                             break;
                         case (int)TipoAnexo.CREDENCIA_CERTIFICADO_AUTONOMO:
+
+                            nomeArquivo = "CREDENCIA_CERTIFICADO_AUTONOMO";
                             if (arquivo.Base64 == null || arquivo.Base64.Length == 0)
                                 throw new Exception("Documento Credencial/Certificado de Autônomo não foi enviado");
                             break;
                         case (int)TipoAnexo.COMPROVANTE_ENDERECO:
+
+                            nomeArquivo = "COMPROVANTE_ENDERECO";
                             if (arquivo.Base64 == null || arquivo.Base64.Length == 0)
                                 throw new Exception("Documento Comprovante de Endereço não foi enviado");
                             break;
                         case (int)TipoAnexo.CERTIDAO_ANTECEDENTE_CRIMINAL:
+
+                            nomeArquivo = "CERTIDAO_ANTECEDENTE_CRIMINAL";
                             if (arquivo.Base64 == null || arquivo.Base64.Length == 0)
                                 throw new Exception("Documento Certidão de Antecedente Criminal não foi enviado");
                             break;
@@ -107,13 +126,67 @@ namespace AutoEscola.API.BLL
                             break;
                     }
 
+                    var caminho = await _storageBLL.BuscarTodos();
 
+                    if (caminho != null && caminho.Count > 0)
+                    {
+                        var caminhoFisico = @$"{caminho?.FirstOrDefault()?.Caminho}\{usuario.Id}_{usuario.Cpf}";
+
+                        if (!Path.Exists(caminhoFisico))
+                        {
+                            Directory.CreateDirectory(caminhoFisico);
+                        }
+
+                        byte[] bytes = Convert.FromBase64String(arquivo.Base64);
+
+                        var extensao = ObterExtensaoArquivo(arquivo.NomeOriginal);
+
+                        nomeArquivo += $".{extensao}";
+
+                        var caminhoCompleto = Path.Combine(caminhoFisico, nomeArquivo);
+
+                        arquivo.CaminhoArquivo = caminhoCompleto;
+
+                        await File.WriteAllBytesAsync(caminhoCompleto, bytes);
+                    }
+                    else
+                    {
+                        throw new Exception("Erro ao salvar arquivo, verifique a configuração do storage");
+                    }
                 }
+
+                return listaArquivos;
             }
             else
             {
                 throw new Exception("Nenhum arquivo enviado");
             }
+        }
+        private async Task ValidarDocumentoObrigatorios(List<DocumentoDTO> listaArquivos, int tipoUsuarioId)
+        {
+            var tiposDocumento = await _tiposDocumentoBLL.BuscarTodos();
+
+            foreach (var documento in tiposDocumento.Where(c => c.Obrigatorio == (int)Status.ATIVO && c.TipoUsuarioId == tipoUsuarioId))
+            {
+                if (listaArquivos.FindAll(c => c.TipoDocumentoId == documento.Id).Count == 0)
+                {
+                    throw new Exception($"O Documento {documento.Descricao} é obrigatório e não foi enviado");
+                }
+            }
+        }
+        private string ObterExtensaoArquivo(string nomeArquivo)
+        {
+
+            string extensao = Path.GetExtension(nomeArquivo);
+
+            return extensao.Replace(".", "");
+        }
+
+        private bool ValidarExtensaoArquivo(string nomeArquivo)
+        {
+            var extensao = ObterExtensaoArquivo(nomeArquivo);
+            var extensoesPermitidas = new List<string> { "jpg", "jpeg", "png", "pdf" };
+            return extensoesPermitidas.Contains(extensao.ToLower());
         }
     }
 }

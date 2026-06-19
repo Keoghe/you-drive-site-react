@@ -8,9 +8,8 @@
         public int TipoDocumentoId { get; set; }
         public int Status { get; set; }
         public DateTime DataCriacao { get; set; } = DateTime.Now;
-        public int Excluido { get; set; } = 0;
-
+        public int Excluido { get; set; } = 0; 
         public int UsuarioId { get; set; }
-        public virtual Usuario Usuario { get; set; } = new Usuario();
+        public virtual Usuario Usuario { get; set; }
     }
 }

@@ -48,6 +48,69 @@
         }
       }
     },
+    "/api/Documento/upload/ativar/conta/instrutor": {
+      "post": {
+        "tags": [
+          "Documento"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DocumentoDTO"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DocumentoDTO"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DocumentoDTO"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/TiposDocumento/{tipoUsuarioId}": {
+      "get": {
+        "tags": [
+          "TiposDocumento"
+        ],
+        "parameters": [
+          {
+            "name": "tipoUsuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Usuarios/login": {
       "post": {
         "tags": [
@@ -193,6 +256,40 @@
           },
           "excluido": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DocumentoDTO": {
+        "type": "object",
+        "properties": {
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nomeOriginal": {
+            "type": "string",
+            "nullable": true
+          },
+          "caminhoArquivo": {
+            "type": "string",
+            "nullable": true
+          },
+          "base64": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipoDocumentoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataCriacao": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
