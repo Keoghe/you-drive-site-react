@@ -7,6 +7,8 @@ export default function AtivarConta() {
   const [documentos, setDocumentos] = useState({});
   const [tipos, setTipos] = useState([]);
   const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const [documentosUsuario, setDocumentosUsuario] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   function handleFileChange(e, tipoId) {
     const file = e.target.files[0];
@@ -81,6 +83,58 @@ export default function AtivarConta() {
     }
   }
 
+  async function carregarDocumentos() {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/Documento/${usuario.usuarioId}/0`,
+        {
+          headers: {
+            Authorization: `Bearer ${usuario.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      setDocumentosUsuario(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function getStatus(tipoDocumentalId) {
+    debugger; 
+    const doc = documentosUsuario.find((d) => d.tipoDocumentalId === tipoDocumentalId);
+
+    return doc != null ? doc.status : null;
+  }
+
+  function getStatusDescricao(status) {
+    switch (status) {
+      case 0:
+        return "Em Análise";
+      case 1:
+        return "Aprovado";
+      case 2:
+        return "Reprovado";
+      default:
+        return "Não enviado";
+    }
+  }
+
+  function getStatusCor(status) {
+    switch (status) {
+      case 0:
+        return "#ffa726"; // laranja
+      case 1:
+        return "#00c853"; // verde
+      case 2:
+        return "#d32f2f"; // vermelho
+      default:
+        return "#999";
+    }
+  }
+
   useEffect(() => {
     if (!carregadoGlobal) {
       carregarTipos();
@@ -109,39 +163,58 @@ export default function AtivarConta() {
       const data = await response.json();
 
       setTipos(data);
+      debugger;
+      await carregarDocumentos();
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // ✅ aqui termina tudo
     }
   }
 
   return (
-    <div className="home-container">
-      <section className="home-section">
-        <h2 className="home-title">Ativar Conta</h2>
+  <div className="home-container">
+    <section className="home-section">
+      <h2 className="home-title">Ativar Conta</h2>
 
+      {loading ? (
+        <p>Carregando...</p>
+      ) : (
         <div className="plans">
-          {tipos.map((tipo) => (
-            <div key={tipo.id} className="plan-card">
-              <h3>{tipo.nome}</h3>
+          {tipos.map((tipo) => {
+            const status = getStatus(tipo.id);
 
-              <label className="upload-btn">
-                Escolher arquivo
-                <input
-                  type="file"
-                  onChange={(e) => handleFileChange(e, tipo.id)}
-                />
-              </label>
-              {documentos[tipo.id] && (
-                <p className="file-name">{documentos[tipo.id].nomeOriginal}</p>
-              )}
-            </div>
-          ))}
+            return (
+              <div key={tipo.id} className="plan-card">
+                <h3>{tipo.nome}</h3>
+
+                <p style={{ color: getStatusCor(status) }}>
+                  {getStatusDescricao(status)}
+                </p>
+
+                <label className="upload-btn">
+                  Escolher arquivo
+                  <input
+                    type="file"
+                    onChange={(e) => handleFileChange(e, tipo.id)}
+                  />
+                </label>
+
+                {documentos[tipo.id] && (
+                  <p className="file-name">
+                    {documentos[tipo.id].nomeOriginal}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
+      )}
 
-        <button onClick={enviarDocumentos} className="btn-enviar">
-          Enviar Documentos
-        </button>
-      </section>
-    </div>
-  );
+      <button onClick={enviarDocumentos} className="btn-enviar">
+        Enviar Documentos
+      </button>
+    </section>
+  </div>
+);
 }

@@ -1,4 +1,5 @@
-﻿using AutoEscola.API.Models.DTO.Documento;
+﻿using AutoEscola.API.Enum;
+using AutoEscola.API.Models.DTO.Documento;
 using AutoEscola.API.Models.ViewModel.Documento;
 
 namespace AutoEscola.API.BLL.Interface
@@ -8,7 +9,7 @@ namespace AutoEscola.API.BLL.Interface
         Task<List<DocumentoViewModel>> UploadAtivarContaInstrutor(List<DocumentoDTO> listaArquivos);
         Task<DocumentoViewModel> UploadArquivo(DocumentoDTO arquivo);
         Task<DocumentoViewModel> BuscarArquivo(int documentoId);
-        Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId); 
+        Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId, int statusDocumento = (int)StatusDocumento.Pendente); 
         Task<DownloadArquivoViewModel> BaixarArquivo(int documentoId);
 
 

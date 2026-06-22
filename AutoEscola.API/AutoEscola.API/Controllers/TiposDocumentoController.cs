@@ -33,8 +33,7 @@ namespace AutoEscola.API.Controllers
             catch (Exception ex)
             {
                 return Unauthorized(ex.Message);
-            }
-
-        }
+            } 
+        }        
     }
 }

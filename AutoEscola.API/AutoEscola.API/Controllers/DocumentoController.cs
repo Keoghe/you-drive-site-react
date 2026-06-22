@@ -41,5 +41,20 @@ namespace AutoEscola.API.Controllers
 
         }
 
+        [Authorize]
+        [HttpGet("{usuarioId}/{statusDocumento}")]
+        public async Task<IActionResult> BuscarTiposDocumento(int usuarioId, int statusDocumento, [FromServices] JwtService jwtService)
+        {
+            try
+            {
+                var resultado = await _documentoBll.BuscarArquivosUsuario(usuarioId, statusDocumento);
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
     }
 }

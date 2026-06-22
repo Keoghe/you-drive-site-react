@@ -6,6 +6,6 @@ namespace AutoEscola.API.BLL.Interface
 {
     public interface ITiposDocumento : IBaseBLL<TiposDocumento>
     {
-        public Task<List<TiposDocumentoViewModel>> BuscarTiposDocumento(int tipoUsuarioId);
+        public Task<List<TiposDocumentoViewModel>> BuscarTiposDocumento(int tipoUsuarioId); 
     }
 }

@@ -34,9 +34,35 @@ namespace AutoEscola.API.BLL
             throw new NotImplementedException();
         }
 
-        public Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId)
+        public async Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId, int statusDocumento = (int)StatusDocumento.Pendente)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var documentosUsuario = new List<DocumentoViewModel>();
+                var documentos = _context.Documentos.Where(c => c.UsuarioId == usuarioId && c.Excluido == statusDocumento);
+
+                foreach (var documento in documentos)
+                {
+                    var documentoBase64 = await File.ReadAllBytesAsync(documento.CaminhoArquivo);
+                   
+                    documentosUsuario.Add(new DocumentoViewModel
+                    {
+                        Id = documento.Id,
+                        NomeOriginal = documento.NomeOriginal,
+                        Status = documento.Status,
+                        TipoDocumentalId = documento.TipoDocumentoId,
+                        DataCriacao = documento.DataCriacao,
+                        Base64 = Convert.ToBase64String(documentoBase64)
+                    });
+                }
+
+                return documentosUsuario;
+            }
+            catch (Exception ex)
+            { 
+                throw new Exception(ex.Message);
+
+            }
         }
 
         public Task<DocumentoViewModel> UploadArquivo(DocumentoDTO arquivo)
