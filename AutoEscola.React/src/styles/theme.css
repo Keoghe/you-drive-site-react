@@ -970,4 +970,39 @@ body {
 }
 
 
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+
+.upload-btn:disabled {
+  background: #ccc; /* cinza */
+  color: #666;
+  cursor: not-allowed;
+  border: 1px solid #999;
+  box-shadow: none; /* remove sombra */
+  opacity: 0.7;
+}
+
+
+.upload-btn:hover:not(:disabled) {
+  background: #00a844;
+  border: 2px solid black;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+}
+
+
+
+.upload-btn.disabled,.upload-btn.disabled:hover {
+  pointer-events: none;
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  border: 1px solid #aaa;
+  box-shadow: none;
+  opacity: 0.7;
+} 
+
+
 /*ATIVAR CONTA.JSX - FIM*/

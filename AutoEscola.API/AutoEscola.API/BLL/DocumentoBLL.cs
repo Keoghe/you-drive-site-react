@@ -2,8 +2,10 @@
 using AutoEscola.API.Data;
 using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Documento;
+using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Documento;
 using AutoEscola.API.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Buffers.Text;
 using System.IO;
 
@@ -44,7 +46,7 @@ namespace AutoEscola.API.BLL
                 foreach (var documento in documentos)
                 {
                     var documentoBase64 = await File.ReadAllBytesAsync(documento.CaminhoArquivo);
-                   
+
                     documentosUsuario.Add(new DocumentoViewModel
                     {
                         Id = documento.Id,
@@ -59,7 +61,7 @@ namespace AutoEscola.API.BLL
                 return documentosUsuario;
             }
             catch (Exception ex)
-            { 
+            {
                 throw new Exception(ex.Message);
 
             }
@@ -76,32 +78,42 @@ namespace AutoEscola.API.BLL
             try
             {
                 await ValidarDocumentoObrigatorios(listaArquivos, (int)TipoUsuario.Instrutor);
-                listaArquivos = await ValidarArquivosEnviados(listaArquivos, (int)TipoUsuario.Instrutor);
 
-                var entidades = listaArquivos.Select(a => new Models.Entidade.Documento
+                if (await VerificarNovoDocumentoAnalise(listaArquivos) >= 0)
                 {
-                    UsuarioId = a.usuarioId,
-                    NomeOriginal = a.NomeOriginal,
-                    CaminhoArquivo = a.CaminhoArquivo,
-                    TipoDocumentoId = a.TipoDocumentoId,
-                    Status = (int)StatusDocumento.Pendente,
-                    DataCriacao = DateTime.UtcNow
-                }).ToList();
 
-                // ✅ adiciona no contexto
-                _context.Documentos.AddRange(entidades);
+                    listaArquivos = await ValidarArquivosEnviados(listaArquivos, (int)TipoUsuario.Instrutor);
 
-                await _context.SaveChangesAsync();
+                    var entidades = listaArquivos.Select(a => new Models.Entidade.Documento
+                    {
+                        UsuarioId = a.usuarioId,
+                        NomeOriginal = a.NomeOriginal,
+                        CaminhoArquivo = a.CaminhoArquivo,
+                        TipoDocumentoId = a.TipoDocumentoId,
+                        Status = (int)StatusDocumento.Pendente,
+                        DataCriacao = DateTime.UtcNow
+                    }).ToList();
 
-                var resultado = entidades.Select(e => new DocumentoViewModel
+                    // ✅ adiciona no contexto
+                    _context.Documentos.AddRange(entidades);
+
+                    await _context.SaveChangesAsync();
+
+                    var resultado = entidades.Select(e => new DocumentoViewModel
+                    {
+                        Id = e.Id,
+                        NomeOriginal = e.NomeOriginal,
+                        Status = e.Status,
+                        DataCriacao = e.DataCriacao
+                    }).ToList();
+
+                    return resultado;
+                }
+                else
                 {
-                    Id = e.Id,
-                    NomeOriginal = e.NomeOriginal,
-                    Status = e.Status,
-                    DataCriacao = e.DataCriacao
-                }).ToList();
+                    throw new Exception("Erro ao validar documentos.");
+                }
 
-                return resultado;
             }
             catch (Exception ex)
             {
@@ -190,10 +202,29 @@ namespace AutoEscola.API.BLL
         }
         private async Task ValidarDocumentoObrigatorios(List<DocumentoDTO> listaArquivos, int tipoUsuarioId)
         {
+            var usuarioId = listaArquivos.First().usuarioId;
+
+            if(usuarioId == 0)
+                throw new Exception($"O usuário informado não existe");
+
             var tiposDocumento = await _tiposDocumentoBLL.BuscarTodos();
+             
+            var documentosSalvos = await _context.Documentos
+                .Where(c =>
+                    c.UsuarioId == usuarioId &&
+                    c.Excluido == (int)Status.ATIVO  
+                )
+                .ToListAsync();
+            
+            
 
             foreach (var documento in tiposDocumento.Where(c => c.Obrigatorio == (int)Status.ATIVO && c.TipoUsuarioId == tipoUsuarioId))
             {
+                if (documentosSalvos.FindAll(c => c.TipoDocumentoId == documento.Id).Count > 0)
+                {
+                    continue;
+                }
+
                 if (listaArquivos.FindAll(c => c.TipoDocumentoId == documento.Id).Count == 0)
                 {
                     throw new Exception($"O Documento {documento.Descricao} é obrigatório e não foi enviado");
@@ -214,5 +245,27 @@ namespace AutoEscola.API.BLL
             var extensoesPermitidas = new List<string> { "jpg", "jpeg", "png", "pdf" };
             return extensoesPermitidas.Contains(extensao.ToLower());
         }
+
+        private async Task<int> VerificarNovoDocumentoAnalise(List<DocumentoDTO> listaArquivos)
+        {
+            var tiposIds = listaArquivos.Select(a => a.TipoDocumentoId).ToList();
+
+
+            var documentosAtuais = await _context.Documentos
+                .Where(d => d.UsuarioId == listaArquivos.First().usuarioId
+                         && tiposIds.Contains(d.TipoDocumentoId)
+                         && d.Excluido == 0)
+                .ToListAsync();
+
+
+            foreach (var doc in documentosAtuais)
+            {
+                doc.Excluido = 1;
+            }
+            var retorno = await _context.SaveChangesAsync();
+
+            return retorno;
+        }
+
     }
 }

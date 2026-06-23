@@ -35,7 +35,7 @@ export default function AtivarConta() {
   async function enviarDocumentos() {
     try {
       debugger;
-
+      setLoading(true);
       const lista = Object.keys(documentos).map((tipoId) => ({
         TipoDocumentoId: documentos[tipoId]?.tipoId,
         usuarioId: usuario.usuarioId, // ✅ ajuste conforme seu objeto
@@ -70,9 +70,9 @@ export default function AtivarConta() {
         text: "Documentos Enviados com Sucesso",
         icon: "success",
         confirmButtonColor: "#00c853",
-      }).then(() => {
-        navigate("/agendadas"); // ✅ redireciona
       });
+      console.log("Recarregar Status");
+      await carregarTipos();
     } catch (error) {
       Swal.fire({
         title: "Erro!",
@@ -103,8 +103,10 @@ export default function AtivarConta() {
   }
 
   function getStatus(tipoDocumentalId) {
-    debugger; 
-    const doc = documentosUsuario.find((d) => d.tipoDocumentalId === tipoDocumentalId);
+    debugger;
+    const doc = documentosUsuario.find(
+      (d) => d.tipoDocumentalId === tipoDocumentalId,
+    );
 
     return doc != null ? doc.status : null;
   }
@@ -173,48 +175,58 @@ export default function AtivarConta() {
   }
 
   return (
-  <div className="home-container">
-    <section className="home-section">
-      <h2 className="home-title">Ativar Conta</h2>
+    <div className="home-container">
+      <section className="home-section">
+        <h2 className="home-title">Ativar Conta</h2>
 
-      {loading ? (
-        <p>Carregando...</p>
-      ) : (
-        <div className="plans">
-          {tipos.map((tipo) => {
-            const status = getStatus(tipo.id);
+        {loading ? (
+          <p>Carregando...</p>
+        ) : (
+          <div className="plans">
+            {tipos.map((tipo) => {
+              const status = getStatus(tipo.id);
 
-            return (
-              <div key={tipo.id} className="plan-card">
-                <h3>{tipo.nome}</h3>
+              return (
+                <div key={tipo.id} className="plan-card">
+                  <h3>{tipo.nome}</h3>
 
-                <p style={{ color: getStatusCor(status) }}>
-                  {getStatusDescricao(status)}
-                </p>
-
-                <label className="upload-btn">
-                  Escolher arquivo
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, tipo.id)}
-                  />
-                </label>
-
-                {documentos[tipo.id] && (
-                  <p className="file-name">
-                    {documentos[tipo.id].nomeOriginal}
+                  <p style={{ color: getStatusCor(status) }}>
+                    {getStatusDescricao(status)}
                   </p>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
 
-      <button onClick={enviarDocumentos} className="btn-enviar">
-        Enviar Documentos
-      </button>
-    </section>
-  </div>
-);
+                  <label
+                    className={`upload-btn ${status === 0 || status === 1 ? "disabled" : ""}`}
+                  >
+                    {
+                    status === 1
+                      ? "Aprovado" :
+                    status === 2
+                      ? "Reenviar documento"
+                      : status === null
+                        ? "Selecionar Arquivo"
+                        : "Aguardando análise"}
+
+                    <input
+                      type="file"
+                      disabled={status === 0 || status === 1}
+                      onChange={(e) => handleFileChange(e, tipo.id)}
+                    />
+                  </label>
+
+                  {documentos[tipo.id] && (
+                    <p className="file-name">
+                      {documentos[tipo.id].nomeOriginal}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <button onClick={enviarDocumentos} className="btn-enviar">
+          Enviar Documentos
+        </button>
+      </section>
+    </div>
+  );
 }
