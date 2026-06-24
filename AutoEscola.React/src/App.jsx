@@ -8,7 +8,7 @@ import Contato from "./pages/Contato";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import AtivarConta from "./pages/AtivarConta";
-
+import AnaliseDocumento from "./pages/AnaliseDocumento";
 
 export default function App() {
   return (
@@ -19,6 +19,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="agendadas" element={<AulasAgendadas />} />
           <Route path="agendarAula" element={<AgendarAulas />} />
+          <Route path="analiseDocumento" element={<AnaliseDocumento />} />
           <Route path="conta" element={<Conta />} />
           <Route path="contato" element={<Contato />} />
           <Route path="login" element={<Login />} />

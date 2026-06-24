@@ -10,6 +10,8 @@
         public DateTime DataCriacao { get; set; } = DateTime.Now;
         public int Excluido { get; set; } = 0; 
         public int UsuarioId { get; set; }
+        public string DescricaoAnalise { get; set; } = string.Empty;
+
         public virtual Usuario? Usuario { get; set; }
     }
 }

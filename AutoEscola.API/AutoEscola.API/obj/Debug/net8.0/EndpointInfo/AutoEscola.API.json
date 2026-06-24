@@ -120,6 +120,37 @@
         }
       }
     },
+    "/api/Documento": {
+      "put": {
+        "tags": [
+          "Documento"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/TiposDocumento/{tipoUsuarioId}": {
       "get": {
         "tags": [
@@ -295,6 +326,10 @@
       "DocumentoDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "usuarioId": {
             "type": "integer",
             "format": "int32"
@@ -322,6 +357,10 @@
           "dataCriacao": {
             "type": "string",
             "format": "date-time"
+          },
+          "descricaoAnalise": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

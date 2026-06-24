@@ -86,7 +86,7 @@ namespace AutoEscola.API.BLL
 
                     var entidades = listaArquivos.Select(a => new Models.Entidade.Documento
                     {
-                        UsuarioId = a.usuarioId,
+                        UsuarioId = a.UsuarioId,
                         NomeOriginal = a.NomeOriginal,
                         CaminhoArquivo = a.CaminhoArquivo,
                         TipoDocumentoId = a.TipoDocumentoId,
@@ -125,7 +125,7 @@ namespace AutoEscola.API.BLL
         {
 
             var usuario = _context.Usuarios
-                .Where(u => u.Id == listaArquivos.FirstOrDefault().usuarioId && u.Excluido == (int)StatusContaUsuario.ATIVO)
+                .Where(u => u.Id == listaArquivos.FirstOrDefault().UsuarioId && u.Excluido == (int)StatusContaUsuario.ATIVO)
                 .FirstOrDefault();
 
             if (listaArquivos != null && listaArquivos.Count > 0)
@@ -202,21 +202,21 @@ namespace AutoEscola.API.BLL
         }
         private async Task ValidarDocumentoObrigatorios(List<DocumentoDTO> listaArquivos, int tipoUsuarioId)
         {
-            var usuarioId = listaArquivos.First().usuarioId;
+            var usuarioId = listaArquivos.First().UsuarioId;
 
-            if(usuarioId == 0)
+            if (usuarioId == 0)
                 throw new Exception($"O usuário informado não existe");
 
             var tiposDocumento = await _tiposDocumentoBLL.BuscarTodos();
-             
+
             var documentosSalvos = await _context.Documentos
                 .Where(c =>
                     c.UsuarioId == usuarioId &&
-                    c.Excluido == (int)Status.ATIVO  
+                    c.Excluido == (int)Status.ATIVO
                 )
                 .ToListAsync();
-            
-            
+
+
 
             foreach (var documento in tiposDocumento.Where(c => c.Obrigatorio == (int)Status.ATIVO && c.TipoUsuarioId == tipoUsuarioId))
             {
@@ -252,7 +252,7 @@ namespace AutoEscola.API.BLL
 
 
             var documentosAtuais = await _context.Documentos
-                .Where(d => d.UsuarioId == listaArquivos.First().usuarioId
+                .Where(d => d.UsuarioId == listaArquivos.First().UsuarioId
                          && tiposIds.Contains(d.TipoDocumentoId)
                          && d.Excluido == 0)
                 .ToListAsync();
@@ -267,5 +267,66 @@ namespace AutoEscola.API.BLL
             return retorno;
         }
 
+
+        public async Task<DocumentoDTO> AtualizarStatusDocumento(DocumentoDTO documento)
+        {
+            try
+            {
+                var entidade = await _context.Documentos
+                        .FirstOrDefaultAsync(d => d.Id == documento.Id);
+
+                if (entidade == null)
+                    throw new Exception("Documento não encontrado");
+
+                entidade.TipoDocumentoId = documento.TipoDocumentoId;
+                entidade.Status = documento.Status;
+                entidade.DescricaoAnalise = documento.DescricaoAnalise;
+
+
+                await _context.SaveChangesAsync();
+                 
+                return new DocumentoDTO
+                {
+                    UsuarioId = entidade.UsuarioId,
+                    TipoDocumentoId = entidade.TipoDocumentoId,
+                    Status = entidade.Status
+                };  
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        public Task<DocumentoDTO> Adicionar(DocumentoDTO entidade)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DocumentoDTO> Atualizar(DocumentoDTO entidade)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Remover(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DocumentoDTO> BuscarPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<DocumentoDTO>> BuscarTodos()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
     }
 }

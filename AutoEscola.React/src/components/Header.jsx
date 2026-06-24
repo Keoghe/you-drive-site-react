@@ -47,7 +47,7 @@ export default function Header() {
           <Link to="/agendarAula">Agendar Aula</Link>
           <Link to="/conta">Minha Conta</Link>
           <Link to="/contato">Fale Conosco</Link>
-          {/* <Link to="/login">Login</Link> */}
+          <Link to="/AnaliseDocumento">Analise Documento</Link>
           <Link to="/cadastro">Cadastre-se</Link>
           <Link to="/ativar-conta">Ativar Conta</Link>
 

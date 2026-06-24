@@ -27,6 +27,22 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.DocumentoController",
+    "Method": "AtualizarStatusDocumento",
+    "RelativePath": "api/Documento",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "documento",
+        "Type": "AutoEscola.API.Models.DTO.Documento.DocumentoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.DocumentoController",
     "Method": "BuscarTiposDocumento",
     "RelativePath": "api/Documento/{usuarioId}/{statusDocumento}",
     "HttpMethod": "GET",

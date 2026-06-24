@@ -56,5 +56,22 @@ namespace AutoEscola.API.Controllers
                 return Unauthorized(ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpPut("")]
+        public async Task<IActionResult> AtualizarStatusDocumento([FromBody] DocumentoDTO documento, [FromServices] JwtService jwtService)
+        {
+            try
+            {
+                var resultado = await _documentoBll.AtualizarStatusDocumento(documento);
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+
+        }
     }
 }

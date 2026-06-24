@@ -358,6 +358,7 @@ body {
   font-size: 28px;
   margin-bottom: 30px;
   color: #000;
+  text-align: center;
 }
 
 /* CARDS */
@@ -936,13 +937,11 @@ body {
   color: #fff;
 }
 
-.btn-enviar:hover { 
-
+.btn-enviar:hover {
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* ✅ sombra */
 
   transform: translateY(-2px); /* ✅ leve "subida" bonita */
 }
-
 
 .upload-btn {
   display: inline-block;
@@ -961,7 +960,7 @@ body {
 .upload-btn:hover {
   background: #00a844;
   border: 2px solid black;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.4);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* ✅ esconder input feio */
@@ -969,12 +968,10 @@ body {
   display: none;
 }
 
-
 button:disabled {
   background: #ccc;
   cursor: not-allowed;
 }
-
 
 .upload-btn:disabled {
   background: #ccc; /* cinza */
@@ -985,16 +982,14 @@ button:disabled {
   opacity: 0.7;
 }
 
-
 .upload-btn:hover:not(:disabled) {
   background: #00a844;
   border: 2px solid black;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-
-
-.upload-btn.disabled,.upload-btn.disabled:hover {
+.upload-btn.disabled,
+.upload-btn.disabled:hover {
   pointer-events: none;
   background: #ccc;
   color: #666;
@@ -1002,7 +997,142 @@ button:disabled {
   border: 1px solid #aaa;
   box-shadow: none;
   opacity: 0.7;
-} 
-
+}
 
 /*ATIVAR CONTA.JSX - FIM*/
+
+/*ANALISE DE DOCUMENTOS DOS INSTRUTORES - INICIO*/
+.btn-aprovar {
+  background: #00c853;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-reprovar {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-fechar {
+  background: #4e504f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-fechar:hover {
+  background: #1b1b1b;
+}
+
+.btn-aprovar:hover {
+  background: #00a844;
+}
+
+.btn-reprovar:hover {
+  background: #b71c1c;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /*usa toda altura da tela */
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 10px;
+
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.modal-content iframe {
+  width: 100%;
+  flex: 1;  
+  border: none;
+}
+
+
+.modal-content h2 {
+  padding: 15px;
+  margin: 0;
+}
+
+.modal-actions {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.btn-visualizar {
+  margin-top: 10px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-content.small {
+  width: 90%;
+  max-width: 698px;
+
+  height: auto;  
+  max-height: 80vh;  
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+
+
+.modal-content.small textarea {
+  width: 100%;
+  height: 120px;
+
+  box-sizing: border-box;  
+
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+
+  resize: vertical;  
+}
+
+
+
+/*ANALISE DE DOCUMENTOS DOS INSTRUTORES - FIM*/

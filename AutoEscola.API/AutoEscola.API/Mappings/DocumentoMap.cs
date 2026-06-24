@@ -23,6 +23,8 @@ namespace AutoEscola.API.Mappings
             builder.Property(c => c.Status).HasColumnName("status").HasMaxLength(100);
             builder.Property(c => c.DataCriacao).HasColumnName("data_criacao");
             builder.Property(c => c.Excluido).HasColumnName("excluido").HasDefaultValue(false);
+            builder.Property(c => c.DescricaoAnalise).HasColumnName("descricao_analise").HasMaxLength(500);
+
 
             builder.Property(c => c.UsuarioId)
                 .HasColumnName("usuario_id");
