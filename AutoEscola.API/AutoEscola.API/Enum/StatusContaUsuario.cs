@@ -3,6 +3,7 @@
     public enum StatusContaUsuario
     {
        ATIVO = 0,
-       INATIVO = 1
+       INATIVO = 1,
+       PENDENTE = 2,
     }
 }

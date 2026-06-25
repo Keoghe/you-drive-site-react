@@ -14,8 +14,8 @@
 
         public DateTime? DataFim { get; set; }
 
-        public bool Ativa { get; set; }
+        public int Ativa { get; set; }
 
-        public bool Excluido { get; set; }
+        public int Excluido { get; set; }
     }
 }

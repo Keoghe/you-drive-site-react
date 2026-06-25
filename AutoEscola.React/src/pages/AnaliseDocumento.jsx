@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API_BASE_URL from "../config/api";
 import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
 
 export default function AnaliseDocumento() {
   const [documentos, setDocumentos] = useState([]);
@@ -9,7 +10,7 @@ export default function AnaliseDocumento() {
   const [documentoSelecionado, setDocumentoSelecionado] = useState(null);
   const [modalReprovar, setModalReprovar] = useState(false);
   const [descricao, setDescricao] = useState("");
-
+  const { id } = useParams();
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function AnaliseDocumento() {
       setLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/Documento/${usuario.usuarioId}/0`, // ajuste sua rota
+        `${API_BASE_URL}/Documento/${id}/0`, // ajuste sua rota
         {
           headers: {
             Authorization: `Bearer ${usuario.token}`,
@@ -49,25 +50,24 @@ export default function AnaliseDocumento() {
 
     setModalOpen(false);
     carregarDocumentos();
-  } 
-async function reprovar(id, descricaoAnalise) {
-  await fetch(`${API_BASE_URL}/documento`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${usuario.token}`,
-    },
-    body: JSON.stringify({
-      id: id,
-      status: 2,
-      descricaoAnalise: descricaoAnalise,
-    }),
-  });
+  }
+  async function reprovar(id, descricaoAnalise) {
+    await fetch(`${API_BASE_URL}/documento`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${usuario.token}`,
+      },
+      body: JSON.stringify({
+        id: id,
+        status: 2,
+        descricaoAnalise: descricaoAnalise,
+      }),
+    });
 
-  setModalOpen(false);
-  carregarDocumentos();
-}
-
+    setModalOpen(false);
+    carregarDocumentos();
+  }
 
   function getStatusDescricao(status) {
     switch (status) {
@@ -127,7 +127,10 @@ async function reprovar(id, descricaoAnalise) {
       <h2 className="home-title">Análise de Documentos</h2>
 
       {loading ? (
-        <p>Carregando...</p>
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <p>Carregando documentos...</p>
+        </div>
       ) : (
         <div className="plans">
           {documentos.map((doc) => (
@@ -214,7 +217,6 @@ async function reprovar(id, descricaoAnalise) {
             <p>Tem certeza que deseja reprovar este documento?</p>
 
             <textarea
-            
               placeholder="Informe o motivo da reprovação (obrigatório)"
               maxLength={500}
               value={descricao}

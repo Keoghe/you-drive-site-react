@@ -1,5 +1,6 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
+using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Services;
@@ -43,7 +44,7 @@ namespace AutoEscola.API.BLL
             // ✅ VALIDAÇÃO DE DUPLICIDADE
 
             var instrutorExistente = await _context.Instrutores
-                .Where(u => !u.Excluido &&
+                .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO &&
                            (u.UsuarioId == novoInstrutor.UsuarioId))
                 .FirstOrDefaultAsync();
 
@@ -60,7 +61,7 @@ namespace AutoEscola.API.BLL
                 UsuarioId = novoInstrutor.UsuarioId
             };
                  
-            instrutor.Excluido = false;
+            instrutor.Excluido = (int)StatusContaUsuario.ATIVO;
 
             await _context.Instrutores.AddAsync(instrutor);
             await _context.SaveChangesAsync();

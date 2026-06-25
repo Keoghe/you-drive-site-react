@@ -4,6 +4,7 @@ using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Login;
 using AutoEscola.API.Models.DTO.Usuario;
 using AutoEscola.API.Models.ViewModel.Login;
+using AutoEscola.API.Models.ViewModel.Usuario;
 using AutoEscola.API.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,35 +28,69 @@ namespace AutoEscola.API.BLL
             throw new NotImplementedException();
         }
 
-        public Task<Usuario> BuscarUsuarioPorId(int usuarioId)
+        public Task<UsuarioViewModel> BuscarUsuarioPorId(int usuarioId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Usuario>> BuscarUsuarios()
+        public async Task<List<UsuarioViewModel>> BuscarUsuarios()
         {
 
-            var usuarioId = _httpContext.HttpContext.User
+            var usuarioId = _httpContext?.HttpContext?.User
                 .FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
             var usuarios = await _context.Usuarios
                 .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO).ToListAsync();
 
-            return usuarios;
+            var usuariosDTO = usuarios.Select(u => new UsuarioViewModel
+            {
+                Id = u.Id,
+                Nome = u.Nome,
+                Cnh = u.Cnh,
+                Cpf = u.Cpf,
+                DataNascimento = u.DataNascimento,
+                Email = u.Email,
+                Login = u.Login,
+                Saldo = u.Saldo
+            }).ToList();
+
+            return usuariosDTO;
         }
 
-        public Task<List<Usuario>> BuscarUsuariosPorId(List<int> usuarioId)
+        public async Task<List<InstrutorViewModel>> BuscarInstrutores()
+        {
+
+            var instrutores = await (
+                from u in _context.Usuarios
+                join i in _context.Instrutores
+                    on u.Id equals i.UsuarioId
+                where u.Excluido == (int)StatusContaUsuario.ATIVO
+                && i.Excluido == (int)StatusContaUsuario.ATIVO
+                select new InstrutorViewModel
+                {
+                    Id = u.Id,
+                    Nome = u.Nome,
+                    Cpf = u.Cpf,
+                    Email = u.Email,
+                    Ativo = i.Ativo
+                }
+            ).ToListAsync();
+
+            return instrutores;
+        }
+        
+        public Task<List<UsuarioViewModel>> BuscarUsuariosPorId(List<int> usuarioId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Usuario> CriarUsuario(UsuarioDTO novoUsuario)
+        public async Task<UsuarioViewModel> CriarUsuario(UsuarioDTO novoUsuario)
         {
 
             // ✅ VALIDAÇÃO DE DUPLICIDADE
 
             var usuarioExistente = await _context.Usuarios
-                .Where(u => 
+                .Where(u =>
                            (u.Login == novoUsuario.Login ||
                             u.Cpf == novoUsuario.Cpf ||
                             u.Email == novoUsuario.Email))
@@ -89,11 +124,23 @@ namespace AutoEscola.API.BLL
             };
 
             usuario.DataCadastro = DateTime.Now;
-            usuario.Excluido = (int)StatusContaUsuario.ATIVO;   
+            usuario.Excluido = (int)StatusContaUsuario.ATIVO;
             await _context.Usuarios.AddAsync(usuario);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
-            return usuario;
+            var usuarioDTO = new UsuarioViewModel
+            {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Cnh = usuario.Cnh,
+                Cpf = usuario.Cpf,
+                DataNascimento = usuario.DataNascimento,
+                Email = usuario.Email,
+                Login = usuario.Login,
+                Saldo = usuario.Saldo
+            };
+
+            return usuarioDTO;
         }
 
         public async Task<LoginViewModel> ValidarLogin(LoginDTO login)
@@ -124,5 +171,6 @@ namespace AutoEscola.API.BLL
             };
         }
 
+        
     }
 }

@@ -104,6 +104,7 @@ namespace AutoEscola.API.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("buscar-usuario/{usuarioId}")]
         public async Task<IActionResult> BuscarUsuario(int usuarioId)
         {
@@ -123,5 +124,27 @@ namespace AutoEscola.API.Controllers
             }
 
         }
+
+        [Authorize]
+        [HttpGet("buscar-instrutores")]
+        public async Task<IActionResult> BuscarInstrutores()
+        {
+            try
+            {
+                var instrutores = await _usuariosBll.BuscarInstrutores();
+
+                if (instrutores == null)
+                    throw new Exception("Instrutores não encontrados.");
+
+                return Ok(instrutores);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
     }
 }

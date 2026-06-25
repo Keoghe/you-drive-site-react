@@ -15,8 +15,8 @@ namespace AutoEscola.API.Models.Entidade
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        public bool Ativo { get; set; }
-        public bool Excluido { get; set; }
+        public int Ativo { get; set; }
+        public int Excluido { get; set; }
 
         // ✅ RELACIONAMENTOS
 

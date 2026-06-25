@@ -270,6 +270,18 @@
           }
         }
       }
+    },
+    "/api/Usuarios/buscar-instrutores": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -382,6 +394,10 @@
       "UsuarioDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "nome": {
             "type": "string",
             "nullable": true

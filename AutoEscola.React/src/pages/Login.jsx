@@ -20,8 +20,9 @@ export default function Login() {
   }
 
   async function handleLogin(e) {
-    e.preventDefault();
     setLoading(true);
+    e.preventDefault();
+    
     if (loading) return;
     try {
       const response = await fetch(`${API_BASE_URL}/usuarios/login`, {

@@ -1,5 +1,6 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
+using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Aula;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Services;
@@ -71,9 +72,9 @@ namespace AutoEscola.API.BLL
                 //verificar se existe promoção ativa para aplicar o desconto no valor hora final
 
                 var usuarioExistente = await _context.Usuarios
-                    .Where(u => u.Excluido == 0 && u.Id == novaAula.UsuarioId)
+                    .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO && u.Id == novaAula.UsuarioId)
                     .FirstOrDefaultAsync();
-                if (novaAula == null)
+                if (usuarioExistente == null)
                 {
                     throw new Exception("Usuário informado não está ativo");
                 }
@@ -81,7 +82,7 @@ namespace AutoEscola.API.BLL
                 if (novaAula.PromocaoId != 0)
                 {
                     var promocao = await _context.Promocoes
-                           .Where(u => !u.Excluido && u.Id == novaAula.PromocaoId)
+                           .Where(u => u.Excluido == (int)Status.ATIVO && u.Id == novaAula.PromocaoId)
                            .FirstOrDefaultAsync();
                     if (novaAula == null)
                     {
@@ -90,7 +91,7 @@ namespace AutoEscola.API.BLL
                 }
 
                 var instrutor = await _context.Instrutores
-                           .Where(u => !u.Excluido && u.Id == novaAula.InstrutorId)
+                           .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO && u.Id == novaAula.InstrutorId)
                            .FirstOrDefaultAsync();
                 if (novaAula == null)
                 {

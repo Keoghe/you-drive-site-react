@@ -106,6 +106,16 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
+    "Method": "BuscarInstrutores",
+    "RelativePath": "api/Usuarios/buscar-instrutores",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
     "Method": "BuscarUsuario",
     "RelativePath": "api/Usuarios/buscar-usuario/{usuarioId}",
     "HttpMethod": "GET",
