@@ -64,6 +64,27 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.DocumentoController",
+    "Method": "BuscarDocumentosAnalise",
+    "RelativePath": "api/Documento/buscar-documentos-analise/{usuarioId}/{statusDocumento}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "statusDocumento",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.DocumentoController",
     "Method": "UploadArquivosContaInstrutor",
     "RelativePath": "api/Documento/upload/ativar/conta/instrutor",
     "HttpMethod": "POST",

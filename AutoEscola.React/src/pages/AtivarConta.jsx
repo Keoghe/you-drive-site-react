@@ -2,16 +2,33 @@ import { useState, useEffect, useRef } from "react";
 import API_BASE_URL from "../config/api";
 import Swal from "sweetalert2";
 
-let carregadoGlobal = false;
 export default function AtivarConta() {
   const [documentos, setDocumentos] = useState({});
   const [tipos, setTipos] = useState([]);
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const [documentosUsuario, setDocumentosUsuario] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [mostrarMotivo, setMostrarMotivo] = useState(null);
 
   function handleFileChange(e, tipoId) {
     const file = e.target.files[0];
+
+    const nome = file.name.toLowerCase();
+
+    const extensoesPermitidas = [".pdf", ".jpg", ".jpeg", ".png"];
+
+    const valido = extensoesPermitidas.some((ext) => nome.endsWith(ext));
+
+    if (!valido) {
+      Swal.fire({
+        title: "Arquivo inválido",
+        text: "Envie apenas arquivos PDF, JPG, JPEG ou PNG",
+        icon: "warning",
+      });
+
+      e.target.value = ""; // ✅ limpa input
+      return;
+    }
 
     if (!file) return;
     const reader = new FileReader();
@@ -34,7 +51,6 @@ export default function AtivarConta() {
 
   async function enviarDocumentos() {
     try {
-      debugger;
       setLoading(true);
       const lista = Object.keys(documentos).map((tipoId) => ({
         TipoDocumentoId: documentos[tipoId]?.tipoId,
@@ -72,7 +88,6 @@ export default function AtivarConta() {
         confirmButtonColor: "#00c853",
       });
       console.log("Recarregar Status");
-      await carregarTipos();
     } catch (error) {
       Swal.fire({
         title: "Erro!",
@@ -80,8 +95,13 @@ export default function AtivarConta() {
         icon: "error",
         confirmButtonColor: "#ff5252",
       });
+    } finally {
+      setLoading(false);
+      await carregarTipos();
     }
   }
+
+  function validaTipoDeDocumento() {}
 
   async function carregarDocumentos() {
     try {
@@ -103,7 +123,6 @@ export default function AtivarConta() {
   }
 
   function getStatus(tipoDocumentalId) {
-    debugger;
     const doc = documentosUsuario.find(
       (d) => d.tipoDocumentalId === tipoDocumentalId,
     );
@@ -137,16 +156,18 @@ export default function AtivarConta() {
     }
   }
 
+  function getDocumento(tipoDocumentalId) {
+    return documentosUsuario.find(
+      (d) => d.tipoDocumentalId === tipoDocumentalId,
+    );
+  }
+
   useEffect(() => {
-    if (!carregadoGlobal) {
-      carregarTipos();
-      carregadoGlobal = true;
-    }
+    carregarTipos();
   }, []);
 
   async function carregarTipos() {
     try {
-      debugger;
       const tipoUsuario = 2;
       const response = await fetch(
         `${API_BASE_URL}/tiposdocumento/${tipoUsuario}`,
@@ -165,7 +186,7 @@ export default function AtivarConta() {
       const data = await response.json();
 
       setTipos(data);
-      debugger;
+
       await carregarDocumentos();
     } catch (error) {
       console.error(error);
@@ -190,21 +211,52 @@ export default function AtivarConta() {
                 <div key={tipo.id} className="plan-card">
                   <h3>{tipo.nome}</h3>
 
-                  <p style={{ color: getStatusCor(status) }}>
+                  <p
+                    style={{
+                      color: getStatusCor(status),
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
                     {getStatusDescricao(status)}
+
+                    
+{status === 2 && (
+  <span
+    className="icon-circle"
+    title={getDocumento(tipo.id)?.descricao || "Motivo da recusa"}
+    onClick={(e) => {
+      e.stopPropagation();
+      setMostrarMotivo(
+        mostrarMotivo === tipo.id ? null : tipo.id
+      );
+    }}
+  >
+    i
+  </span>
+)}
+
                   </p>
+
+                  {status === 2 &&
+                    mostrarMotivo === tipo.id &&
+                    getDocumento(tipo.id)?.descricao && (
+                      <div className="motivo-reprovacao">
+                        {getDocumento(tipo.id).descricao}
+                      </div>
+                    )}
 
                   <label
                     className={`upload-btn ${status === 0 || status === 1 ? "disabled" : ""}`}
                   >
-                    {
-                    status === 1
-                      ? "Aprovado" :
-                    status === 2
-                      ? "Reenviar documento"
-                      : status === null
-                        ? "Selecionar Arquivo"
-                        : "Aguardando análise"}
+                    {status === 1
+                      ? "Aprovado"
+                      : status === 2
+                        ? "Reenviar documento"
+                        : status === null
+                          ? "Selecionar Arquivo"
+                          : "Aguardando análise"}
 
                     <input
                       type="file"

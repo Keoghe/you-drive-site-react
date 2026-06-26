@@ -7,6 +7,7 @@
         public string Base64 { get; set; } = string.Empty;
         public int Status { get; set; }
         public int TipoDocumentalId { get; set; }
+        public string Descricao { get; set; } = string.Empty;
 
         public DateTime DataCriacao { get; set; } = DateTime.Now;
     }

@@ -87,7 +87,7 @@ export default function AnaliseDocumento() {
   function getStatusCor(ativo) {
     switch (ativo) {
       case 0:
-        return "#cec111";
+        return "#d50ae7";
       case 1:
         return "#00c853";
       case 2:

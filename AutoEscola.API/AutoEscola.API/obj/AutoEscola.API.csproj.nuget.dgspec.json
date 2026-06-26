@@ -80,6 +80,14 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "itext": {
+              "target": "Package",
+              "version": "[9.6.0, )"
+            },
+            "itext.bouncy-castle-adapter": {
+              "target": "Package",
+              "version": "[9.6.0, )"
             }
           },
           "imports": [

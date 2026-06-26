@@ -3,6 +3,8 @@ import API_BASE_URL from "../config/api";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 
+
+
 export default function AnaliseDocumento() {
   const [documentos, setDocumentos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,9 +22,9 @@ export default function AnaliseDocumento() {
   async function carregarDocumentos() {
     try {
       setLoading(true);
-
+      const documentoAtivos = 0;
       const response = await fetch(
-        `${API_BASE_URL}/Documento/${id}/0`, // ajuste sua rota
+        `${API_BASE_URL}/Documento/buscar-documentos-analise/${id}/${documentoAtivos}`, // ajuste sua rota
         {
           headers: {
             Authorization: `Bearer ${usuario.token}`,
@@ -41,11 +43,17 @@ export default function AnaliseDocumento() {
   }
 
   async function aprovar(id) {
-    await fetch(`${API_BASE_URL}/documento/aprovar/${id}`, {
+    await fetch(`${API_BASE_URL}/documento`, {
       method: "PUT",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${usuario.token}`,
       },
+      body: JSON.stringify({
+        id: id,
+        status: 1,
+        descricaoAnalise: `Documento Aprovado por: id ${usuario.usuarioId} - ${usuario.nome}`,
+      }),
     });
 
     setModalOpen(false);
@@ -110,8 +118,22 @@ export default function AnaliseDocumento() {
     return URL.createObjectURL(blob);
   }
 
-  function base64ToBlob(base64, contentType = "application/pdf") {
-    const byteCharacters = atob(base64);
+  function getFileUrl(base64, nomeOriginal) {
+    if (!base64) return "";
+
+    const nome = nomeOriginal.toLowerCase();
+
+    let contentType = "application/pdf";
+
+    const blob = base64ToBlob(base64, contentType);
+    return URL.createObjectURL(blob);
+  }
+
+  function base64ToBlob(base64, contentType) {
+    // ✅ remove prefixo se existir
+    const cleanedBase64 = base64.includes(",") ? base64.split(",")[1] : base64;
+
+    const byteCharacters = atob(cleanedBase64);
     const byteNumbers = new Array(byteCharacters.length);
 
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -119,6 +141,7 @@ export default function AnaliseDocumento() {
     }
 
     const byteArray = new Uint8Array(byteNumbers);
+
     return new Blob([byteArray], { type: contentType });
   }
 
@@ -131,6 +154,10 @@ export default function AnaliseDocumento() {
           <div className="spinner"></div>
           <p>Carregando documentos...</p>
         </div>
+      ) : documentos.length === 0 ? (
+        <p className="empty-message">
+          <h3>Nenhum documento encaminhado</h3>
+        </p>
       ) : (
         <div className="plans">
           {documentos.map((doc) => (
@@ -163,21 +190,15 @@ export default function AnaliseDocumento() {
             <h2>{documentoSelecionado.nomeOriginal}</h2>
 
             {documentoSelecionado?.base64 ? (
-              documentoSelecionado.nomeOriginal
-                .toLowerCase()
-                .endsWith(".pdf") ? (
-                <iframe
-                  src={getPdfUrl(documentoSelecionado.base64)}
-                  width="100%"
-                  height="500px"
-                  style={{ border: "none" }}
-                />
-              ) : (
-                <img
-                  src={getSrc(documentoSelecionado)}
-                  style={{ width: "100%" }}
-                />
-              )
+              <iframe
+                src={getFileUrl(
+                  documentoSelecionado.base64,
+                  documentoSelecionado.nomeOriginal,
+                )}
+                width="100%"
+                height="500px"
+                style={{ border: "none" }}
+              />
             ) : (
               <p>Arquivo não disponível</p>
             )}

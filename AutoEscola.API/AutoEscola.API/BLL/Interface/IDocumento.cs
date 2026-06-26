@@ -10,7 +10,7 @@ namespace AutoEscola.API.BLL.Interface
         Task<List<DocumentoViewModel>> UploadAtivarContaInstrutor(List<DocumentoDTO> listaArquivos);
         Task<DocumentoViewModel> UploadArquivo(DocumentoDTO arquivo);
         Task<DocumentoViewModel> BuscarArquivo(int documentoId);
-        Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId, int statusDocumento = (int)StatusDocumento.Pendente); 
+        Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId, int statusDocumento = (int)StatusDocumento.Pendente, bool transformePdf = false); 
         Task<DownloadArquivoViewModel> BaixarArquivo(int documentoId);
         Task<DocumentoDTO> AtualizarStatusDocumento(DocumentoDTO documento);
 

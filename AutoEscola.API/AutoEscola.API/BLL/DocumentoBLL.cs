@@ -5,6 +5,7 @@ using AutoEscola.API.Models.DTO.Documento;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Documento;
 using AutoEscola.API.Services;
+using AutoEscola.API.Util;
 using Microsoft.EntityFrameworkCore;
 using System.Buffers.Text;
 using System.IO;
@@ -36,16 +37,22 @@ namespace AutoEscola.API.BLL
             throw new NotImplementedException();
         }
 
-        public async Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId, int statusDocumento = (int)StatusDocumento.Pendente)
+        public async Task<List<DocumentoViewModel>> BuscarArquivosUsuario(int usuarioId, int statusDocumento = (int)StatusDocumento.Pendente, bool transformePdf = false)
         {
             try
             {
+                var conversor = new ConverterArquivos();
                 var documentosUsuario = new List<DocumentoViewModel>();
-                var documentos = _context.Documentos.Where(c => c.UsuarioId == usuarioId && c.Excluido == statusDocumento);
+                var documentos = await _context.Documentos.Where(c => c.UsuarioId == usuarioId && c.Excluido == statusDocumento).ToListAsync();
 
                 foreach (var documento in documentos)
                 {
                     var documentoBase64 = await File.ReadAllBytesAsync(documento.CaminhoArquivo);
+                    var arquivoBase64 = Convert.ToBase64String(documentoBase64);
+                    if (!documento.NomeOriginal.Contains(".pdf"))
+                    {
+                        arquivoBase64 = conversor.ConverterImagemBase64ParaPdfBase64(arquivoBase64);
+                    } 
 
                     documentosUsuario.Add(new DocumentoViewModel
                     {
@@ -54,7 +61,8 @@ namespace AutoEscola.API.BLL
                         Status = documento.Status,
                         TipoDocumentalId = documento.TipoDocumentoId,
                         DataCriacao = documento.DataCriacao,
-                        Base64 = Convert.ToBase64String(documentoBase64)
+                        Descricao = documento.DescricaoAnalise, 
+                        Base64 = arquivoBase64
                     });
                 }
 
@@ -278,19 +286,18 @@ namespace AutoEscola.API.BLL
                 if (entidade == null)
                     throw new Exception("Documento não encontrado");
 
-                entidade.TipoDocumentoId = documento.TipoDocumentoId;
                 entidade.Status = documento.Status;
                 entidade.DescricaoAnalise = documento.DescricaoAnalise;
 
 
                 await _context.SaveChangesAsync();
-                 
+
                 return new DocumentoDTO
                 {
                     UsuarioId = entidade.UsuarioId,
                     TipoDocumentoId = entidade.TipoDocumentoId,
                     Status = entidade.Status
-                };  
+                };
             }
             catch (Exception ex)
             {
