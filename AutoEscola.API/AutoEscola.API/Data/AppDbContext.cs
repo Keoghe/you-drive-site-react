@@ -26,6 +26,8 @@ namespace AutoEscola.API.Data
         public DbSet<Documento> Documentos { get; set; }
         public DbSet<Storage> Storage { get; set; }
         public DbSet<TiposDocumento> TiposDocumento { get; set; }
+        public DbSet<Grupo> Grupo { get; set; }
+        public DbSet<GrupoUsuario> GrupoUsuario { get; set; }
 
         // =========================================
         // MAPPINGS (FLUENT API)
@@ -48,6 +50,8 @@ namespace AutoEscola.API.Data
             modelBuilder.ApplyConfiguration(new DocumentoMap());
             modelBuilder.ApplyConfiguration(new StorageMap());
             modelBuilder.ApplyConfiguration(new TiposDocumentoMap());
+            modelBuilder.ApplyConfiguration(new GrupoMap());
+            modelBuilder.ApplyConfiguration(new GrupoUsuarioMap());
 
             base.OnModelCreating(modelBuilder);
         }

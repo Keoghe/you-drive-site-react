@@ -3,8 +3,6 @@ import API_BASE_URL from "../config/api";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 
-
-
 export default function AnaliseDocumento() {
   const [documentos, setDocumentos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +33,7 @@ export default function AnaliseDocumento() {
       const data = await response.json();
 
       setDocumentos(data);
+      todosAprovados()
     } catch (error) {
       console.error(error);
     } finally {
@@ -76,6 +75,46 @@ export default function AnaliseDocumento() {
     setModalOpen(false);
     carregarDocumentos();
   }
+
+  
+async function aprovarInstrutor() {
+  const result = await Swal.fire({
+    title: "Confirmação",
+    text: `O usuário ${usuario.nome}: Tem certeza da aprovação do instrutor?`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Sim",
+    cancelButtonText: "Não",
+    confirmButtonColor: "#00c853",
+    cancelButtonColor: "#d33",
+  });
+
+  if (!result.isConfirmed) return;
+
+  // ✅ aqui chama sua API
+  console.log("Aprovando instrutor...");
+}
+
+
+async function reprovarInstrutor() {
+  const result = await Swal.fire({
+    title: "Confirmação",
+    text: `O usuário ${usuario.nome}: Tem certeza da reprovação do instrutor?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sim",
+    cancelButtonText: "Não",
+    confirmButtonColor: "#d32f2f",
+    cancelButtonColor: "#999",
+  });
+
+  if (!result.isConfirmed) return;
+
+  // ✅ aqui chama sua API
+  console.log("Reprovando instrutor...");
+}
+
+
 
   function getStatusDescricao(status) {
     switch (status) {
@@ -145,6 +184,10 @@ export default function AnaliseDocumento() {
     return new Blob([byteArray], { type: contentType });
   }
 
+  function todosAprovados() {
+    return documentos.length > 0 && documentos.every((doc) => doc.status === 1);
+  }
+
   return (
     <div className="home-container">
       <h2 className="home-title">Análise de Documentos</h2>
@@ -181,6 +224,14 @@ export default function AnaliseDocumento() {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {todosAprovados() && (
+        <div className="actions-container">
+          <button className="btn-aprovar"  onClick={aprovarInstrutor}>Aprovar Instrutor</button>
+
+          <button className="btn-reprovar" onClick={reprovarInstrutor}>Reprovar Instrutor</button>
         </div>
       )}
 

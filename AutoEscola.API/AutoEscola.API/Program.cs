@@ -102,6 +102,8 @@ builder.Services.AddScoped<IInstrutor, InstrutorBLL>();
 builder.Services.AddScoped<IDocumento, DocumentoBLL>(); 
 builder.Services.AddScoped<IStorage, StorageBLL>();
 builder.Services.AddScoped<ITiposDocumento, TiposDocumentoBLL>();
+builder.Services.AddScoped<IGrupo, GrupoBLL>();
+builder.Services.AddScoped<IGrupoUsuario, GrupoUsuarioBLL>();
 
 var app = builder.Build();
 

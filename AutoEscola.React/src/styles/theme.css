@@ -1232,6 +1232,32 @@ button:disabled {
   font-size: 30px;
 }
 
+.actions-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-aprovar {
+  background: #00c853;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-reprovar {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
 /*ANALISE DE DOCUMENTOS DOS INSTRUTORES - FIM*/
 
 /* INSTRUTOR - INICIO */
