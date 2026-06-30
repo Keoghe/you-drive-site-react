@@ -19,54 +19,73 @@ namespace AutoEscola.API.BLL
             _jwtService = jwtService;
             _httpContext = httpContext;
         }
-        public Task<bool> AtualizarInstrutorPorId(List<int> instrutorId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<List<Instrutor>> BuscarInstrutores()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<InstrutorDTO> Adicionar(InstrutorDTO instrutor)
 
-        public Task<List<Instrutor>> BuscarInstrutoresPorId(List<int> instrutorId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Instrutor> BuscarInstrutorPorId(int instrutorId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Instrutor> CriarInstrutor(InstrutorDTO novoInstrutor)
-        {
-            // ✅ VALIDAÇÃO DE DUPLICIDADE
-
             var instrutorExistente = await _context.Instrutores
-                .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO &&
-                           (u.UsuarioId == novoInstrutor.UsuarioId))
-                .FirstOrDefaultAsync();
-
-
-            if (instrutorExistente != null)
+                .FirstOrDefaultAsync(i => i.UsuarioId == instrutor.UsuarioId);
+             
+            if (instrutorExistente != null && instrutorExistente.Ativo == 1)
+                throw new Exception("Instrutor já cadastrado e ativo");
+ 
+            var novoInstrutor = new Instrutor
             {
-                if (instrutorExistente.UsuarioId == novoInstrutor.UsuarioId)
-                    throw new Exception("Já existe usuário cadastrado com esse login"); 
-            }
-
-
-            var instrutor = new Instrutor
-            {
-                UsuarioId = novoInstrutor.UsuarioId
+                UsuarioId = instrutor.UsuarioId,
+                Avaliacao = instrutor.Avaliacao,
+                ValorHora = instrutor.ValorHora,
+                Latitude = instrutor.Latitude,
+                Longitude = instrutor.Longitude,
+                Ativo = (int)StatusContaUsuario.ATIVO,
+                Excluido = 0
             };
-                 
-            instrutor.Excluido = (int)StatusContaUsuario.ATIVO;
 
-            await _context.Instrutores.AddAsync(instrutor);
+            await _context.Instrutores.AddAsync(novoInstrutor);
             await _context.SaveChangesAsync();
 
             return instrutor;
+        }
+
+
+        public async Task<InstrutorDTO> Atualizar(InstrutorDTO instrutor)
+        {
+
+            var instrutorExistente = await _context.Instrutores
+                   .FirstOrDefaultAsync(i => i.UsuarioId == instrutor.UsuarioId);
+
+            if (instrutorExistente == null)
+                throw new Exception("Instrutor não encontrado");
+
+            instrutorExistente.Avaliacao = instrutor.Avaliacao;
+            instrutorExistente.ValorHora = instrutor.ValorHora;
+            instrutorExistente.Latitude = instrutor.Latitude;
+            instrutorExistente.Longitude = instrutor.Longitude;
+            instrutorExistente.Ativo = instrutor.Ativo;
+            instrutorExistente.Excluido = instrutor.Excluido;
+
+            await _context.SaveChangesAsync(); 
+
+            return instrutor; 
+        }
+
+        public async Task<InstrutorDTO> BuscarPorId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<InstrutorDTO>> BuscarTodos()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public Task<bool> Remover(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

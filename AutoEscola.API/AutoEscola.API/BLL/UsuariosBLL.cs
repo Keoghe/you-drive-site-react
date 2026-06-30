@@ -1,6 +1,7 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
 using AutoEscola.API.Enum;
+using AutoEscola.API.Helper;
 using AutoEscola.API.Models.DTO.Login;
 using AutoEscola.API.Models.DTO.Usuario;
 using AutoEscola.API.Models.ViewModel.Login;
@@ -65,7 +66,6 @@ namespace AutoEscola.API.BLL
                 join i in _context.Instrutores
                     on u.Id equals i.UsuarioId
                 where u.Excluido == (int)StatusContaUsuario.ATIVO
-                && i.Excluido == (int)StatusContaUsuario.ATIVO
                 select new InstrutorViewModel
                 {
                     Id = u.Id,
@@ -78,7 +78,40 @@ namespace AutoEscola.API.BLL
 
             return instrutores;
         }
-        
+
+        public async Task<Paginacao<InstrutorViewModel>> BuscarInstrutores(int pagina = 1, int tamanhoPagina = 10)
+        {
+            var query = (
+                from u in _context.Usuarios
+                join i in _context.Instrutores
+                    on u.Id equals i.UsuarioId
+                where u.Excluido == (int)StatusContaUsuario.ATIVO
+                select new InstrutorViewModel
+                {
+                    Id = u.Id,
+                    Nome = u.Nome,
+                    Cpf = u.Cpf,
+                    Email = u.Email,
+                    Ativo = i.Ativo
+                }
+            );
+
+            var totalRegistros = await query.CountAsync();
+
+            var instrutores = await query
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
+                .ToListAsync();
+
+            return new Paginacao<InstrutorViewModel>
+            {
+                Dados = instrutores,
+                TotalRegistros = totalRegistros,
+                PaginaAtual = pagina,
+                TotalPaginas = (int)Math.Ceiling((double)totalRegistros / tamanhoPagina)
+            };
+        }
+
         public Task<List<UsuarioViewModel>> BuscarUsuariosPorId(List<int> usuarioId)
         {
             throw new NotImplementedException();
@@ -86,8 +119,6 @@ namespace AutoEscola.API.BLL
 
         public async Task<UsuarioViewModel> CriarUsuario(UsuarioDTO novoUsuario)
         {
-
-            // ✅ VALIDAÇÃO DE DUPLICIDADE
 
             var usuarioExistente = await _context.Usuarios
                 .Where(u =>
@@ -107,7 +138,6 @@ namespace AutoEscola.API.BLL
                 if (usuarioExistente.Email == novoUsuario.Email)
                     throw new Exception("Já existe usuário com cadastrado esse e-mail");
             }
-
 
             var usuario = new Usuario
             {
@@ -171,6 +201,6 @@ namespace AutoEscola.API.BLL
             };
         }
 
-        
+
     }
 }

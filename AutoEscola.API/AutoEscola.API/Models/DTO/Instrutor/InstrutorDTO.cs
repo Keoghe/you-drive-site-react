@@ -7,7 +7,7 @@
         public decimal ValorHora { get; set; } = 0;
         public double Latitude { get; set; } = 0;
         public double Longitude { get; set; } = 0;
-        public bool Ativo { get; set; } = false;
-        public bool Excluido { get; set; } = false;
+        public int Ativo { get; set; } = 0;
+        public int Excluido { get; set; } = 0;
     }
 }

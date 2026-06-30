@@ -92,7 +92,7 @@ namespace AutoEscola.API.Controllers
                         UsuarioId = usuario.Id
                     };
 
-                    await _instrutorBll.CriarInstrutor(novoInstrutor);
+                    await _instrutorBll.Adicionar(novoInstrutor);
                 }
 
                 return Ok(novoUsuario);
@@ -126,13 +126,12 @@ namespace AutoEscola.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("buscar-instrutores")]
-        public async Task<IActionResult> BuscarInstrutores()
+        [HttpGet("buscar-instrutores/{pagina}/{tamanhoPagina}")]
+        public async Task<IActionResult> BuscarInstrutores(int pagina = 1, int tamanhoPagina = 10)
         {
             try
             {
-                var instrutores = await _usuariosBll.BuscarInstrutores();
-
+                var instrutores = await _usuariosBll.BuscarInstrutores(pagina, tamanhoPagina);
                 if (instrutores == null)
                     throw new Exception("Instrutores não encontrados.");
 

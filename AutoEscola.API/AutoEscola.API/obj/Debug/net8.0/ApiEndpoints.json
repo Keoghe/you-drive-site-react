@@ -100,6 +100,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoEscola.API.Controllers.InstrutorController",
+    "Method": "AlterarStatusInstrutor",
+    "RelativePath": "api/Instrutor/atualizar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "instrutorDTO",
+        "Type": "AutoEscola.API.Models.DTO.Instrutor.InstrutorDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.TiposDocumentoController",
     "Method": "BuscarTiposDocumento",
     "RelativePath": "api/TiposDocumento/{tipoUsuarioId}",
@@ -128,11 +144,22 @@
   {
     "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
     "Method": "BuscarInstrutores",
-    "RelativePath": "api/Usuarios/buscar-instrutores",
+    "RelativePath": "api/Usuarios/buscar-instrutores/{pagina}/{tamanhoPagina}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "pagina",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tamanhoPagina",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

@@ -12,7 +12,13 @@ export default function AnaliseDocumento() {
   const [descricao, setDescricao] = useState("");
   const { id } = useParams();
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-
+  const StatusContaUsuario = {
+    ATIVO: 0,
+    INATIVO: 1,
+    PENDENTE: 2,
+    APROVADO: 3,
+    REPROVADO: 4,
+  };
   useEffect(() => {
     carregarDocumentos();
   }, []);
@@ -33,7 +39,7 @@ export default function AnaliseDocumento() {
       const data = await response.json();
 
       setDocumentos(data);
-      todosAprovados()
+      todosAprovados();
     } catch (error) {
       console.error(error);
     } finally {
@@ -76,45 +82,83 @@ export default function AnaliseDocumento() {
     carregarDocumentos();
   }
 
-  
-async function aprovarInstrutor() {
-  const result = await Swal.fire({
-    title: "Confirmação",
-    text: `O usuário ${usuario.nome}: Tem certeza da aprovação do instrutor?`,
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonText: "Sim",
-    cancelButtonText: "Não",
-    confirmButtonColor: "#00c853",
-    cancelButtonColor: "#d33",
-  });
+  async function aprovarInstrutor() {
+    const result = await Swal.fire({
+      title: "Confirmação",
+      text: `Tem certeza da aprovação do instrutor?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      confirmButtonColor: "#00c853",
+      cancelButtonColor: "#d33",
+    });
 
-  if (!result.isConfirmed) return;
+    if (!result.isConfirmed) return;
 
-  // ✅ aqui chama sua API
-  console.log("Aprovando instrutor...");
-}
+    await fetch(`${API_BASE_URL}/instrutor/atualizar`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${usuario.token}`,
+      },
+      body: JSON.stringify({
+        usuarioId: id,
+        Ativo: StatusContaUsuario.APROVADO,
+      }),
+    });
 
+    await Swal.fire({
+      title: "Sucesso",
+      text: "Dados atualizados com sucesso!",
+      icon: "success",
+      confirmButtonText: "OK",
+      timer: 5000,
+      timerProgressBar: true,
+    });
 
-async function reprovarInstrutor() {
-  const result = await Swal.fire({
-    title: "Confirmação",
-    text: `O usuário ${usuario.nome}: Tem certeza da reprovação do instrutor?`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Sim",
-    cancelButtonText: "Não",
-    confirmButtonColor: "#d32f2f",
-    cancelButtonColor: "#999",
-  });
+    setModalOpen(false);
+    carregarDocumentos();
+  }
 
-  if (!result.isConfirmed) return;
+  async function reprovarInstrutor() {
+    const result = await Swal.fire({
+      title: "Confirmação",
+      text: `O usuário ${usuario.nome}: Tem certeza da reprovação do instrutor?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim",
+      cancelButtonText: "Não",
+      confirmButtonColor: "#d32f2f",
+      cancelButtonColor: "#999",
+    });
 
-  // ✅ aqui chama sua API
-  console.log("Reprovando instrutor...");
-}
+    if (!result.isConfirmed) return;
 
+    await fetch(`${API_BASE_URL}/instrutor/atualizar`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${usuario.token}`,
+      },
+      body: JSON.stringify({
+        usuarioId: id,
+        Ativo: StatusContaUsuario.REPROVADO,
+      }),
+    });
 
+    await Swal.fire({
+      title: "Sucesso",
+      text: "Dados atualizados com sucesso!",
+      icon: "success",
+      confirmButtonText: "OK",
+      timer: 5000,
+      timerProgressBar: true,
+    });
+
+    setModalOpen(false);
+    carregarDocumentos();
+  }
 
   function getStatusDescricao(status) {
     switch (status) {
@@ -229,9 +273,13 @@ async function reprovarInstrutor() {
 
       {todosAprovados() && (
         <div className="actions-container">
-          <button className="btn-aprovar"  onClick={aprovarInstrutor}>Aprovar Instrutor</button>
+          <button className="btn-aprovar" onClick={aprovarInstrutor}>
+            Aprovar Instrutor
+          </button>
 
-          <button className="btn-reprovar" onClick={reprovarInstrutor}>Reprovar Instrutor</button>
+          <button className="btn-reprovar" onClick={reprovarInstrutor}>
+            Reprovar Instrutor
+          </button>
         </div>
       )}
 

@@ -40,12 +40,12 @@ export default function AnaliseDocumento() {
     },
   ];
 
-  async function carregarInstrutores() {
+  async function carregarInstrutores(pagina = 1, quantidade = 10) {
     try {
       setLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/usuarios/buscar-instrutores`, // ajuste sua rota
+        `${API_BASE_URL}/usuarios/buscar-instrutores/${pagina}/${quantidade}`, // ajuste sua rota
         {
           headers: {
             Authorization: `Bearer ${usuario.token}`,
@@ -54,31 +54,27 @@ export default function AnaliseDocumento() {
       );
 
       const data = await response.json();
-
-      setInstrutores(data);
+ 
+      setInstrutores(data.dados || data.content || data);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
-    }
-
-    // setLoading(true);
-
-    // // ✅ simula API
-    // setTimeout(() => {
-    //   setInstrutores(mockInstrutores);
-    //   setLoading(false);
-    // }, 1000);
+    } 
   }
 
   function getStatus(status) {
     switch (status) {
       case 0:
-        return "Pendente";
+        return "PENDENTE APROVAÇÃO";
       case 1:
-        return "Ativo";
+        return "INATIVO";
       case 2:
-        return "Inativo";
+        return "PENDENTE";
+      case 3:
+        return "APROVADO";
+      case 4:
+        return "REPROVADO";
       default:
         return "Desconhecido";
     }
@@ -89,11 +85,15 @@ export default function AnaliseDocumento() {
       case 0:
         return "#d50ae7";
       case 1:
-        return "#00c853";
+        return "#df1954";
       case 2:
+        return "#1ab3ce";
+      case 3:
+        return "#00c853";
+      case 4:
         return "#d32f2f";
       default:
-        return "#98c926";
+        return "#482385";
     }
   }
 
@@ -132,7 +132,8 @@ export default function AnaliseDocumento() {
                 <td>
                   <button
                     className="btn-action"
-                    onClick={() => navigate(`/analise-documento/${inst.id}`)}>
+                    onClick={() => navigate(`/analise-documento/${inst.id}`)}
+                  >
                     Analisar
                   </button>
                 </td>

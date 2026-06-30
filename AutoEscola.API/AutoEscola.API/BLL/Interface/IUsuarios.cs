@@ -1,4 +1,5 @@
-﻿using AutoEscola.API.Models.DTO.Login;
+﻿using AutoEscola.API.Helper;
+using AutoEscola.API.Models.DTO.Login;
 using AutoEscola.API.Models.DTO.Usuario;
 using AutoEscola.API.Models.ViewModel.Login;
 using AutoEscola.API.Models.ViewModel.Usuario;
@@ -14,7 +15,9 @@ namespace AutoEscola.API.BLL.Interface
         Task<List<UsuarioViewModel>> BuscarUsuarios();
         Task<List<InstrutorViewModel>> BuscarInstrutores();
         Task<bool> AtualizarUsuarioPorId(List<int> usuarioId); 
-        Task<LoginViewModel> ValidarLogin(LoginDTO login); 
+        Task<LoginViewModel> ValidarLogin(LoginDTO login);
+
+        Task<Paginacao<InstrutorViewModel>> BuscarInstrutores(int pagina = 1, int tamanhoPagina = 10);
 
     }
 }

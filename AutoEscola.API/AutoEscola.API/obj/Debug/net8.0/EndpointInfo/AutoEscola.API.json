@@ -183,6 +183,37 @@
         }
       }
     },
+    "/api/Instrutor/atualizar": {
+      "put": {
+        "tags": [
+          "Instrutor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstrutorDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstrutorDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstrutorDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/TiposDocumento/{tipoUsuarioId}": {
       "get": {
         "tags": [
@@ -303,10 +334,32 @@
         }
       }
     },
-    "/api/Usuarios/buscar-instrutores": {
+    "/api/Usuarios/buscar-instrutores/{pagina}/{tamanhoPagina}": {
       "get": {
         "tags": [
           "Usuarios"
+        ],
+        "parameters": [
+          {
+            "name": "pagina",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "tamanhoPagina",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -405,6 +458,40 @@
           "descricaoAnalise": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InstrutorDTO": {
+        "type": "object",
+        "properties": {
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "avaliacao": {
+            "type": "number",
+            "format": "double"
+          },
+          "valorHora": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "ativo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "excluido": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
