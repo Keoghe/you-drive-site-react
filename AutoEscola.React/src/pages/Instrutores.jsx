@@ -5,41 +5,18 @@ import { useNavigate } from "react-router-dom";
 
 export default function AnaliseDocumento() {
   const [descricao, setDescricao] = useState("");
-  const [instrutores, setInstrutores] = useState([]);
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const [instrutores, setInstrutores] = useState([]);
+  const [pagina, setPagina] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(0);
+
   useEffect(() => {
-    carregarInstrutores();
-  }, []);
-
-  const mockInstrutores = [
-    {
-      id: 1,
-      nome: "João Silva",
-      cpf: "123.456.789-00",
-      cnh: "999999999",
-      dataNascimento: "1990-01-01",
-      email: "joao@email.com",
-      login: "joao",
-      saldo: 150.5,
-      tipoUsuario: 2,
-      ativo: 1,
-    },
-    {
-      id: 2,
-      nome: "Maria Souza",
-      cpf: "987.654.321-00",
-      cnh: "888888888",
-      dataNascimento: "1985-05-10",
-      email: "maria@email.com",
-      login: "maria",
-      saldo: 300.0,
-      tipoUsuario: 2,
-      ativo: 0,
-    },
-  ];
-
+    carregarInstrutores(pagina);
+  }, [pagina]);
+ 
   async function carregarInstrutores(pagina = 1, quantidade = 10) {
     try {
       setLoading(true);
@@ -54,13 +31,15 @@ export default function AnaliseDocumento() {
       );
 
       const data = await response.json();
- 
+
       setInstrutores(data.dados || data.content || data);
+      setPagina(data.paginaAtual);
+      setTotalPaginas(data.totalPaginas);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
-    } 
+    }
   }
 
   function getStatus(status) {
@@ -142,6 +121,28 @@ export default function AnaliseDocumento() {
           </tbody>
         </table>
       )}
+
+      <div style={{ marginTop: 20 }}>
+        <button
+          className="btn-action"
+          onClick={() => setPagina(pagina - 1)}
+          disabled={pagina === 1}
+        >
+          Anterior
+        </button>
+
+        <span style={{ margin: "0 10px" }}>
+          Página {pagina} de {totalPaginas}
+        </span>
+
+        <button
+          className="btn-action"
+          onClick={() => setPagina(pagina + 1)}
+          disabled={pagina === totalPaginas}
+        >
+          Próxima
+        </button>
+      </div>
     </div>
   );
 }

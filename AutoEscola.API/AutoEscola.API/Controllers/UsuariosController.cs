@@ -126,6 +126,27 @@ namespace AutoEscola.API.Controllers
         }
 
         [Authorize]
+        [HttpGet("buscar-dados/minha-conta/{usuarioId}")]
+        public async Task<IActionResult> BuscarDadosMinhaConta(int usuarioId)
+        {
+            try
+            {
+                var usuario = await _usuariosBll.BuscarDadosMinhaConta(usuarioId);
+
+                if (usuario == null || usuario.Count() == 0)
+                    throw new Exception("Usuário não encontrado");
+
+                return Ok(usuario.First());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [Authorize]
         [HttpGet("buscar-instrutores/{pagina}/{tamanhoPagina}")]
         public async Task<IActionResult> BuscarInstrutores(int pagina = 1, int tamanhoPagina = 10)
         {

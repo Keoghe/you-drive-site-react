@@ -334,6 +334,29 @@
         }
       }
     },
+    "/api/Usuarios/buscar-dados/minha-conta/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Usuarios/buscar-instrutores/{pagina}/{tamanhoPagina}": {
       "get": {
         "tags": [

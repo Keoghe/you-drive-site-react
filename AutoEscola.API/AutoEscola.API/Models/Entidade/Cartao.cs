@@ -13,8 +13,9 @@ namespace AutoEscola.API.Models.Entidade
         public string Numero { get; set; }
         public string Final { get; set; }
         public string NomeTitular { get; set; }
+        public string DataVigencia { get; set; }
 
-        public bool Excluido { get; set; }
+        public int Excluido { get; set; }
 
         // ✅ Navegação
         [JsonIgnore]

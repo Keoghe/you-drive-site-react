@@ -4,6 +4,7 @@ using AutoEscola.API.Enum;
 using AutoEscola.API.Helper;
 using AutoEscola.API.Models.DTO.Login;
 using AutoEscola.API.Models.DTO.Usuario;
+using AutoEscola.API.Models.ViewModel.Conta;
 using AutoEscola.API.Models.ViewModel.Login;
 using AutoEscola.API.Models.ViewModel.Usuario;
 using AutoEscola.API.Services;
@@ -32,7 +33,7 @@ namespace AutoEscola.API.BLL
         public Task<UsuarioViewModel> BuscarUsuarioPorId(int usuarioId)
         {
             throw new NotImplementedException();
-        }
+        } 
 
         public async Task<List<UsuarioViewModel>> BuscarUsuarios()
         {
@@ -201,6 +202,31 @@ namespace AutoEscola.API.BLL
             };
         }
 
+        public async Task<List<MinhaContaViewModel>> BuscarDadosMinhaConta(int usuarioId)
+        {  
+            var dadosUsuario = await _context.Usuarios
+                            .Where(u => 
+                            u.Id == usuarioId &&
+                            u.Excluido == (int)StatusContaUsuario.ATIVO )
+                            .Select(u => new MinhaContaViewModel
+                            {
+                                Id = u.Id,
+                                Nome = u.Nome,
+                                Cpf = u.Cpf,
+                                Cnh = u.Cnh,
+                                Email = u.Email,
+                                Login = u.Login,
+                                DataNascimento = u.DataNascimento,
+                                Cartao = u.Cartoes.Where(c => c.Excluido == (int)Status.ATIVO).Select(c => new CartaoViewModel
+                                {
+                                    Id = c.Id,
+                                    Numero = c.Numero,
+                                    Bandeira = c.Bandeira
+                                }).ToList()
+                            })
+                            .ToListAsync();
 
+            return dadosUsuario;
+        }
     }
 }

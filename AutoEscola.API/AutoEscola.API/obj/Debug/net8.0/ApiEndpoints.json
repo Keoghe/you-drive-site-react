@@ -143,6 +143,22 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
+    "Method": "BuscarDadosMinhaConta",
+    "RelativePath": "api/Usuarios/buscar-dados/minha-conta/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.UsuariosController",
     "Method": "BuscarInstrutores",
     "RelativePath": "api/Usuarios/buscar-instrutores/{pagina}/{tamanhoPagina}",
     "HttpMethod": "GET",

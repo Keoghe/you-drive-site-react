@@ -13,6 +13,8 @@ namespace AutoEscola.API.BLL.Interface
         Task<UsuarioViewModel> BuscarUsuarioPorId(int usuarioId);
         Task<List<UsuarioViewModel>> BuscarUsuariosPorId(List<int> usuarioId);
         Task<List<UsuarioViewModel>> BuscarUsuarios();
+        Task<List<MinhaContaViewModel>> BuscarDadosMinhaConta(int usuarioId);
+
         Task<List<InstrutorViewModel>> BuscarInstrutores();
         Task<bool> AtualizarUsuarioPorId(List<int> usuarioId); 
         Task<LoginViewModel> ValidarLogin(LoginDTO login);

@@ -19,6 +19,7 @@ namespace AutoEscola.API.Mappings
             builder.Property(c => c.Bandeira).HasColumnName("bandeira").HasMaxLength(50);
             builder.Property(c => c.Numero).HasColumnName("numero").HasMaxLength(20);
             builder.Property(c => c.Final).HasColumnName("final").HasMaxLength(4);
+            builder.Property(c => c.DataVigencia).HasColumnName("data_vigencia").HasMaxLength(6);
             builder.Property(c => c.NomeTitular).HasColumnName("nome_titular").HasMaxLength(100);
 
             builder.Property(c => c.Excluido).HasColumnName("excluido").HasDefaultValue(false);
