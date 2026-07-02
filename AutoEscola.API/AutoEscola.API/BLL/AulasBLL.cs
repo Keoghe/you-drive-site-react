@@ -55,7 +55,7 @@ namespace AutoEscola.API.BLL
                 ValorAulaId = novaAula.ValorAulaId,
                 ValorFinal = novaAula.ValorFinal,
                 Status = "ATIVO",
-                Excluido = false
+                Excluido = (int)Status.ATIVO
             };
 
             await _context.Aulas.AddAsync(aula);

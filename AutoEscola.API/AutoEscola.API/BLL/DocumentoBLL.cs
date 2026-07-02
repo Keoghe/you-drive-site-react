@@ -2,6 +2,7 @@
 using AutoEscola.API.Data;
 using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Documento;
+using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Documento;
 using AutoEscola.API.Services;
@@ -19,13 +20,22 @@ namespace AutoEscola.API.BLL
         private readonly IHttpContextAccessor _httpContext;
         private readonly IStorage _storageBLL;
         private readonly ITiposDocumento _tiposDocumentoBLL;
-        public DocumentoBLL(AppDbContext context, JwtService jwtService, IHttpContextAccessor httpContext, IStorage storageBLL, ITiposDocumento tiposDocumentoBLL)
+        private readonly IEndereco _enderecoBLL;
+        private readonly IVeiculo _veiculoBLL;
+        public DocumentoBLL(AppDbContext context, JwtService jwtService, 
+            IHttpContextAccessor httpContext, 
+            IStorage storageBLL, 
+            ITiposDocumento tiposDocumentoBLL,
+            IEndereco enderecoBLL,
+            IVeiculo veiculoBLL)
         {
             _context = context;
             _jwtService = jwtService;
             _httpContext = httpContext;
             _storageBLL = storageBLL;
             _tiposDocumentoBLL = tiposDocumentoBLL;
+            _enderecoBLL = enderecoBLL;
+            _veiculoBLL = veiculoBLL;
         }
         public Task<DownloadArquivoViewModel> BaixarArquivo(int documentoId)
         {
@@ -128,7 +138,14 @@ namespace AutoEscola.API.BLL
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<DadosAtivacaoContaDTO> AtivarContaInstrutor(DadosAtivacaoContaDTO dadosAtivacaoConta)
+        {
+            var documentos = UploadAtivarContaInstrutor(dadosAtivacaoConta.Documentos);
 
+            var endereco = _enderecoBLL.AdicionarEndereco(dadosAtivacaoConta.Endereco);  
+
+            return dadosAtivacaoConta;
+        }
         private async Task<List<DocumentoDTO>> ValidarArquivosEnviados(List<DocumentoDTO> listaArquivos, int tipoUsuarioId)
         {
 

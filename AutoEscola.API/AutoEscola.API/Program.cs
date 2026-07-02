@@ -104,6 +104,8 @@ builder.Services.AddScoped<IStorage, StorageBLL>();
 builder.Services.AddScoped<ITiposDocumento, TiposDocumentoBLL>();
 builder.Services.AddScoped<IGrupo, GrupoBLL>();
 builder.Services.AddScoped<IGrupoUsuario, GrupoUsuarioBLL>();
+builder.Services.AddScoped<IVeiculo, VeiculoBLL>();
+builder.Services.AddScoped<IEndereco, EnderecoBLL>();
 
 var app = builder.Build();
 

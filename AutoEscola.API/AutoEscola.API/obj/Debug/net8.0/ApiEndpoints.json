@@ -85,15 +85,15 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.DocumentoController",
-    "Method": "UploadArquivosContaInstrutor",
+    "Method": "AtivarContaInstrutor",
     "RelativePath": "api/Documento/upload/ativar/conta/instrutor",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "listaArquivos",
-        "Type": "System.Collections.Generic.List\u00601[[AutoEscola.API.Models.DTO.Documento.DocumentoDTO, AutoEscola.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Name": "dadosAtivacaoConta",
+        "Type": "AutoEscola.API.Models.DTO.Instrutor.DadosAtivacaoContaDTO",
         "IsRequired": true
       }
     ],

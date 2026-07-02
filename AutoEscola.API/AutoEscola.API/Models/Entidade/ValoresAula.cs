@@ -10,6 +10,6 @@
 
         public int? DuracaoMinutos { get; set; }
 
-        public bool Excluido { get; set; }
+        public int Excluido { get; set; }
     }
 }

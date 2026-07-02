@@ -10,6 +10,29 @@ export default function AtivarConta() {
   const [loading, setLoading] = useState(true);
   const [mostrarMotivo, setMostrarMotivo] = useState(null);
 
+  const [form, setForm] = useState({
+    logradouro: "",
+    numero: "",
+    complemento: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
+    cep: "",
+
+    modelo: "",
+    cor: "",
+    placa: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === "cep" ? formatarCep(value) : value,
+    }));
+  };
+
   function handleFileChange(e, tipoId) {
     const file = e.target.files[0];
 
@@ -52,6 +75,7 @@ export default function AtivarConta() {
   async function enviarDocumentos() {
     try {
       setLoading(true);
+
       const lista = Object.keys(documentos).map((tipoId) => ({
         TipoDocumentoId: documentos[tipoId]?.tipoId,
         usuarioId: usuario.usuarioId, // ✅ ajuste conforme seu objeto
@@ -59,7 +83,30 @@ export default function AtivarConta() {
         base64: documentos[tipoId].base64,
       }));
 
-      console.log(lista); // ✅ validar antes de enviar
+      const dadosCadastrais = {
+        endereco: {
+          cep: form.cep,
+          logradouro: form.rua,
+          numero: form.numero,
+          complemento: form.complemento,
+          bairro: form.bairro,
+          cidade: form.cidade,
+          estado: form.estado,
+        },
+
+        veiculo: {
+          modelo: form.modelo,
+          cor: form.cor,
+          placa: form.placa,
+        },
+
+        documentos: documentos,
+      }; 
+
+      // const dadosInstrutor = {
+      //   dadosCadastrais = dadosCadastrais,
+      //   documentos = lista
+      // }
 
       const response = await fetch(
         `${API_BASE_URL}/documento/upload/ativar/conta/instrutor`,
@@ -162,6 +209,60 @@ export default function AtivarConta() {
     );
   }
 
+  const formatarCep = (valor) => {
+    return valor
+      .replace(/\D/g, "")
+      .replace(/^(\d{5})(\d)/, "$1-$2")
+      .slice(0, 9);
+  };
+
+  const buscarCep = async () => {
+    try {
+      setLoading(true);
+      const cep = form.cep.replace(/\D/g, "");
+
+      if (cep.length !== 8) {
+        Swal.fire({
+          icon: "warning",
+          title: "CEP inválido",
+          text: "Informe um CEP válido.",
+        });
+        return;
+      }
+
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+
+      const data = await response.json();
+
+      if (data.erro) {
+        Swal.fire({
+          icon: "error",
+          title: "CEP não encontrado",
+          text: "Verifique o CEP informado.",
+        });
+        return;
+      }
+
+      setForm((prev) => ({
+        ...prev,
+        rua: data.logradouro || "",
+        bairro: data.bairro || "",
+        cidade: data.localidade || "",
+        estado: data.uf || "",
+      }));
+    } catch (error) {
+      console.error(error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Erro",
+        text: "Não foi possível consultar o CEP.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     carregarTipos();
   }, []);
@@ -201,82 +302,182 @@ export default function AtivarConta() {
         <h2 className="home-title">Ativar Conta</h2>
 
         {loading ? (
-          <p>Carregando...</p>
+          <div className="loading-overlay">
+            <div className="spinner"></div>
+            <p>Carregando documentos...</p>
+          </div>
         ) : (
           <div className="plans">
-            {tipos.map((tipo) => {
-              const status = getStatus(tipo.id);
+            <div className="dados-container">
+              <div className="card-form">
+                <h3>Dados do Endereço</h3>
 
-              return (
-                <div key={tipo.id} className="plan-card">
-                  <h3>{tipo.nome}</h3>
+                <div className="form-grid">
+                  <input
+                    type="text"
+                    name="cep"
+                    placeholder="Cep"
+                    value={form.cep}
+                    onChange={handleChange}
+                    className="campo-inteiro"
+                    onBlur={buscarCep}
+                  />
+                  <input
+                    type="text"
+                    name="rua"
+                    placeholder="Rua"
+                    value={form.rua}
+                    onChange={handleChange}
+                  />
 
-                  <p
-                    style={{
-                      color: getStatusCor(status),
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
-                  >
-                    {getStatusDescricao(status)}
+                  <input
+                    type="text"
+                    name="numero"
+                    placeholder="Número"
+                    value={form.numero}
+                    onChange={handleChange}
+                  />
 
-                    
-{status === 2 && (
-  <span
-    className="icon-circle"
-    title={getDocumento(tipo.id)?.descricao || "Motivo da recusa"}
-    onClick={(e) => {
-      e.stopPropagation();
-      setMostrarMotivo(
-        mostrarMotivo === tipo.id ? null : tipo.id
-      );
-    }}
-  >
-    i
-  </span>
-)}
+                  <input
+                    type="text"
+                    name="complemento"
+                    placeholder="Complemento"
+                    value={form.complemento}
+                    onChange={handleChange}
+                  />
 
-                  </p>
+                  <input
+                    type="text"
+                    name="bairro"
+                    placeholder="Bairro"
+                    value={form.bairro}
+                    onChange={handleChange}
+                  />
 
-                  {status === 2 &&
-                    mostrarMotivo === tipo.id &&
-                    getDocumento(tipo.id)?.descricao && (
-                      <div className="motivo-reprovacao">
-                        {getDocumento(tipo.id).descricao}
-                      </div>
-                    )}
+                  <input
+                    type="text"
+                    name="cidade"
+                    placeholder="Cidade"
+                    value={form.cidade}
+                    onChange={handleChange}
+                  />
 
-                  <label
-                    className={`upload-btn ${status === 0 || status === 1 ? "disabled" : ""}`}
-                  >
-                    {status === 1
-                      ? "Aprovado"
-                      : status === 2
-                        ? "Reenviar documento"
-                        : status === null
-                          ? "Selecionar Arquivo"
-                          : "Aguardando análise"}
-
-                    <input
-                      type="file"
-                      disabled={status === 0 || status === 1}
-                      onChange={(e) => handleFileChange(e, tipo.id)}
-                    />
-                  </label>
-
-                  {documentos[tipo.id] && (
-                    <p className="file-name">
-                      {documentos[tipo.id].nomeOriginal}
-                    </p>
-                  )}
+                  <input
+                    type="text"
+                    name="estado"
+                    placeholder="Estado"
+                    value={form.estado}
+                    onChange={handleChange}
+                  />
                 </div>
-              );
-            })}
+              </div>
+              <div className="card-form">
+                <h3>Dados do Veículo</h3>
+
+                <div className="form-grid">
+                  <input
+                    type="text"
+                    name="modelo"
+                    placeholder="Modelo"
+                    value={form.modelo}
+                    onChange={handleChange}
+                  />
+
+                  <input
+                    type="text"
+                    name="cor"
+                    placeholder="Cor"
+                    value={form.cor}
+                    onChange={handleChange}
+                  />
+
+                  <input
+                    type="text"
+                    name="placa"
+                    placeholder="Placa"
+                    value={form.placa}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="documentos-container">
+              {tipos.map((tipo) => {
+                const status = getStatus(tipo.id);
+
+                return (
+                  <div key={tipo.id} className="plan-card">
+                    <h3>{tipo.nome}</h3>
+
+                    <p
+                      style={{
+                        color: getStatusCor(status),
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {getStatusDescricao(status)}
+
+                      {status === 2 && (
+                        <span
+                          className="icon-circle"
+                          title={
+                            getDocumento(tipo.id)?.descricao ||
+                            "Motivo da recusa"
+                          }
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setMostrarMotivo(
+                              mostrarMotivo === tipo.id ? null : tipo.id,
+                            );
+                          }}
+                        >
+                          i
+                        </span>
+                      )}
+                    </p>
+
+                    {status === 2 &&
+                      mostrarMotivo === tipo.id &&
+                      getDocumento(tipo.id)?.descricao && (
+                        <div className="motivo-reprovacao">
+                          {getDocumento(tipo.id).descricao}
+                        </div>
+                      )}
+
+                    <label
+                      className={`upload-btn ${status === 0 || status === 1 ? "disabled" : ""}`}
+                    >
+                      {status === 1
+                        ? "Aprovado"
+                        : status === 2
+                          ? "Reenviar documento"
+                          : status === null
+                            ? "Selecionar Arquivo"
+                            : "Aguardando análise"}
+
+                      <input
+                        type="file"
+                        disabled={status === 0 || status === 1}
+                        onChange={(e) => handleFileChange(e, tipo.id)}
+                      />
+                    </label>
+
+                    {documentos[tipo.id] && (
+                      <p className="file-name">
+                        {documentos[tipo.id].nomeOriginal}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
+
         <button onClick={enviarDocumentos} className="btn-enviar">
-          Enviar Documentos
+          Enviar Dados
         </button>
       </section>
     </div>

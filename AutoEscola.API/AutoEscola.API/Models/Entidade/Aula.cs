@@ -22,7 +22,7 @@
 
         public decimal? ValorFinal { get; set; }
 
-        public bool Excluido { get; set; }
+        public int Excluido { get; set; }
 
         // Navegação
         public virtual Usuario Usuario { get; set; } = null!;

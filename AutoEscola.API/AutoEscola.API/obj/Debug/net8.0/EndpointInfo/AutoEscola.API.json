@@ -57,26 +57,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DocumentoDTO"
-                }
+                "$ref": "#/components/schemas/DadosAtivacaoContaDTO"
               }
             },
             "text/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DocumentoDTO"
-                }
+                "$ref": "#/components/schemas/DadosAtivacaoContaDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DocumentoDTO"
-                }
+                "$ref": "#/components/schemas/DadosAtivacaoContaDTO"
               }
             }
           }
@@ -443,6 +434,22 @@
         },
         "additionalProperties": false
       },
+      "DadosAtivacaoContaDTO": {
+        "type": "object",
+        "properties": {
+          "endereco": {
+            "$ref": "#/components/schemas/EnderecoDTO"
+          },
+          "documentos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentoDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DocumentoDTO": {
         "type": "object",
         "properties": {
@@ -479,6 +486,44 @@
             "format": "date-time"
           },
           "descricaoAnalise": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EnderecoDTO": {
+        "type": "object",
+        "properties": {
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cep": {
+            "type": "string",
+            "nullable": true
+          },
+          "logradouro": {
+            "type": "string",
+            "nullable": true
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "complemento": {
+            "type": "string",
+            "nullable": true
+          },
+          "bairro": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidade": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
             "type": "string",
             "nullable": true
           }

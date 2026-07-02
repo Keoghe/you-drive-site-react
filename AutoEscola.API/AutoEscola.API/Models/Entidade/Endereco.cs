@@ -17,7 +17,7 @@ namespace AutoEscola.API.Models.Entidade
         public string Cidade { get; set; }
         public string Estado { get; set; }
 
-        public bool Excluido { get; set; }
+        public int Excluido { get; set; }
 
         // ✅ Navegação
         [JsonIgnore]

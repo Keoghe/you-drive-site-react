@@ -11,7 +11,7 @@
         public string Cor { get; set; }
         public string Placa { get; set; }
 
-        public bool Excluido { get; set; }
+        public int Excluido { get; set; }
 
         // ✅ Navegação
         public Instrutor Instrutor { get; set; }
