@@ -5,8 +5,10 @@ using AutoEscola.API.Models.DTO.Documento;
 using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Documento;
+using AutoEscola.API.Models.ViewModel.Instrutor;
 using AutoEscola.API.Services;
 using AutoEscola.API.Util;
+using iText.Signatures.Validation.Lotl;
 using Microsoft.EntityFrameworkCore;
 using System.Buffers.Text;
 using System.IO;
@@ -22,12 +24,14 @@ namespace AutoEscola.API.BLL
         private readonly ITiposDocumento _tiposDocumentoBLL;
         private readonly IEndereco _enderecoBLL;
         private readonly IVeiculo _veiculoBLL;
-        public DocumentoBLL(AppDbContext context, JwtService jwtService, 
-            IHttpContextAccessor httpContext, 
-            IStorage storageBLL, 
+        private readonly IInstrutor _instrutorBLL;
+        public DocumentoBLL(AppDbContext context, JwtService jwtService,
+            IHttpContextAccessor httpContext,
+            IStorage storageBLL,
             ITiposDocumento tiposDocumentoBLL,
             IEndereco enderecoBLL,
-            IVeiculo veiculoBLL)
+            IVeiculo veiculoBLL,
+            IInstrutor instrutorBLL)
         {
             _context = context;
             _jwtService = jwtService;
@@ -36,6 +40,7 @@ namespace AutoEscola.API.BLL
             _tiposDocumentoBLL = tiposDocumentoBLL;
             _enderecoBLL = enderecoBLL;
             _veiculoBLL = veiculoBLL;
+            _instrutorBLL = instrutorBLL;
         }
         public Task<DownloadArquivoViewModel> BaixarArquivo(int documentoId)
         {
@@ -62,16 +67,17 @@ namespace AutoEscola.API.BLL
                     if (!documento.NomeOriginal.Contains(".pdf"))
                     {
                         arquivoBase64 = conversor.ConverterImagemBase64ParaPdfBase64(arquivoBase64);
-                    } 
+                    }
 
                     documentosUsuario.Add(new DocumentoViewModel
                     {
                         Id = documento.Id,
+                        UsuarioId = usuarioId,
                         NomeOriginal = documento.NomeOriginal,
                         Status = documento.Status,
-                        TipoDocumentalId = documento.TipoDocumentoId,
+                        TipoDocumentoId = documento.TipoDocumentoId,
                         DataCriacao = documento.DataCriacao,
-                        Descricao = documento.DescricaoAnalise, 
+                        DescricaoAnalise = documento.DescricaoAnalise,
                         Base64 = arquivoBase64
                     });
                 }
@@ -138,13 +144,28 @@ namespace AutoEscola.API.BLL
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<DadosAtivacaoContaDTO> AtivarContaInstrutor(DadosAtivacaoContaDTO dadosAtivacaoConta)
+        public async Task<DadosAtivacaoContaViewModel> AtivarContaInstrutor(DadosAtivacaoContaDTO dadosAtivacaoConta)
         {
-            var documentos = UploadAtivarContaInstrutor(dadosAtivacaoConta.Documentos);
+            var dadosAtivacaoContaViewModel = new DadosAtivacaoContaViewModel();
 
-            var endereco = _enderecoBLL.AdicionarEndereco(dadosAtivacaoConta.Endereco);  
+            var instrutor = await _instrutorBLL.BuscarPorId(dadosAtivacaoConta.Endereco.UsuarioId);
 
-            return dadosAtivacaoConta;
+            if (instrutor.Id == 0)
+                throw new Exception("Instrutor não encontrado");
+
+                dadosAtivacaoConta.Veiculo.InstrutorId = instrutor.Id; 
+
+            var documentos = await UploadAtivarContaInstrutor(dadosAtivacaoConta.Documentos);
+
+            var endereco = await _enderecoBLL.AdicionarEndereco(dadosAtivacaoConta.Endereco);
+
+            var veiculo = await _veiculoBLL.AdicionarVeiculo(dadosAtivacaoConta.Veiculo);
+
+            dadosAtivacaoContaViewModel.Documentos = documentos;
+            dadosAtivacaoContaViewModel.Endereco = endereco;
+            dadosAtivacaoContaViewModel.Veiculo = veiculo;
+
+            return dadosAtivacaoContaViewModel;
         }
         private async Task<List<DocumentoDTO>> ValidarArquivosEnviados(List<DocumentoDTO> listaArquivos, int tipoUsuarioId)
         {
@@ -179,11 +200,15 @@ namespace AutoEscola.API.BLL
                             if (arquivo.Base64 == null || arquivo.Base64.Length == 0)
                                 throw new Exception("Documento Comprovante de Endereço não foi enviado");
                             break;
-                        case (int)TipoAnexo.CERTIDAO_ANTECEDENTE_CRIMINAL:
-
+                        case (int)TipoAnexo.CERTIDAO_ANTECEDENTE_CRIMINAL: 
                             nomeArquivo = "CERTIDAO_ANTECEDENTE_CRIMINAL";
                             if (arquivo.Base64 == null || arquivo.Base64.Length == 0)
                                 throw new Exception("Documento Certidão de Antecedente Criminal não foi enviado");
+                            break;
+                        case (int)TipoAnexo.FOTO_SELFIE:
+                            nomeArquivo = "FOTO_SELFIE";
+                            if (arquivo.Base64 == null || arquivo.Base64.Length == 0)
+                                throw new Exception("A Selfie não foi enviada");
                             break;
                         default:
                             break;
@@ -292,8 +317,7 @@ namespace AutoEscola.API.BLL
             return retorno;
         }
 
-
-        public async Task<DocumentoDTO> AtualizarStatusDocumento(DocumentoDTO documento)
+        public async Task<DocumentoViewModel> AtualizarStatusDocumento(DocumentoDTO documento)
         {
             try
             {
@@ -309,7 +333,7 @@ namespace AutoEscola.API.BLL
 
                 await _context.SaveChangesAsync();
 
-                return new DocumentoDTO
+                return new DocumentoViewModel
                 {
                     UsuarioId = entidade.UsuarioId,
                     TipoDocumentoId = entidade.TipoDocumentoId,
@@ -321,7 +345,6 @@ namespace AutoEscola.API.BLL
                 throw new Exception(ex.Message);
             }
         }
-
 
         public Task<DocumentoDTO> Adicionar(DocumentoDTO entidade)
         {

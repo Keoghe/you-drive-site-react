@@ -3,12 +3,14 @@
     public class DocumentoViewModel
     {
         public int Id { get; set; }
-        public string NomeOriginal { get; set; } = string.Empty; 
+        public int UsuarioId { get; set; } 
+        public string NomeOriginal { get; set; } = string.Empty;
+        public string CaminhoArquivo { get; set; } = string.Empty; 
         public string Base64 { get; set; } = string.Empty;
+        public int TipoDocumentoId { get; set; }
         public int Status { get; set; }
-        public int TipoDocumentalId { get; set; }
-        public string Descricao { get; set; } = string.Empty;
-
         public DateTime DataCriacao { get; set; } = DateTime.Now;
+        public string DescricaoAnalise { get; set; } = string.Empty;
+
     }
 }

@@ -25,10 +25,10 @@ namespace AutoEscola.API.BLL
         {
             var instrutorExistente = await _context.Instrutores
                 .FirstOrDefaultAsync(i => i.UsuarioId == instrutor.UsuarioId);
-             
+
             if (instrutorExistente != null && instrutorExistente.Ativo == 1)
                 throw new Exception("Instrutor já cadastrado e ativo");
- 
+
             var novoInstrutor = new Instrutor
             {
                 UsuarioId = instrutor.UsuarioId,
@@ -63,14 +63,31 @@ namespace AutoEscola.API.BLL
             instrutorExistente.Ativo = instrutor.Ativo;
             instrutorExistente.Excluido = instrutor.Excluido;
 
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
-            return instrutor; 
+            return instrutor;
         }
 
         public async Task<InstrutorDTO> BuscarPorId(int id)
-        {
-            throw new NotImplementedException();
+        { 
+            var instrutor = await _context.Instrutores
+                            .AsNoTracking()
+                           .Where(i => i.Id == id)
+                           .Select(i => new InstrutorDTO
+                           {
+                               Id = i.Id,
+                               UsuarioId = i.UsuarioId,
+                               Avaliacao = i.Avaliacao,
+                               ValorHora = i.ValorHora,
+                               Latitude = i.Latitude,
+                               Longitude = i.Longitude,
+                               Ativo = i.Ativo,
+                               Excluido = i.Excluido
+                           })
+                           .FirstOrDefaultAsync();  
+
+            return instrutor == null ? new InstrutorDTO() : instrutor;
+
         }
 
         public async Task<List<InstrutorDTO>> BuscarTodos()

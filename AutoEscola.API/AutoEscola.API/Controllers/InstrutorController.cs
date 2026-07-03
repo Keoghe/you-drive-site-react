@@ -5,6 +5,7 @@ using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.DTO.Usuario;
 using AutoEscola.API.Models.ViewModel.Usuario;
+using AutoEscola.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,9 +36,24 @@ namespace AutoEscola.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
-
+            } 
         }
+
+        [HttpGet("{instrutorId}")]
+        public async Task<IActionResult> BuscarInstrutor(int instrutorId, [FromServices] JwtService jwtService)
+        {
+            try
+            {
+                var resultado = await _instrutorBll.BuscarPorId(instrutorId);
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
+
 
     }
 }

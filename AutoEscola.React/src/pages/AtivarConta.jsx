@@ -82,7 +82,7 @@ export default function AtivarConta() {
         nomeOriginal: documentos[tipoId]?.nomeOriginal || "arquivo",
         base64: documentos[tipoId].base64,
       }));
-
+ 
       const dadosCadastrais = {
         endereco: {
           cep: form.cep,
@@ -92,15 +92,17 @@ export default function AtivarConta() {
           bairro: form.bairro,
           cidade: form.cidade,
           estado: form.estado,
+          usuarioId: usuario.usuarioId
         },
 
         veiculo: {
           modelo: form.modelo,
           cor: form.cor,
           placa: form.placa,
+          insrtutorId: usuario.usuarioId
         },
 
-        documentos: documentos,
+        documentos: lista,
       }; 
 
       // const dadosInstrutor = {
@@ -116,7 +118,7 @@ export default function AtivarConta() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${usuario.token}`,
           },
-          body: JSON.stringify(lista),
+          body: JSON.stringify(dadosCadastrais),
         },
       );
 
@@ -150,8 +152,64 @@ export default function AtivarConta() {
 
   function validaTipoDeDocumento() {}
 
+ async function buscarEndereco() {
+    try { 
+      const response = await fetch(
+        `${API_BASE_URL}/endereco/${usuario.usuarioId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${usuario.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();       
+      console.log('ENDEREÇO - ' + JSON.stringify(data));
+      setForm((prev) => ({
+            ...prev,
+            rua: data.logradouro ?? "",
+            numero: data.numero ?? "",
+            complemento: data.complemento ?? "",
+            bairro: data.bairro ?? "",
+            cidade: data.cidade ?? "",
+            estado: data.estado ?? "",
+            cep: data.cep ?? "",
+          }));
+
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+   async function buscarVeiculo() {
+    try { 
+      const response = await fetch(
+        `${API_BASE_URL}/veiculo/${usuario.usuarioId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${usuario.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();        
+      setForm((prev) => ({
+            ...prev,
+            modelo: data.modelo ?? "",
+            cor: data.cor ?? "",
+            placa: data.placa ?? ""             
+          }));
+
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+ 
   async function carregarDocumentos() {
     try {
+       
       const response = await fetch(
         `${API_BASE_URL}/Documento/${usuario.usuarioId}/0`,
         {
@@ -162,16 +220,16 @@ export default function AtivarConta() {
       );
 
       const data = await response.json();
-
+      
       setDocumentosUsuario(data);
     } catch (error) {
       console.error(error);
     }
   }
 
-  function getStatus(tipoDocumentalId) {
+  function getStatus(tipoDocumentoId) {
     const doc = documentosUsuario.find(
-      (d) => d.tipoDocumentalId === tipoDocumentalId,
+      (d) => d.tipoDocumentoId === tipoDocumentoId,
     );
 
     return doc != null ? doc.status : null;
@@ -203,9 +261,9 @@ export default function AtivarConta() {
     }
   }
 
-  function getDocumento(tipoDocumentalId) {
+  function getDocumento(tipoDocumentoId) {
     return documentosUsuario.find(
-      (d) => d.tipoDocumentalId === tipoDocumentalId,
+      (d) => d.tipoDocumentoId === tipoDocumentoId,
     );
   }
 
@@ -264,6 +322,8 @@ export default function AtivarConta() {
   };
 
   useEffect(() => {
+    buscarEndereco();
+    buscarVeiculo();
     carregarTipos();
   }, []);
 
@@ -403,8 +463,7 @@ export default function AtivarConta() {
             </div>
             <div className="documentos-container">
               {tipos.map((tipo) => {
-                const status = getStatus(tipo.id);
-
+                const status = getStatus(tipo.id); 
                 return (
                   <div key={tipo.id} className="plan-card">
                     <h3>{tipo.nome}</h3>
@@ -423,7 +482,7 @@ export default function AtivarConta() {
                         <span
                           className="icon-circle"
                           title={
-                            getDocumento(tipo.id)?.descricao ||
+                            getDocumento(tipo.id)?.descricaoAnalise ||
                             "Motivo da recusa"
                           }
                           onClick={(e) => {
@@ -440,9 +499,9 @@ export default function AtivarConta() {
 
                     {status === 2 &&
                       mostrarMotivo === tipo.id &&
-                      getDocumento(tipo.id)?.descricao && (
+                      getDocumento(tipo.id)?.descricaoAnalise && (
                         <div className="motivo-reprovacao">
-                          {getDocumento(tipo.id).descricao}
+                          {getDocumento(tipo.id).descricaoAnalise}
                         </div>
                       )}
 

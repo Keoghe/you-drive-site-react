@@ -2,6 +2,7 @@
 {
     public class InstrutorDTO
     {
+        public int Id { get; set; }
         public int UsuarioId { get; set; }
         public decimal Avaliacao { get; set; } = 0;
         public decimal ValorHora { get; set; } = 0;

@@ -100,6 +100,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoEscola.API.Controllers.EnderecoController",
+    "Method": "BuscarEndereco",
+    "RelativePath": "api/Endereco/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.InstrutorController",
+    "Method": "BuscarInstrutor",
+    "RelativePath": "api/Instrutor/{instrutorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "instrutorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.InstrutorController",
     "Method": "AlterarStatusInstrutor",
     "RelativePath": "api/Instrutor/atualizar",
@@ -221,6 +253,22 @@
       {
         "Name": "loginDTO",
         "Type": "AutoEscola.API.Models.DTO.Login.LoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.VeiculoController",
+    "Method": "BuscarVeiculoInstrutor",
+    "RelativePath": "api/Veiculo/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 
 export default function AnaliseDocumento() {
+  const [tipos, setTipos] = useState([]);
   const [documentos, setDocumentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,8 +21,39 @@ export default function AnaliseDocumento() {
     REPROVADO: 4,
   };
   useEffect(() => {
-    carregarDocumentos();
+    buscarEndereco();
+    buscarVeiculo();
+    carregarTipos();
   }, []);
+
+  async function carregarTipos() {
+    try {
+      const tipoUsuario = 2;
+      const response = await fetch(
+        `${API_BASE_URL}/tiposdocumento/${tipoUsuario}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${usuario.token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao carregar tipos de documentos");
+      }
+
+      const data = await response.json();
+
+      setTipos(data);
+
+      await carregarDocumentos();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // ✅ aqui termina tudo
+    }
+  }
 
   async function carregarDocumentos() {
     try {
@@ -232,6 +264,71 @@ export default function AnaliseDocumento() {
     return documentos.length > 0 && documentos.every((doc) => doc.status === 1);
   }
 
+  async function buscarEndereco() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/endereco/${id}`, {
+        headers: {
+          Authorization: `Bearer ${usuario.token}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log("ENDEREÇO - " + JSON.stringify(data));
+      setForm((prev) => ({
+        ...prev,
+        rua: data.logradouro ?? "",
+        numero: data.numero ?? "",
+        complemento: data.complemento ?? "",
+        bairro: data.bairro ?? "",
+        cidade: data.cidade ?? "",
+        estado: data.estado ?? "",
+        cep: data.cep ?? "",
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function buscarVeiculo() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/veiculo/${id}`, {
+        headers: {
+          Authorization: `Bearer ${usuario.token}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log("VEICULO - " + JSON.stringify(data));
+      setForm((prev) => ({
+        ...prev,
+        modelo: data.modelo ?? "",
+        cor: data.cor ?? "",
+        placa: data.placa ?? "",
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const [form, setForm] = useState({
+    logradouro: "",
+    numero: "",
+    complemento: "",
+    bairro: "",
+    cidade: "",
+    estado: "",
+    cep: "",
+
+    modelo: "",
+    cor: "",
+    placa: "",
+  });
+
+  const tiposMap = tipos.reduce((acc, tipo) => {
+    acc[tipo.id] = tipo.nome;
+    return acc;
+  }, {});
+
   return (
     <div className="home-container">
       <h2 className="home-title">Análise de Documentos</h2>
@@ -247,27 +344,132 @@ export default function AnaliseDocumento() {
         </p>
       ) : (
         <div className="plans">
-          {documentos.map((doc) => (
-            <div key={doc.id} className="plan-card">
-              <h3>{doc.nomeOriginal}</h3>
+          <div className="dados-container">
+            <div className="card-form">
+              <h3>Dados do Endereço</h3>
 
-              <p style={{ color: getStatusCor(doc.status) }}>
-                {getStatusDescricao(doc.status)}
-              </p>
+              <div className="form-grid">
+                <input
+                  type="text"
+                  name="cep"
+                  placeholder="Cep"
+                  value={form.cep}
+                  className="campo-inteiro"
+                  readOnly
+                  disabled
+                />
+                <input
+                  type="text"
+                  name="rua"
+                  placeholder="Rua"
+                  value={form.rua}
+                  readOnly
+                  disabled
+                />
 
-              {/* ✅ Botões só quando em análise */}
-              {doc.status === 0 && (
-                <div style={{ marginTop: "10px" }}>
-                  <button
-                    className="btn-visualizar"
-                    onClick={() => abrirModal(doc)}
-                  >
-                    Visualizar
-                  </button>
-                </div>
-              )}
+                <input
+                  type="text"
+                  name="numero"
+                  placeholder="Número"
+                  value={form.numero}
+                  readOnly
+                  disabled
+                />
+
+                <input
+                  type="text"
+                  name="complemento"
+                  placeholder="Complemento"
+                  value={form.complemento}
+                  readOnly
+                  disabled
+                />
+
+                <input
+                  type="text"
+                  name="bairro"
+                  placeholder="Bairro"
+                  value={form.bairro}
+                  readOnly
+                  disabled
+                />
+
+                <input
+                  type="text"
+                  name="cidade"
+                  placeholder="Cidade"
+                  value={form.cidade}
+                  readOnly
+                  disabled
+                />
+
+                <input
+                  type="text"
+                  name="estado"
+                  placeholder="Estado"
+                  value={form.estado}
+                  readOnly
+                  disabled
+                />
+              </div>
             </div>
-          ))}
+            <div className="card-form">
+              <h3>Dados do Veículo</h3>
+
+              <div className="form-grid">
+                <input
+                  type="text"
+                  name="modelo"
+                  placeholder="Modelo"
+                  value={form.modelo}
+                  readOnly
+                  disabled
+                />
+
+                <input
+                  type="text"
+                  name="cor"
+                  placeholder="Cor"
+                  value={form.cor}
+                  readOnly
+                  disabled
+                />
+
+                <input
+                  type="text"
+                  name="placa"
+                  placeholder="Placa"
+                  value={form.placa}
+                  readOnly
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="documentos-container">
+            {documentos.map((doc) => (
+              <div key={doc.id} className="plan-card">
+                <h3>{tiposMap[doc.tipoDocumentoId] ?? doc.nomeOriginal}</h3>
+
+                <p style={{ color: getStatusCor(doc.status) }}>
+                  {getStatusDescricao(doc.status)}
+                </p>
+
+                {/* ✅ Botões só quando em análise */}
+                {doc.status === 0 && (
+                  <div style={{ marginTop: "10px" }}>
+                    <button
+                      className="btn-visualizar"
+                      onClick={() => abrirModal(doc)}
+                    >
+                      Visualizar
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

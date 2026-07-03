@@ -64,14 +64,38 @@ namespace AutoEscola.API.BLL
             };
         }
 
+        public async Task<EnderecoViewModel> BuscarEndereco(int usuarioId)
+        {
+            var endereco = await _context.Enderecos
+                .FirstOrDefaultAsync(x => x.UsuarioId == usuarioId);
+            if (endereco == null)
+            {
+                return new EnderecoViewModel();
+            }
+            return new EnderecoViewModel
+            {
+                Id = endereco.Id,
+                UsuarioId = endereco.UsuarioId,
+                Logradouro = endereco.Logradouro,
+                Numero = endereco.Numero,
+                Complemento = endereco.Complemento,
+                Bairro = endereco.Bairro,
+                Cep = endereco.Cep,
+                Cidade = endereco.Cidade,
+                Estado = endereco.Estado
+            };
+        }
         public Task<Endereco> Atualizar(Endereco entidade)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Endereco> BuscarPorId(int id)
+        public async Task<Endereco> BuscarPorId(int usuarioId)
         {
-            throw new NotImplementedException();
+            var endereco = await _context.Enderecos
+                .FirstOrDefaultAsync(x => x.UsuarioId == usuarioId); 
+
+            return endereco == null ? new Endereco(): endereco;
         }
 
         public Task<List<Endereco>> BuscarTodos()

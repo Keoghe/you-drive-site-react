@@ -174,6 +174,29 @@
         }
       }
     },
+    "/api/Endereco/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Endereco"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Instrutor/atualizar": {
       "put": {
         "tags": [
@@ -198,6 +221,29 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Instrutor/{instrutorId}": {
+      "get": {
+        "tags": [
+          "Instrutor"
+        ],
+        "parameters": [
+          {
+            "name": "instrutorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -381,6 +427,29 @@
           }
         }
       }
+    },
+    "/api/Veiculo/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Veiculo"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -446,6 +515,9 @@
               "$ref": "#/components/schemas/DocumentoDTO"
             },
             "nullable": true
+          },
+          "veiculo": {
+            "$ref": "#/components/schemas/VeiculoDTO"
           }
         },
         "additionalProperties": false
@@ -533,6 +605,10 @@
       "InstrutorDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "usuarioId": {
             "type": "integer",
             "format": "int32"
@@ -620,6 +696,32 @@
           "tipoUsuario": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VeiculoDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "instrutorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "modelo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cor": {
+            "type": "string",
+            "nullable": true
+          },
+          "placa": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

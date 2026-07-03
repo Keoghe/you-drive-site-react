@@ -2,18 +2,13 @@
 {
     public class Veiculo
     {
-        public int Id { get; set; }
-
-        // ✅ FK
-        public int InstrutorId { get; set; }
-
+        public int Id { get; set; } 
+        public int InstrutorId { get; set; } 
         public string Modelo { get; set; }
         public string Cor { get; set; }
-        public string Placa { get; set; }
-
+        public string Placa { get; set; } 
         public int Excluido { get; set; }
-
-        // ✅ Navegação
+         
         public Instrutor Instrutor { get; set; }
     }
 }
