@@ -1,4 +1,4 @@
-﻿namespace AutoEscola.API.Models.DTO.Instrutor
+﻿namespace AutoEscola.API.Models.DTO.Endereco
 {
     public class EnderecoDTO
     {

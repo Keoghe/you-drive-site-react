@@ -32,7 +32,6 @@ namespace AutoEscola.API.Controllers
             try
             { 
                 var resultado = await _documentoBll.AtivarContaInstrutor(dadosAtivacaoConta); 
-                //var resultado = await _documentoBll.UploadAtivarContaInstrutor(dadosAtivacaoConta.Documentos);
 
                 return Ok(resultado);
             }

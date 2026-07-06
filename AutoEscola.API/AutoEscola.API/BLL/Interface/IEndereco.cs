@@ -1,5 +1,5 @@
 ﻿using AutoEscola.API.BLL.Interface.Base;
-using AutoEscola.API.Models.DTO.Instrutor;
+using AutoEscola.API.Models.DTO.Endereco;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Endereco;
 

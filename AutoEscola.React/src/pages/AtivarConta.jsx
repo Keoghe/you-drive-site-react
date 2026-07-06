@@ -105,11 +105,6 @@ export default function AtivarConta() {
         documentos: lista,
       }; 
 
-      // const dadosInstrutor = {
-      //   dadosCadastrais = dadosCadastrais,
-      //   documentos = lista
-      // }
-
       const response = await fetch(
         `${API_BASE_URL}/documento/upload/ativar/conta/instrutor`,
         {

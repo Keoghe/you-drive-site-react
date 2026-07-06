@@ -101,6 +101,22 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.EnderecoController",
+    "Method": "CadastrarEndereco",
+    "RelativePath": "api/Endereco",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "endereco",
+        "Type": "AutoEscola.API.Models.DTO.Endereco.EnderecoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.EnderecoController",
     "Method": "BuscarEndereco",
     "RelativePath": "api/Endereco/{usuarioId}",
     "HttpMethod": "GET",

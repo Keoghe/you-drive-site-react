@@ -1,4 +1,5 @@
 ﻿using AutoEscola.API.Models.DTO.Documento;
+using AutoEscola.API.Models.DTO.Endereco;
 using AutoEscola.API.Models.DTO.Veiculo;
 using AutoEscola.API.Models.Entidade;
 

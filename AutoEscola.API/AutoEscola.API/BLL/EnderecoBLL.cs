@@ -1,7 +1,7 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
 using AutoEscola.API.Enum;
-using AutoEscola.API.Models.DTO.Instrutor;
+using AutoEscola.API.Models.DTO.Endereco;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Endereco;
 using AutoEscola.API.Models.ViewModel.Usuario;
