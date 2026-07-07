@@ -31,7 +31,7 @@ namespace AutoEscola.API.BLL
             throw new NotImplementedException();
         }
 
-        public Task<List<GrupoUsuario>> BuscarTodos()
+        public Task<List<GrupoUsuario>> BuscarTodos(int id)
         {
             throw new NotImplementedException();
         }

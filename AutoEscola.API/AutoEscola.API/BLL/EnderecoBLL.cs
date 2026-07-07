@@ -21,7 +21,7 @@ namespace AutoEscola.API.BLL
             _jwtService = jwtService;
             _httpContext = httpContext;
         }
-        public Task<Endereco> Adicionar(Endereco entidade)
+        public Task<EnderecoDTO> Adicionar(EnderecoDTO entidade)
         {
             throw new NotImplementedException();
         }
@@ -66,12 +66,8 @@ namespace AutoEscola.API.BLL
 
         public async Task<EnderecoViewModel> BuscarEndereco(int usuarioId)
         {
-            var endereco = await _context.Enderecos
-                .FirstOrDefaultAsync(x => x.UsuarioId == usuarioId);
-            if (endereco == null)
-            {
-                return new EnderecoViewModel();
-            }
+            var endereco = await BuscarPorId(usuarioId);
+            
             return new EnderecoViewModel
             {
                 Id = endereco.Id,
@@ -85,27 +81,41 @@ namespace AutoEscola.API.BLL
                 Estado = endereco.Estado
             };
         }
-        public Task<Endereco> Atualizar(Endereco entidade)
+        public Task<EnderecoDTO> Atualizar(EnderecoDTO enderecoDTO)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Endereco> BuscarPorId(int usuarioId)
+        public async Task<EnderecoDTO> BuscarPorId(int usuarioId)
         {
+            var enderecoDTO = new EnderecoDTO();
             var endereco = await _context.Enderecos
-                .FirstOrDefaultAsync(x => x.UsuarioId == usuarioId); 
+                .FirstOrDefaultAsync(x => x.UsuarioId == usuarioId);
 
-            return endereco == null ? new Endereco(): endereco;
+            if (endereco != null)
+            {
+                enderecoDTO.Id = endereco.Id;
+                enderecoDTO.UsuarioId = endereco.UsuarioId;
+                enderecoDTO.Logradouro = endereco.Logradouro;
+                enderecoDTO.Numero = endereco.Numero;
+                enderecoDTO.Complemento = endereco.Complemento;
+                enderecoDTO.Bairro = endereco.Bairro;
+                enderecoDTO.Cep = endereco.Cep;
+                enderecoDTO.Cidade = endereco.Cidade;
+                enderecoDTO.Estado = endereco.Estado;
+            }
+
+            return enderecoDTO;
         }
 
-        public Task<List<Endereco>> BuscarTodos()
+        public Task<List<EnderecoDTO>> BuscarTodos(int usuarioId)
         {
             throw new NotImplementedException();
         }
 
         public void Dispose()
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         public Task<bool> Remover(int id)

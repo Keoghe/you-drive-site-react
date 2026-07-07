@@ -26,6 +26,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoEscola.API.Controllers.CartaoController",
+    "Method": "CadastrarCartao",
+    "RelativePath": "api/Cartao",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cartao",
+        "Type": "AutoEscola.API.Models.DTO.Cartao.CartaoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.CartaoController",
+    "Method": "BuscarCartao",
+    "RelativePath": "api/Cartao/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.DocumentoController",
     "Method": "AtualizarStatusDocumento",
     "RelativePath": "api/Documento",

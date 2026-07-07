@@ -5,6 +5,6 @@ namespace AutoEscola.API.BLL.Interface
 {
     public interface IStorage : IBaseBLL<Storage> 
     {
-
+        public Task<List<Storage>> BuscarStoraAtivo();
     }
 }

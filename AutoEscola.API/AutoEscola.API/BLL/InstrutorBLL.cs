@@ -90,7 +90,7 @@ namespace AutoEscola.API.BLL
 
         }
 
-        public async Task<List<InstrutorDTO>> BuscarTodos()
+        public async Task<List<InstrutorDTO>> BuscarTodos(int id)
         {
             throw new NotImplementedException();
         }

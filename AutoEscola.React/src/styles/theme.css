@@ -771,7 +771,7 @@ body {
   margin-bottom: 15px;
 }
 
-/* CARTÕES */
+/* CARTÕES - INICIO */
 
 .cartao {
   background: #222;
@@ -795,6 +795,30 @@ body {
 
 .btn-endereco:hover {
   background: #1565c0;
+}
+
+.btn-cartao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cartao:hover {
+  background: #1565c0;
+}
+
+.modal select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  outline: none;
 }
 
 /* Modal Inicio*/

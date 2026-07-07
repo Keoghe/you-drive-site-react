@@ -214,7 +214,7 @@ namespace AutoEscola.API.BLL
                             break;
                     }
 
-                    var caminho = await _storageBLL.BuscarTodos();
+                    var caminho = await _storageBLL.BuscarStoraAtivo();
 
                     if (caminho != null && caminho.Count > 0)
                     {
@@ -257,18 +257,16 @@ namespace AutoEscola.API.BLL
             if (usuarioId == 0)
                 throw new Exception($"O usuário informado não existe");
 
-            var tiposDocumento = await _tiposDocumentoBLL.BuscarTodos();
+            var tiposDocumento = await _tiposDocumentoBLL.BuscarTodos(tipoUsuarioId);
 
             var documentosSalvos = await _context.Documentos
                 .Where(c =>
                     c.UsuarioId == usuarioId &&
                     c.Excluido == (int)Status.ATIVO
                 )
-                .ToListAsync();
+                .ToListAsync(); 
 
-
-
-            foreach (var documento in tiposDocumento.Where(c => c.Obrigatorio == (int)Status.ATIVO && c.TipoUsuarioId == tipoUsuarioId))
+            foreach (var documento in tiposDocumento)
             {
                 if (documentosSalvos.FindAll(c => c.TipoDocumentoId == documento.Id).Count > 0)
                 {
@@ -366,7 +364,7 @@ namespace AutoEscola.API.BLL
             throw new NotImplementedException();
         }
 
-        public Task<List<DocumentoDTO>> BuscarTodos()
+        public Task<List<DocumentoDTO>> BuscarTodos(int id)
         {
             throw new NotImplementedException();
         }

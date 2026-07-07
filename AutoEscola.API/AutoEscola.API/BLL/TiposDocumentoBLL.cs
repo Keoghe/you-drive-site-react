@@ -75,5 +75,15 @@ namespace AutoEscola.API.BLL
 
             return tiposDocumentos;
         }
+
+        public async Task<List<TiposDocumento>> BuscarTodos(int tipoUsuarioId)
+        {
+            var tiposDocumentos = await _context.TiposDocumento.Where(c =>
+            c.Excluido == (int)StatusContaUsuario.ATIVO
+            && c.TipoUsuarioId == tipoUsuarioId
+            ).ToListAsync();
+
+            return tiposDocumentos;
+        }
     }
 }

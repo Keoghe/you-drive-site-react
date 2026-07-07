@@ -2,6 +2,7 @@
 {
     public class EnderecoDTO
     {
+        public int Id { get; set; }
         public int UsuarioId { get; set; } = 0;
         public string Cep { get; set; } = string.Empty;
         public string Logradouro { get; set; } = string.Empty;

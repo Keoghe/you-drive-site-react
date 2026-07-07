@@ -7,7 +7,7 @@
         Task<T> Atualizar(T entidade);
         Task<bool> Remover(int id); 
         Task<T> BuscarPorId(int id);
-        Task<List<T>> BuscarTodos();
+        Task<List<T>> BuscarTodos(int id);
     }
 
 }

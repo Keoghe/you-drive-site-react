@@ -5,7 +5,7 @@ using AutoEscola.API.Models.ViewModel.Endereco;
 
 namespace AutoEscola.API.BLL.Interface
 {
-    public interface IEndereco : IBaseBLL<Endereco>
+    public interface IEndereco : IBaseBLL<EnderecoDTO>
     {
         Task<EnderecoViewModel> AdicionarEndereco(EnderecoDTO endereco);
         Task<EnderecoViewModel> BuscarEndereco(int usuarioId);

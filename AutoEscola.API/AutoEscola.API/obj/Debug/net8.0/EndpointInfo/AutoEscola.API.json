@@ -48,6 +48,60 @@
         }
       }
     },
+    "/api/Cartao/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Cartao"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Cartao": {
+      "post": {
+        "tags": [
+          "Cartao"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartaoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartaoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartaoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Documento/upload/ativar/conta/instrutor": {
       "post": {
         "tags": [
@@ -534,6 +588,48 @@
         },
         "additionalProperties": false
       },
+      "CartaoDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cpfCnpj": {
+            "type": "string",
+            "nullable": true
+          },
+          "bandeira": {
+            "type": "string",
+            "nullable": true
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nomeTitular": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataVigencia": {
+            "type": "string",
+            "nullable": true
+          },
+          "excluido": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "DadosAtivacaoContaDTO": {
         "type": "object",
         "properties": {
@@ -598,6 +694,10 @@
       "EnderecoDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "usuarioId": {
             "type": "integer",
             "format": "int32"

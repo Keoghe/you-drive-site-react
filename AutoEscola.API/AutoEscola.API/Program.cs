@@ -106,6 +106,7 @@ builder.Services.AddScoped<IGrupo, GrupoBLL>();
 builder.Services.AddScoped<IGrupoUsuario, GrupoUsuarioBLL>();
 builder.Services.AddScoped<IVeiculo, VeiculoBLL>();
 builder.Services.AddScoped<IEndereco, EnderecoBLL>();
+builder.Services.AddScoped<ICartao, CartaoBLL>();
 
 var app = builder.Build();
 

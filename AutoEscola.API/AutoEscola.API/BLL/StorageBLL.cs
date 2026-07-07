@@ -41,7 +41,14 @@ namespace AutoEscola.API.BLL
             
         }
 
-        public async Task<List<Storage>> BuscarTodos()
+        public async Task<List<Storage>> BuscarTodos(int storageId)
+        {
+            var storage = await _context.Storage
+               .Where(u => u.Excluido == (int)Status.ATIVO && u.Id == storageId).ToListAsync();
+
+            return storage;
+        }
+        public async Task<List<Storage>> BuscarStoraAtivo()
         {
             var storage = await _context.Storage
                .Where(u => u.Excluido == (int)Status.ATIVO).ToListAsync();
