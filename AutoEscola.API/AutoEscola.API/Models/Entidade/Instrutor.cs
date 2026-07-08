@@ -28,5 +28,7 @@ namespace AutoEscola.API.Models.Entidade
 
         // 1 instrutor → várias aulas
         public List<Aula> Aulas { get; set; }
+
+        public virtual ICollection<InstrutorDisponivel> Disponibilidades { get; set; }
     }
 }

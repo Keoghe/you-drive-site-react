@@ -14,7 +14,7 @@ namespace AutoEscola.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize] 
-    public class InstrutorController : ControllerBase
+    public class InstrutorController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IInstrutor _instrutorBll;

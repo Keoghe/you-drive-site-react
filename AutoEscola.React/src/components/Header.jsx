@@ -44,6 +44,7 @@ export default function Header() {
         <nav className="nav-menu">
           <Link to="/">Home</Link>
           <Link to="/agendadas">Aulas Agendadas</Link>
+          <Link to="/agendaInstrutor">Agenda Instrutor</Link>
           <Link to="/agendarAula">Agendar Aula</Link>
           <Link to="/conta">Minha Conta</Link>
           <Link to="/contato">Fale Conosco</Link>

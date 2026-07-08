@@ -14,7 +14,7 @@ namespace AutoEscola.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DocumentoController : ControllerBase
+    public class DocumentoController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IDocumento _documentoBll; 

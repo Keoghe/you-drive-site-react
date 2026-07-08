@@ -3,6 +3,7 @@ import Layout from "./layout/Layout";
 import Home from "./pages/Home";
 import AulasAgendadas from "./pages/AulasAgendadas";
 import AgendarAulas from "./pages/AgendarAulas";
+import AgendaInstrutor from "./pages/AgendaInstrutor";
 import Conta from "./pages/Conta";
 import Contato from "./pages/Contato";
 import Login from "./pages/Login";
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="agendadas" element={<AulasAgendadas />} />
+          <Route path="agendaInstrutor" element={<AgendaInstrutor />} />
           <Route path="agendarAula" element={<AgendarAulas />} /> 
           <Route path="/analise-documento/:id" element={<AnaliseDocumento />} />
           <Route path="instrutores" element={<Instrutores />} />

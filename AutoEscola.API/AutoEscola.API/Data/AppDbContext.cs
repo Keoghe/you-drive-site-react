@@ -28,6 +28,7 @@ namespace AutoEscola.API.Data
         public DbSet<TiposDocumento> TiposDocumento { get; set; }
         public DbSet<Grupo> Grupo { get; set; }
         public DbSet<GrupoUsuario> GrupoUsuario { get; set; }
+        public DbSet<InstrutorDisponivel> InstrutorDisponivel { get; set; }
 
         // =========================================
         // MAPPINGS (FLUENT API)
@@ -52,6 +53,7 @@ namespace AutoEscola.API.Data
             modelBuilder.ApplyConfiguration(new TiposDocumentoMap());
             modelBuilder.ApplyConfiguration(new GrupoMap());
             modelBuilder.ApplyConfiguration(new GrupoUsuarioMap());
+            modelBuilder.ApplyConfiguration(new InstrutorDisponivelMap());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -10,7 +10,7 @@ namespace AutoEscola.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TiposDocumentoController : ControllerBase
+    public class TiposDocumentoController : Controller
     {
         private readonly AppDbContext _context;
         private readonly ITiposDocumento _tiposDocumentoBll;

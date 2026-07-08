@@ -196,6 +196,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
+    "Method": "BuscarInstrutoresDisponiveis",
+    "RelativePath": "api/InstrutorDisponivel",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
+    "Method": "AtualizarStatusInstrutor",
+    "RelativePath": "api/InstrutorDisponivel/atualizar/status",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "instrutorDisponivel",
+        "Type": "AutoEscola.API.Models.DTO.Instrutor.InstrutorDisponivelDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.TiposDocumentoController",
     "Method": "BuscarTiposDocumento",
     "RelativePath": "api/TiposDocumento/{tipoUsuarioId}",

@@ -15,7 +15,7 @@ namespace AutoEscola.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsuariosController : ControllerBase
+    public class UsuariosController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IUsuarios _usuariosBll;
