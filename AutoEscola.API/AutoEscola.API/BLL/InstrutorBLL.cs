@@ -46,7 +46,6 @@ namespace AutoEscola.API.BLL
             return instrutor;
         }
 
-
         public async Task<InstrutorDTO> Atualizar(InstrutorDTO instrutor)
         {
 

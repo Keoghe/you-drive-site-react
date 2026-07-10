@@ -207,6 +207,22 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
+    "Method": "BuscarInstrutorDisponivel",
+    "RelativePath": "api/InstrutorDisponivel/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
     "Method": "AtualizarStatusInstrutor",
     "RelativePath": "api/InstrutorDisponivel/atualizar/status",
     "HttpMethod": "POST",

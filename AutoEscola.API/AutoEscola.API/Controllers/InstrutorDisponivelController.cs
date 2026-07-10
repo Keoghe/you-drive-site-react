@@ -40,6 +40,21 @@ namespace AutoEscola.API.Controllers
             }
         }
 
+        [HttpGet("{usuarioId}")]
+        public async Task<IActionResult> BuscarInstrutorDisponivel(int usuarioId, [FromServices] JwtService jwtService)
+        {
+            try
+            {
+                var resultado = await _instrutorDisponivelBll.BuscarPorId(usuarioId);
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+        }
+
         [HttpPost("atualizar/status")]
         public async Task<IActionResult> AtualizarStatusInstrutor(InstrutorDisponivelDTO instrutorDisponivel)
         {

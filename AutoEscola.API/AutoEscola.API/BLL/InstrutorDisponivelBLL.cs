@@ -14,11 +14,13 @@ namespace AutoEscola.API.BLL
         private readonly AppDbContext _context;
         private readonly JwtService _jwtService;
         private readonly IHttpContextAccessor _httpContext;
-        public InstrutorDisponivelBLL(AppDbContext context, JwtService jwtService, IHttpContextAccessor httpContext)
+        private readonly IInstrutor _instrutor;
+        public InstrutorDisponivelBLL(AppDbContext context, JwtService jwtService, IHttpContextAccessor httpContext, IInstrutor instrutor)
         {
             _context = context;
             _jwtService = jwtService;
             _httpContext = httpContext;
+            _instrutor = instrutor;
         }
         public async Task<InstrutorDisponivelDTO> Adicionar(InstrutorDisponivelDTO instrutor)
         {
@@ -44,15 +46,28 @@ namespace AutoEscola.API.BLL
         public async Task<InstrutorDisponivelDTO> Atualizar(InstrutorDisponivelDTO instrutor)
         {
             var instrutorExistente = await _context.InstrutorDisponivel
-                  .FirstOrDefaultAsync(i => i.InstrutorId == instrutor.InstrutorId);
+                .Include(x => x.Instrutor)
+                .FirstOrDefaultAsync(x => x.Instrutor.UsuarioId == instrutor.UsuarioId);
+
 
             if (instrutorExistente == null)
-                throw new Exception("Instrutor não encontrado");
+            { 
+                var dadosIntrutor = await _instrutor.BuscarPorId(instrutor.UsuarioId);
+                 
+                var novoInstrutor = await Adicionar(new InstrutorDisponivelDTO
+                {
+                    InstrutorId = dadosIntrutor.Id,
+                    DataAula = instrutor.DataAula,
+                    Status = (int)StatusInstrutorAula.DISPONIVEL    
+                });
+            }
+            else
+            {
+                instrutorExistente.DataAula = instrutor.DataAula;
+                instrutorExistente.Status = instrutor.Status;
 
-            instrutorExistente.DataAula = instrutor.DataAula;
-            instrutorExistente.Status = instrutor.Status; 
-
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            } 
 
             return instrutor;
         }
@@ -71,11 +86,9 @@ namespace AutoEscola.API.BLL
             return instrutores;
         }
 
-
-
         public async Task<InstrutorDisponivelDTO> BuscarPorId(int instrutorId)
         {
-            var instrutor = await _context.InstrutorDisponivel.Where(c => 
+            var instrutor = await _context.InstrutorDisponivel.Where(c =>
             c.Status == (int)StatusInstrutorAula.DISPONIVEL
             && c.InstrutorId == instrutorId)
                 .Select(x => new InstrutorDisponivelDTO

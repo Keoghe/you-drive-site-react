@@ -1446,3 +1446,41 @@ button:disabled {
 }
 
 /* INSTRUTOR - FIM */
+/* INSTRUTOR DISPONIVEL - INICIO */
+
+.indisponivel{
+  background-color: rgb(230, 9, 9);
+}
+
+.indisponivel:hover{
+  background-color: rgb(197, 29, 29);
+}
+
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.status-container {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-circle.green {
+  background-color: #28a745;
+}
+
+.status-circle.red {
+  background-color: #dc3545;
+}
+/* INSTRUTOR DISPONIVEL - FIM */
