@@ -24,11 +24,9 @@ namespace AutoEscola.API.Models.Entidade
         public Usuario Usuario { get; set; }
 
         // 1 instrutor → vários veículos
-        public List<Veiculo> Veiculos { get; set; }
-
-        // 1 instrutor → várias aulas
-        public List<Aula> Aulas { get; set; }
+        public List<Veiculo> Veiculos { get; set; } 
 
         public virtual ICollection<InstrutorDisponivel> Disponibilidades { get; set; }
+        public virtual ICollection<Aula> AulasInstrutor { get; set; }
     }
 }

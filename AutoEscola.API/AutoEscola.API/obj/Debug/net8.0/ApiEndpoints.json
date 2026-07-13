@@ -1,16 +1,6 @@
 [
   {
     "ContainingType": "AutoEscola.API.Controllers.AulasController",
-    "Method": "BuscarUsuario",
-    "RelativePath": "api/Aulas",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AutoEscola.API.Controllers.AulasController",
     "Method": "CadastrarAula",
     "RelativePath": "api/Aulas/cadastrar",
     "HttpMethod": "POST",
@@ -20,6 +10,27 @@
       {
         "Name": "aulaDTO",
         "Type": "AutoEscola.API.Models.DTO.Aula.AulaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.AulasController",
+    "Method": "BuscarAulasUsuario",
+    "RelativePath": "api/Aulas/usuarioId/{usuarioId}/mes/{mes}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "mes",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

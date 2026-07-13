@@ -27,7 +27,7 @@
         // Navegação
         public virtual Usuario Usuario { get; set; } = null!;
 
-        public virtual Usuario Instrutor { get; set; } = null!;
+        public virtual Instrutor Instrutor { get; set; } = null!;
 
         public virtual ValoresAula ValorAula { get; set; } = null!;
 

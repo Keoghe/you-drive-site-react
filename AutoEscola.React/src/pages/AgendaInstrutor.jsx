@@ -4,39 +4,85 @@ import "react-calendar/dist/Calendar.css";
 import { FaPlus, FaPencilAlt } from "react-icons/fa";
 import API_BASE_URL from "../config/api";
 
-const aulasMock = [
-  {
-    data: "2026-05-26",
-    status: "pendente",
-    instrutor: "Carlos Silva",
-    tempo: "1h",
-    custo: "R$ 120",
-  },
-  {
-    data: "2026-05-25",
-    status: "realizada",
-    instrutor: "Ana Souza",
-    tempo: "2h",
-    custo: "R$ 200",
-  },
-];
-
 export default function AulasAgendadas() {
+  const StatusAula = {
+    PENDENTE: 0,
+    REALIZADA: 1,
+    CANCELADA: 2,
+    INICIADA: 3,
+  };
+  const StatusAulaDescricao = {
+    0: "Pendente",
+    1: "Realizada",
+    2: "Cancelada",
+    3: "Iniciada",
+  };
+
+  const StatusAulaInfo = {
+    0: { descricao: "Pendente", cor: "#f39c12" },
+    1: { descricao: "Realizada", cor: "#27ae60" },
+    2: { descricao: "Cancelada", cor: "#e74c3c" },
+    3: { descricao: "Iniciada", cor: "#3498db" },
+  };
   const [dataSelecionada, setDataSelecionada] = useState(new Date());
   const [mostrarModalAtivacao, setMostrarModalAtivacao] = useState(false);
   const [mostrarModalDesativacao, setMostrarModalDesativacao] = useState(false);
-
   const [statusDisponivel, setStatusDisponivel] = useState(false);
   const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
+  const [aulas, setAulas] = useState([]);
+  const [mesSelecionado, setMesSelecionado] = useState(
+    new Date().getMonth() + 1,
+  );
+  const [loading, setLoading] = useState(true);
+  const obterStatusAula = (status) => {
+    switch (Number(status)) {
+      case StatusAula.PENDENTE:
+        return "Pendente";
+
+      case StatusAula.REALIZADA:
+        return "Realizada";
+
+      case StatusAula.CANCELADA:
+        return "Cancelada";
+
+      case StatusAula.INICIADA:
+        return "Iniciada";
+
+      default:
+        return "Desconhecido";
+    }
+  };
+
+  async function carregarAulas(mes) {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${API_BASE_URL}/aulas/usuarioId/${usuarioLogado.usuarioId}/mes/${mes}`, // ajuste sua rota
+        {
+          headers: {
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      setAulas(data.dados || data.content || data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function formatarData(date) {
     return date.toISOString().split("T")[0];
   }
 
-  const aulasDoDia = aulasMock.filter(
-    (aula) => aula.data === formatarData(dataSelecionada),
+  const aulasDoDia = aulas.filter(
+    (aula) => aula.dataAula === formatarData(dataSelecionada),
   );
-
   const consultarStatus = async () => {
     try {
       const response = await fetch(
@@ -98,6 +144,8 @@ export default function AulasAgendadas() {
 
   useEffect(() => {
     consultarStatus();
+    debugger;
+    carregarAulas(new Date().getMonth() + 1);
   }, []);
 
   return (
@@ -137,17 +185,23 @@ export default function AulasAgendadas() {
         onChange={setDataSelecionada}
         value={dataSelecionada}
         tileContent={({ date }) => {
-          const data = formatarData(date);
+          const dataCalendario = formatarData(date);
 
-          const aula = aulasMock.find((a) => a.data === data);
+          const aulasDoDia = aulas.filter((a) => a.dataAula === dataCalendario);
 
-          if (aula) {
+          if (aulasDoDia.length > 0) {
             return (
-              <div
-                className={aula.status === "pendente" ? "dot red" : "dot green"}
-              ></div>
+              <div className="aula-indicador">
+                {/* <span className="qtd-aulas">{aulasDoDia.length}</span> */}
+                <div className="dot green"></div>
+              </div>
             );
           }
+        }}
+        onActiveStartDateChange={({ activeStartDate }) => {
+          const mes = activeStartDate.getMonth() + 1;
+          setMesSelecionado(mes);
+          carregarAulas(mes);
         }}
       />
 
@@ -157,20 +211,30 @@ export default function AulasAgendadas() {
         {aulasDoDia.length === 0 ? (
           <p>Nenhuma aula neste dia</p>
         ) : (
-          aulasDoDia.map((aula, i) => (
-            <div className="aula-card" key={i}>
+          aulasDoDia.map((aula) => (
+            <div className="aula-card" key={aula.id}>
               <p>
-                <strong>Instrutor:</strong> {aula.instrutor}
+                <strong>Data:</strong> {aula.dataAula}
               </p>
+
               <p>
-                <strong>Tempo:</strong> {aula.tempo}
+                <strong>Início:</strong> {aula.horaInicio}
               </p>
+
               <p>
-                <strong>Custo:</strong> {aula.custo}
+                <strong>Fim:</strong> {aula.horaFim}
               </p>
+
               <p>
-                <strong>Status:</strong>{" "}
-                {aula.status === "pendente" ? "Pendente" : "Realizada"}
+                <strong>Valor:</strong> R$ {aula.valorFinal}
+              </p>
+
+              <p>
+                <strong>Status:</strong>
+                <span style={{ color: StatusAulaInfo[aula.status]?.cor }}>
+                  {" "}
+                  {StatusAulaInfo[aula.status]?.descricao}
+                </span>
               </p>
             </div>
           ))

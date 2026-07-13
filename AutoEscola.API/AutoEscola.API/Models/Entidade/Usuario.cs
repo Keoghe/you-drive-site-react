@@ -21,8 +21,8 @@ public class Usuario
 
     // ✅ RELACIONAMENTOS
     public List<Endereco>? Enderecos { get; set; }
-    public List<Cartao>? Cartoes { get; set; }
-    public List<Aula>? Aulas { get; set; }
+    public List<Cartao>? Cartoes { get; set; } 
     public Instrutor? Instrutor { get; set; }
     public List<Documento>? Documentos { get; set; } = new List<Documento>();
+    public virtual ICollection<Aula> AulasAluno { get; set; }
 }

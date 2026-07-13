@@ -2,6 +2,7 @@
 {
     public class AulaDTO
     {
+        public int Id { get; set; }
         public int UsuarioId { get; set; }
 
         public int InstrutorId { get; set; }
@@ -20,6 +21,6 @@
 
         public decimal? ValorFinal { get; set; }
 
-        public bool Excluido { get; set; }
+        public int Excluido { get; set; }
     }
 }

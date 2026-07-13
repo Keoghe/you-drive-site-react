@@ -40,14 +40,20 @@ namespace AutoEscola.API.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public IActionResult BuscarUsuario()
+        [HttpGet("usuarioId/{usuarioId}/mes/{mes}")]
+        public async Task<IActionResult> BuscarAulasUsuario(int usuarioId,int mes, [FromServices] JwtService jwtService)
         {
-            var usuarios = _context.Usuarios
-                .Where(u => u.Excluido == (int)StatusContaUsuario.ATIVO)
-                .ToList();
+            try
+            {
+                var usuarios = await _aulasBll.BuscarAulasMes(usuarioId, mes);
 
-            return Ok(usuarios);
+                return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+
         }
     }
 }

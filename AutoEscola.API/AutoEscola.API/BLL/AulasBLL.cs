@@ -20,6 +20,17 @@ namespace AutoEscola.API.BLL
             _jwtService = jwtService;
             _httpContext = httpContext;
         }
+
+        public Task<AulaDTO> Adicionar(AulaDTO entidade)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AulaDTO> Atualizar(AulaDTO entidade)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> AtualizarAulaPorId(AulaDTO AulaId)
         {
             throw new NotImplementedException();
@@ -34,10 +45,76 @@ namespace AutoEscola.API.BLL
         {
             throw new NotImplementedException();
         }
-
-        public Task<List<Aula>> BuscarAulasPorId(List<int> AulaId)
+         
+        public Task<AulaDTO> BuscarPorId(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<AulaDTO>> BuscarTodos(int usuarioId)
+        {
+
+            var usuario = await _context.Usuarios
+                .Where(u => u.Id == usuarioId && u.Excluido == (int)StatusContaUsuario.ATIVO)
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+            {
+                throw new Exception("Usuário não encontrado ou inativo");
+            }
+
+            var aulas = await _context.Aulas
+                .Where(a => a.UsuarioId == usuarioId && a.Excluido == (int)Status.ATIVO)
+                .Select(a => new AulaDTO
+                {
+                    Id = a.Id,
+                    UsuarioId = a.UsuarioId,
+                    InstrutorId = a.InstrutorId, 
+                    PromocaoId = a.PromocaoId,
+                    DataAula =  a.DataAula.HasValue ? a.DataAula.Value : null,
+                    HoraInicio = a.HoraInicio.HasValue ? TimeOnly.Parse(a.HoraInicio.Value.ToString("HH:mm:ss")) : (TimeOnly?)null,
+                    HoraFim = a.HoraFim.HasValue ? TimeOnly.Parse(a.HoraFim.Value.ToString("HH:mm:ss")) : (TimeOnly?)null,
+                    ValorAulaId = a.ValorAulaId,
+                    ValorFinal = a.ValorFinal,
+                    Status = a.Status
+                })
+                .ToListAsync();
+
+            return aulas;
+        }
+
+        public async Task<List<AulaDTO>> BuscarAulasMes(int usuarioId, int mes )
+        {
+
+            var usuario = await _context.Usuarios
+                .Where(u => u.Id == usuarioId && u.Excluido == (int)StatusContaUsuario.ATIVO)
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+            {
+                throw new Exception("Usuário não encontrado ou inativo");
+            }
+
+            var aulas = await _context.Aulas
+                .Where(a => a.UsuarioId == usuarioId && a.Excluido == (int)Status.ATIVO 
+                && a.DataAula.HasValue && a.DataAula.Value.Month == mes
+                )
+                .Select(a => new AulaDTO
+                {
+                    Id = a.Id,
+                    UsuarioId = a.UsuarioId,
+                    InstrutorId = a.InstrutorId,
+                    PromocaoId = a.PromocaoId,
+                    DataAula = a.DataAula.HasValue ? a.DataAula.Value : null,
+                    HoraInicio = a.HoraInicio.HasValue ? TimeOnly.Parse(a.HoraInicio.Value.ToString("HH:mm:ss")) : (TimeOnly?)null,
+                    HoraFim = a.HoraFim.HasValue ? TimeOnly.Parse(a.HoraFim.Value.ToString("HH:mm:ss")) : (TimeOnly?)null,
+                    ValorAulaId = a.ValorAulaId,
+                    ValorFinal = a.ValorFinal,
+                    Status = a.Status
+                })
+                .ToListAsync();
+
+            return aulas;
         }
 
         public async Task<Aula> CriarAula(AulaDTO novaAula)
@@ -62,6 +139,16 @@ namespace AutoEscola.API.BLL
             await _context.SaveChangesAsync();
 
             return aula;
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public Task<bool> Remover(int id)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task ValidarDadosAula(AulaDTO novaAula)

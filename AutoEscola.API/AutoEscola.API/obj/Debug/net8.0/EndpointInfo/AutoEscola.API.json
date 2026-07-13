@@ -36,10 +36,30 @@
         }
       }
     },
-    "/api/Aulas": {
+    "/api/Aulas/usuarioId/{usuarioId}/mes/{mes}": {
       "get": {
         "tags": [
           "Aulas"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "mes",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -608,6 +628,10 @@
       "AulaDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "usuarioId": {
             "type": "integer",
             "format": "int32"
@@ -649,7 +673,8 @@
             "nullable": true
           },
           "excluido": {
-            "type": "boolean"
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

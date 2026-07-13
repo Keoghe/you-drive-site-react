@@ -10,7 +10,7 @@ namespace AutoEscola.API.Mappings
         {
             builder.ToTable("aulas");
 
-            builder.HasKey(x => x.Id); 
+            builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
                 .HasColumnName("id")
@@ -54,14 +54,14 @@ namespace AutoEscola.API.Mappings
 
             // Relacionamentos
 
-            builder.HasOne(x => x.Usuario)
-                .WithMany()
-                .HasForeignKey(x => x.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(a => a.Usuario)
+               .WithMany(u => u.AulasAluno)
+               .HasForeignKey(a => a.UsuarioId)
+               .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(x => x.Instrutor)
-                .WithMany()
-                .HasForeignKey(x => x.InstrutorId)
+            builder.HasOne(a => a.Instrutor)
+                .WithMany(i => i.AulasInstrutor)
+                .HasForeignKey(a => a.InstrutorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.ValorAula)
@@ -73,6 +73,8 @@ namespace AutoEscola.API.Mappings
                 .WithMany()
                 .HasForeignKey(x => x.PromocaoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+           
         }
     }
 }
