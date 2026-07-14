@@ -39,6 +39,21 @@ namespace AutoEscola.API.Controllers
             } 
         }
 
+        [HttpPut("atualizar/localizacao")]
+        public async Task<IActionResult> AlterarLocalizacaoInstrutor(InstrutorDTO instrutorDTO)
+        {
+            try
+            {
+                var instrutor = await _instrutorBll.AtualizarLocalizacao(instrutorDTO);
+
+                return Ok(instrutor);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{instrutorId}")]
         public async Task<IActionResult> BuscarInstrutor(int instrutorId, [FromServices] JwtService jwtService)
         {

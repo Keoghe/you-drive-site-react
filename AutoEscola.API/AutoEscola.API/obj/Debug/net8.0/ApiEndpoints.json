@@ -207,6 +207,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoEscola.API.Controllers.InstrutorController",
+    "Method": "AlterarLocalizacaoInstrutor",
+    "RelativePath": "api/Instrutor/atualizar/localizacao",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "instrutorDTO",
+        "Type": "AutoEscola.API.Models.DTO.Instrutor.InstrutorDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
     "Method": "BuscarInstrutoresDisponiveis",
     "RelativePath": "api/InstrutorDisponivel",

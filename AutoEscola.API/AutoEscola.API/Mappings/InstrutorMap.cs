@@ -18,6 +18,9 @@ namespace AutoEscola.API.Mappings
             builder.Property(i => i.ValorHora).HasColumnName("valor_hora").HasColumnType("decimal(10,2)");
             builder.Property(i => i.Latitude).HasColumnName("latitude");
             builder.Property(i => i.Longitude).HasColumnName("longitude");
+            builder.Property(i => i.Bairro).HasColumnName("bairro").HasMaxLength(800);
+            builder.Property(i => i.Cidade).HasColumnName("cidade").HasMaxLength(800);
+            builder.Property(i => i.Estado).HasColumnName("estado").HasMaxLength(10);
 
             builder.Property(i => i.Ativo).HasColumnName("ativo");
             builder.Property(i => i.Excluido).HasColumnName("excluido");

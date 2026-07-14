@@ -14,6 +14,9 @@ namespace AutoEscola.API.Models.Entidade
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string Bairro { get; set; } = string.Empty;
+        public string Cidade { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
 
         public int Ativo { get; set; }
         public int Excluido { get; set; }

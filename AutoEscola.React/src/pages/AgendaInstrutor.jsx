@@ -106,6 +106,8 @@ export default function AulasAgendadas() {
 
   const alterarStatusInstrutor = async (status) => {
     try {
+      setLoading(true);
+
       const instrutor = {
         usuarioId: usuarioLogado.usuarioId,
         dataAula: new Date().toISOString(),
@@ -131,9 +133,53 @@ export default function AulasAgendadas() {
       const data = await response.json();
 
       console.log("Status atualizado:", data);
+      await enviarLocalizacao();
 
       // Atualiza o indicador na tela
       setStatusDisponivel(status === 0);
+
+
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setMostrarModalAtivacao(false);
+      setMostrarModalDesativacao(false);
+      setLoading(true);
+
+    }
+  };
+
+  const alterarEnderecoAtual = async (endereco) => {
+    try {
+      const instrutor = {
+        usuarioId: usuarioLogado.usuarioId,
+        latitude: endereco.latitude,
+        longitude: endereco.longitude,
+        bairro: endereco.bairro,
+        cidade: endereco.cidade,
+        estado: endereco.estado,
+      };
+
+      const response = await fetch(
+        `${API_BASE_URL}/instrutor/atualizar/localizacao`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+          body: JSON.stringify(instrutor),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao alterar status");
+      }
+
+      const data = await response.json();
+
+      console.log("Status atualizado:", data);
+ 
     } catch (error) {
       console.error(error);
     } finally {
@@ -142,10 +188,36 @@ export default function AulasAgendadas() {
     }
   };
 
+  async function enviarLocalizacao() {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+      );
+
+      const data = await response.json();
+      const endereco = {
+        latitude: lat,
+        longitude: lon,
+        bairro: data.address.suburb,
+        cidade: data.address.city,
+        estado: data.address.state,
+        rua: data.address.road,
+        cep: data.address.postcode,
+      };
+      console.log(endereco); 
+      alterarEnderecoAtual(endereco);
+     
+    });
+  }
+
   useEffect(() => {
     consultarStatus();
     debugger;
     carregarAulas(new Date().getMonth() + 1);
+    
   }, []);
 
   return (

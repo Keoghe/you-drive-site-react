@@ -8,6 +8,9 @@
         public decimal ValorHora { get; set; } = 0;
         public double Latitude { get; set; } = 0;
         public double Longitude { get; set; } = 0;
+        public string Bairro { get; set; } = string.Empty;
+        public string Cidade { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
         public int Ativo { get; set; } = 0;
         public int Excluido { get; set; } = 0;
     }

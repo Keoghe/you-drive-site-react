@@ -59,8 +59,32 @@ namespace AutoEscola.API.BLL
             instrutorExistente.ValorHora = instrutor.ValorHora;
             instrutorExistente.Latitude = instrutor.Latitude;
             instrutorExistente.Longitude = instrutor.Longitude;
+            instrutorExistente.Bairro = instrutor.Bairro;
+            instrutorExistente.Cidade = instrutor.Cidade;
+            instrutorExistente.Estado = instrutor.Estado;
+            instrutorExistente.Longitude = instrutor.Longitude;
+
             instrutorExistente.Ativo = instrutor.Ativo;
             instrutorExistente.Excluido = instrutor.Excluido;
+
+            await _context.SaveChangesAsync();
+
+            return instrutor;
+        }
+        public async Task<InstrutorDTO> AtualizarLocalizacao(InstrutorDTO instrutor)
+        {
+
+            var instrutorExistente = await _context.Instrutores
+                   .FirstOrDefaultAsync(i => i.UsuarioId == instrutor.UsuarioId);
+
+            if (instrutorExistente == null)
+                throw new Exception("Instrutor não encontrado");
+
+            instrutorExistente.Latitude = instrutor.Latitude;
+            instrutorExistente.Longitude = instrutor.Longitude;
+            instrutorExistente.Bairro = instrutor.Bairro;
+            instrutorExistente.Cidade = instrutor.Cidade;
+            instrutorExistente.Estado = instrutor.Estado;
 
             await _context.SaveChangesAsync();
 
