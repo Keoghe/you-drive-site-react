@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import API_BASE_URL from "../config/api";
 
 // ================== DADOS ==================
 const instrutores = [
@@ -39,7 +40,89 @@ const icon = new L.Icon({
 // ================== COMPONENTE ==================
 export default function MapaInstrutores() {
   const [cep, setCep] = useState("");
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
   const [posicaoMapa, setPosicaoMapa] = useState([-23.545, -46.63]);
+  const [localizacaoUsuario, setLocalizacaoUsuario] = useState(null);
+  const [instrutores, setInstrutores] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  async function obterLocalizacaoAtual() {
+    if (!navigator.geolocation) {
+      alert("Geolocalização não suportada pelo navegador.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        setLocalizacaoUsuario([lat, lng]);
+        setPosicaoMapa([lat, lng]); // centraliza o mapa
+
+        const endereco = await buscarDadosEndereco(lat, lng);
+
+        carregarInstrutoresDisponiveis(endereco.cidade);
+      },
+      (error) => {
+        console.error("Erro ao obter localização:", error);
+        alert("Não foi possível obter sua localização.");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      },
+    );
+  }
+
+  async function carregarInstrutoresDisponiveis(cidade) {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${API_BASE_URL}/instrutorDisponivel/cidade/${cidade}`,
+        {
+          headers: {
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      const lista = (data.dados || data.content || data).map((instrutor) => ({
+        ...instrutor,
+        posicao: [Number(instrutor.latitude), Number(instrutor.longitude)],
+      }));
+      console.log(lista);
+
+      setInstrutores(lista);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function buscarDadosEndereco(lat, lng) {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
+    );
+    const data = await response.json();
+    const endereco = {
+      latitude: lat,
+      longitude: lng,
+      bairro: data.address.suburb,
+      cidade: data.address.city,
+      estado: data.address.state,
+      rua: data.address.road,
+      cep: data.address.postcode,
+    };
+
+    return endereco;
+  }
 
   // ================== BUSCAR CEP ==================
   async function buscarCep() {
@@ -55,7 +138,7 @@ export default function MapaInstrutores() {
       const endereco = `${data.logradouro}, ${data.localidade}, ${data.uf}`;
 
       const geo = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${endereco}`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${endereco}`,
       );
 
       const geoData = await geo.json();
@@ -89,20 +172,49 @@ export default function MapaInstrutores() {
   }
 
   // ================== FILTRO ==================
-  const instrutoresProximos = instrutores.filter((instrutor) => {
-    const [lat, lon] = instrutor.posicao;
-    return distancia(lat, lon, posicaoMapa[0], posicaoMapa[1]) < 5;
-  });
+  const instrutoresProximos = [];
+  // instrutores.filter((instrutor) => {
+  //   const [lat, lon] = instrutor.posicao;
+  //   return distancia(lat, lon, posicaoMapa[0], posicaoMapa[1]) < 5;
+  // });
 
   // ================== RENDER ==================
 
-  
-const iconUsuario = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149059.png", // marcador azul
-  iconSize: [35, 35],
-  iconAnchor: [17, 35],
-  popupAnchor: [0, -30],
-});
+  const iconUsuario = new L.Icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/149/149059.png", // marcador azul
+    iconSize: [35, 35],
+    iconAnchor: [17, 35],
+    popupAnchor: [0, -30],
+  });
+
+  function obterSrcImagem(base64) {
+    if (!base64) return "";
+
+    let mimeType = "image/jpeg";
+
+    // PNG
+    if (base64.startsWith("iVBOR")) {
+      mimeType = "image/png";
+    }
+    // JPG/JPEG
+    else if (base64.startsWith("/9j/")) {
+      mimeType = "image/jpeg";
+    }
+    // GIF
+    else if (base64.startsWith("R0lGOD")) {
+      mimeType = "image/gif";
+    }
+    // WEBP
+    else if (base64.startsWith("UklGR")) {
+      mimeType = "image/webp";
+    }
+
+    return `data:${mimeType};base64,${base64}`;
+  }
+
+  useEffect(() => {
+    obterLocalizacaoAtual();
+  }, []);
 
   return (
     <div className="mapa-container">
@@ -135,27 +247,32 @@ const iconUsuario = new L.Icon({
           </Popup>
         </Marker>
 
-        {instrutoresProximos.map((instrutor) => (
+        {instrutores.map((instrutor) => (
           <Marker
-            key={instrutor.id}
+            key={instrutor.usuarioId}
             position={instrutor.posicao}
             icon={icon}
           >
             <Popup>
               <div className="card-instrutor">
-                <img src={instrutor.foto} alt="instrutor" />
+                <img src={obterSrcImagem(instrutor.foto)} alt="instrutor" />
 
                 <h4>{instrutor.nome}</h4>
 
-                <p><strong>Placa:</strong> {instrutor.placa}</p>
-                <p><strong>Carro:</strong> {instrutor.carro} ({instrutor.cor})</p>
-
                 <p>
-                  <strong>Nota:</strong>{" "}
-                  {"⭐".repeat(instrutor.nota)}
+                  <strong>Placa:</strong> {instrutor.placa}
+                </p>
+                <p>
+                  <strong>Carro:</strong> {instrutor.carro} ({instrutor.cor})
                 </p>
 
-                <p><strong>Valor:</strong> {instrutor.valor}</p>
+                <p>
+                  <strong>Nota:</strong> {"⭐".repeat(instrutor.nota)}
+                </p>
+
+                <p>
+                  <strong>Valor:</strong> {instrutor.valor}
+                </p>
               </div>
             </Popup>
           </Marker>

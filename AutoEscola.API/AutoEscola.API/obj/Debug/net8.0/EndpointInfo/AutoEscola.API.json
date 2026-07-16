@@ -399,6 +399,28 @@
         }
       }
     },
+    "/api/InstrutorDisponivel/cidade/{cidade}": {
+      "get": {
+        "tags": [
+          "InstrutorDisponivel"
+        ],
+        "parameters": [
+          {
+            "name": "cidade",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/InstrutorDisponivel/{usuarioId}": {
       "get": {
         "tags": [

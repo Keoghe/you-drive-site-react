@@ -265,6 +265,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
+    "Method": "BuscarInstrutoresDisponiveisPorCidade",
+    "RelativePath": "api/InstrutorDisponivel/cidade/{cidade}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cidade",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.TiposDocumentoController",
     "Method": "BuscarTiposDocumento",
     "RelativePath": "api/TiposDocumento/{tipoUsuarioId}",

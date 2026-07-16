@@ -51,14 +51,14 @@ namespace AutoEscola.API.BLL
 
 
             if (instrutorExistente == null)
-            { 
+            {
                 var dadosIntrutor = await _instrutor.BuscarPorId(instrutor.UsuarioId);
-                 
+
                 var novoInstrutor = await Adicionar(new InstrutorDisponivelDTO
                 {
                     InstrutorId = dadosIntrutor.Id,
                     DataAula = instrutor.DataAula,
-                    Status = (int)StatusInstrutorAula.DISPONIVEL    
+                    Status = (int)StatusInstrutorAula.DISPONIVEL
                 });
             }
             else
@@ -67,7 +67,7 @@ namespace AutoEscola.API.BLL
                 instrutorExistente.Status = instrutor.Status;
 
                 await _context.SaveChangesAsync();
-            } 
+            }
 
             return instrutor;
         }
@@ -82,6 +82,58 @@ namespace AutoEscola.API.BLL
                     DataAula = x.DataAula,
                     Status = x.Status
                 }).ToListAsync();
+
+            return instrutores;
+        }
+
+        public async Task<List<InstrutorDisponivelCidadeViewModel>> BuscarInstrutorDisponivelCidade(string cidade)
+        {
+
+            var instrutores = await _context
+                                     .InstrutorDisponivel
+                                     .Where(x =>
+                                         x.Status == (int)StatusInstrutorAula.DISPONIVEL &&
+                                         x.Instrutor.Cidade == cidade)
+                                     .Select(x => new
+                                     {
+                                         Disponibilidade = x,
+                                         Veiculo = x.Instrutor.Veiculos
+                                             .FirstOrDefault(v => v.Excluido == (int)Status.ATIVO),
+                                         Documento = x.Instrutor.Usuario.Documentos
+                                             .FirstOrDefault(d => d.Excluido == (int)Status.ATIVO && d.TipoDocumentoId == (int)TipoAnexo.FOTO_SELFIE)
+
+                                     })
+                                     .Select(x => new InstrutorDisponivelCidadeViewModel
+                                     {
+                                         UsuarioId = x.Disponibilidade.Instrutor.UsuarioId,
+                                         Nome = x.Disponibilidade.Instrutor.Usuario.Nome,
+
+                                         Modelo = x.Veiculo.Modelo,
+                                         Cor = x.Veiculo.Cor,
+                                         Placa = x.Veiculo.Placa,
+
+                                         caminhoSelfie = x.Documento.CaminhoArquivo,
+
+                                         Status = x.Disponibilidade.Status,
+                                         Avaliacao = x.Disponibilidade.Instrutor.Avaliacao,
+                                         Bairro = x.Disponibilidade.Instrutor.Bairro,
+                                         Cidade = x.Disponibilidade.Instrutor.Cidade,
+                                         Estado = x.Disponibilidade.Instrutor.Estado,
+                                         Latitude = x.Disponibilidade.Instrutor.Latitude,
+                                         Longitude = x.Disponibilidade.Instrutor.Longitude,
+                                         Nota = x.Disponibilidade.Instrutor.Avaliacao,
+                                         Valor = x.Disponibilidade.Instrutor.ValorHora
+                                     })
+                                     .ToListAsync();
+            instrutores.ForEach(i =>
+            {
+                if (!string.IsNullOrEmpty(i.caminhoSelfie) && File.Exists(i.caminhoSelfie))
+                {
+                    i.Foto = Convert.ToBase64String(
+                        File.ReadAllBytes(i.caminhoSelfie)
+                    );
+                }
+            });
 
             return instrutores;
         }

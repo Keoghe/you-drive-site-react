@@ -7,5 +7,6 @@ namespace AutoEscola.API.BLL.Interface
     public interface IInstrutorDisponivel : IBaseBLL<InstrutorDisponivelDTO>
     {
         Task<List<InstrutorDisponivelViewModel>> BuscarInstrutorDisponivel();
+        Task<List<InstrutorDisponivelCidadeViewModel>> BuscarInstrutorDisponivelCidade(string cidade);
     }
 }

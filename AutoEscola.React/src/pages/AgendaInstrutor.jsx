@@ -137,15 +137,12 @@ export default function AulasAgendadas() {
 
       // Atualiza o indicador na tela
       setStatusDisponivel(status === 0);
-
-
     } catch (error) {
       console.error(error);
     } finally {
       setMostrarModalAtivacao(false);
       setMostrarModalDesativacao(false);
       setLoading(true);
-
     }
   };
 
@@ -179,7 +176,6 @@ export default function AulasAgendadas() {
       const data = await response.json();
 
       console.log("Status atualizado:", data);
- 
     } catch (error) {
       console.error(error);
     } finally {
@@ -207,9 +203,8 @@ export default function AulasAgendadas() {
         rua: data.address.road,
         cep: data.address.postcode,
       };
-      console.log(endereco); 
+      console.log(endereco);
       alterarEnderecoAtual(endereco);
-     
     });
   }
 
@@ -217,7 +212,6 @@ export default function AulasAgendadas() {
     consultarStatus();
     debugger;
     carregarAulas(new Date().getMonth() + 1);
-    
   }, []);
 
   return (

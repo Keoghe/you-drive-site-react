@@ -68,7 +68,7 @@ namespace AutoEscola.API.Controllers
                 return Unauthorized(ex.Message);
             }
         }
-
+         
 
     }
 }

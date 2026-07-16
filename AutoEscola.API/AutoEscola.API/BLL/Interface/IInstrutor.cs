@@ -8,6 +8,6 @@ namespace AutoEscola.API.BLL.Interface
 {
     public interface IInstrutor : IBaseBLL<InstrutorDTO>
     {
-        Task<InstrutorDTO> AtualizarLocalizacao(InstrutorDTO instrutor);
+        Task<InstrutorDTO> AtualizarLocalizacao(InstrutorDTO instrutor); 
     }
 }
