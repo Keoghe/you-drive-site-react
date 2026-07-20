@@ -21,8 +21,13 @@ public class Usuario
 
     // ✅ RELACIONAMENTOS
     public List<Endereco>? Enderecos { get; set; }
-    public List<Cartao>? Cartoes { get; set; } 
+    public List<Cartao>? Cartoes { get; set; }
     public Instrutor? Instrutor { get; set; }
     public List<Documento>? Documentos { get; set; } = new List<Documento>();
     public virtual ICollection<Aula> AulasAluno { get; set; }
+
+    // NOVOS RELACIONAMENTOS 
+    public virtual ICollection<NotificacaoAula> NotificacoesComoAluno { get; set; } = new List<NotificacaoAula>();
+
+    public virtual ICollection<NotificacaoAula> NotificacoesComoInstrutor { get; set; } = new List<NotificacaoAula>();
 }

@@ -29,6 +29,7 @@ namespace AutoEscola.API.Data
         public DbSet<Grupo> Grupo { get; set; }
         public DbSet<GrupoUsuario> GrupoUsuario { get; set; }
         public DbSet<InstrutorDisponivel> InstrutorDisponivel { get; set; }
+        public DbSet<NotificacaoAula> NotificacaoAula { get; set; }
 
         // =========================================
         // MAPPINGS (FLUENT API)
@@ -54,6 +55,7 @@ namespace AutoEscola.API.Data
             modelBuilder.ApplyConfiguration(new GrupoMap());
             modelBuilder.ApplyConfiguration(new GrupoUsuarioMap());
             modelBuilder.ApplyConfiguration(new InstrutorDisponivelMap());
+            modelBuilder.ApplyConfiguration(new NotificacaoAulaMap());
 
             base.OnModelCreating(modelBuilder);
         }
