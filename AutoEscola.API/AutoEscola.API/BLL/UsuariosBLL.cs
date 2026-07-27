@@ -217,6 +217,7 @@ namespace AutoEscola.API.BLL
                                 Email = u.Email,
                                 Login = u.Login,
                                 DataNascimento = u.DataNascimento,
+                                Saldo = u.Saldo,
                                 Cartao = u.Cartoes.Where(c => c.Excluido == (int)Status.ATIVO).Select(c => new CartaoViewModel
                                 {
                                     Id = c.Id,

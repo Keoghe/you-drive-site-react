@@ -8,5 +8,7 @@
         public int UsuarioId { get; set; }
         public int Excluido { get; set; }
 
+        public ICollection<GrupoConfiguracaoAcesso> Configuracoes { get; set; } = new List<GrupoConfiguracaoAcesso>();
+
     }
 }

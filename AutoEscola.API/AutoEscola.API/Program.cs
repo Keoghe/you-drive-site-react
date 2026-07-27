@@ -108,6 +108,8 @@ builder.Services.AddScoped<IVeiculo, VeiculoBLL>();
 builder.Services.AddScoped<IEndereco, EnderecoBLL>();
 builder.Services.AddScoped<ICartao, CartaoBLL>();
 builder.Services.AddScoped<IInstrutorDisponivel, InstrutorDisponivelBLL>();
+builder.Services.AddScoped<IConfiguracaoAcesso, ConfiguracaoAcessoBLL>();
+builder.Services.AddScoped<IGrupoConfiguracaoAcesso, GrupoConfiguracaoAcessoBLL>();
 
 var app = builder.Build();
 
@@ -116,7 +118,6 @@ app.UseCors("AllowReact");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.UseSwagger();
 app.UseSwaggerUI();
