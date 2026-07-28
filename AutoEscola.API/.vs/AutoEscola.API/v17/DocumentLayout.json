@@ -3,60 +3,32 @@
   "WorkspaceRootPath": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\grupoconfiguracaoacessobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\grupoconfiguracaoacessobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\configuracaoacessobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\configuracaoacessobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\interface\\igrupoconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\interface\\igrupoconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\controllers\\configuracaoacessocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\controllers\\configuracaoacessocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\interface\\iconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\interface\\iconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\models\\entidade\\grupoconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\models\\entidade\\grupoconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\grupoconfiguracaoacessobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\grupoconfiguracaoacessobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\mappings\\grupoconfiguracaoacessomap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\mappings\\grupoconfiguracaoacessomap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\controllers\\grupoconfiguracaoacessocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\controllers\\grupoconfiguracaoacessocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\mappings\\configuracaoacessomap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\mappings\\configuracaoacessomap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\interface\\igrupoconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\interface\\igrupoconfiguracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\models\\entidade\\grupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\models\\entidade\\grupo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\models\\entidade\\configuracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\models\\entidade\\configuracaoacesso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\usuariosbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\usuariosbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\models\\entidade\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\models\\entidade\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\bll\\documentobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\bll\\documentobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -119,40 +91,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "UsuariosController.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\UsuariosController.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Controllers\\UsuariosController.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\UsuariosController.cs",
-              "RelativeToolTip": "AutoEscola.API\\Controllers\\UsuariosController.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAkwIEAAABNAAAAAAAAAA==",
+              "Title": "ConfiguracaoAcessoBLL.cs",
+              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
+              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
+              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
+              "RelativeToolTip": "AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAAAFMAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:51:52.057Z",
+              "WhenOpened": "2026-07-28T12:14:26.228Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IConfiguracaoAcesso.cs",
+              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
+              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
+              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
+              "RelativeToolTip": "AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-28T12:14:17.948Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Program.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Program.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Program.cs",
-              "RelativeToolTip": "AutoEscola.API\\Program.cs",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAAAHcAAAAXAAAAAAAAAA==",
+              "Title": "ConfiguracaoAcessoController.cs",
+              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\ConfiguracaoAcessoController.cs",
+              "RelativeDocumentMoniker": "AutoEscola.API\\Controllers\\ConfiguracaoAcessoController.cs",
+              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\ConfiguracaoAcessoController.cs",
+              "RelativeToolTip": "AutoEscola.API\\Controllers\\ConfiguracaoAcessoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:44:17.729Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "GrupoConfiguracaoAcessoBLL.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
-              "RelativeToolTip": "AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:42:27.622Z",
+              "WhenOpened": "2026-07-28T12:12:10.46Z",
               "EditorCaption": ""
             },
             {
@@ -163,139 +135,49 @@
               "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\Interface\\IGrupoConfiguracaoAcesso.cs",
               "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\Interface\\IGrupoConfiguracaoAcesso.cs",
               "RelativeToolTip": "AutoEscola.API\\BLL\\Interface\\IGrupoConfiguracaoAcesso.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:40:40.396Z",
+              "WhenOpened": "2026-07-28T12:08:33.938Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "ConfiguracaoAcessoBLL.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
-              "RelativeToolTip": "AutoEscola.API\\BLL\\ConfiguracaoAcessoBLL.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAnAAAAAAAAAA==",
+              "Title": "GrupoConfiguracaoAcessoController.cs",
+              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\GrupoConfiguracaoAcessoController.cs",
+              "RelativeDocumentMoniker": "AutoEscola.API\\Controllers\\GrupoConfiguracaoAcessoController.cs",
+              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\GrupoConfiguracaoAcessoController.cs",
+              "RelativeToolTip": "AutoEscola.API\\Controllers\\GrupoConfiguracaoAcessoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:37:05.114Z",
+              "WhenOpened": "2026-07-28T11:23:21.193Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GrupoConfiguracaoAcessoBLL.cs",
+              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
+              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
+              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
+              "RelativeToolTip": "AutoEscola.API\\BLL\\GrupoConfiguracaoAcessoBLL.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAgwEIAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-28T10:52:37.041Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "IConfiguracaoAcesso.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
-              "RelativeToolTip": "AutoEscola.API\\BLL\\Interface\\IConfiguracaoAcesso.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAUAAAAUAAAAAAAAAA==",
+              "Title": "DocumentoBLL.cs",
+              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\DocumentoBLL.cs",
+              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\DocumentoBLL.cs",
+              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\DocumentoBLL.cs",
+              "RelativeToolTip": "AutoEscola.API\\BLL\\DocumentoBLL.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAhwGcAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:35:21.976Z",
+              "WhenOpened": "2026-07-28T10:29:55.136Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Data\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Data\\AppDbContext.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Data\\AppDbContext.cs",
-              "RelativeToolTip": "AutoEscola.API\\Data\\AppDbContext.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAuwD0AAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:26:14.213Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "GrupoConfiguracaoAcessoMap.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Mappings\\GrupoConfiguracaoAcessoMap.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Mappings\\GrupoConfiguracaoAcessoMap.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Mappings\\GrupoConfiguracaoAcessoMap.cs",
-              "RelativeToolTip": "AutoEscola.API\\Mappings\\GrupoConfiguracaoAcessoMap.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:09:36.924Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Grupo.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\Grupo.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Models\\Entidade\\Grupo.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\Grupo.cs",
-              "RelativeToolTip": "AutoEscola.API\\Models\\Entidade\\Grupo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:07:51.381Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "GrupoConfiguracaoAcesso.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\GrupoConfiguracaoAcesso.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Models\\Entidade\\GrupoConfiguracaoAcesso.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\GrupoConfiguracaoAcesso.cs",
-              "RelativeToolTip": "AutoEscola.API\\Models\\Entidade\\GrupoConfiguracaoAcesso.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T11:05:30.462Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ConfiguracaoAcessoMap.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Mappings\\ConfiguracaoAcessoMap.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Mappings\\ConfiguracaoAcessoMap.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Mappings\\ConfiguracaoAcessoMap.cs",
-              "RelativeToolTip": "AutoEscola.API\\Mappings\\ConfiguracaoAcessoMap.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T10:56:14.167Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ConfiguracaoAcesso.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\ConfiguracaoAcesso.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Models\\Entidade\\ConfiguracaoAcesso.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\ConfiguracaoAcesso.cs",
-              "RelativeToolTip": "AutoEscola.API\\Models\\Entidade\\ConfiguracaoAcesso.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T10:42:28.747Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "UsuariosBLL.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\UsuariosBLL.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\UsuariosBLL.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\UsuariosBLL.cs",
-              "RelativeToolTip": "AutoEscola.API\\BLL\\UsuariosBLL.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAWwNsAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-27T10:33:51.992Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Usuario.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\Usuario.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Models\\Entidade\\Usuario.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\Entidade\\Usuario.cs",
-              "RelativeToolTip": "AutoEscola.API\\Models\\Entidade\\Usuario.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAA1wB8AAABXAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-20T10:42:46.287Z"
             }
           ]
         }

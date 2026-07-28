@@ -69,6 +69,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "AutoEscola.API.Controllers.ConfiguracaoAcessoController",
+    "Method": "BuscarConfigurcaoAcessoUsuario",
+    "RelativePath": "api/ConfiguracaoAcesso/usuarioId/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "AutoEscola.API.Controllers.DocumentoController",
     "Method": "AtualizarStatusDocumento",
     "RelativePath": "api/Documento",
@@ -168,6 +184,22 @@
     "Parameters": [
       {
         "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.GrupoConfiguracaoAcessoController",
+    "Method": "BuscarConfigurcaoAcessoGrupo",
+    "RelativePath": "api/GrupoConfiguracaoAcesso/grupoId/{grupoId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "grupoId",
         "Type": "System.Int32",
         "IsRequired": true
       }

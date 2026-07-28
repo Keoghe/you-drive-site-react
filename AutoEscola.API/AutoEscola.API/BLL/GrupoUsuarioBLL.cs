@@ -1,5 +1,6 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
+using AutoEscola.API.Models.DTO.Grupo;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Services;
 
@@ -16,29 +17,40 @@ namespace AutoEscola.API.BLL
             _jwtService = jwtService;
             _httpContext = httpContext; 
         }
-        public Task<GrupoUsuario> Adicionar(GrupoUsuario entidade)
+
+
+        public async Task<GrupoUsuarioDTO> Adicionar(GrupoUsuarioDTO grupoUsuarioDTO)
+        {
+            var grupoUsuario = new GrupoUsuario
+            {
+                GrupoId = grupoUsuarioDTO.GrupoId,
+                UsuarioId = grupoUsuarioDTO.UsuarioId
+            };
+
+            _context.GrupoUsuario.Add(grupoUsuario);
+            await _context.SaveChangesAsync();
+             
+            return grupoUsuarioDTO;
+        }
+
+        public Task<GrupoUsuarioDTO> Atualizar(GrupoUsuarioDTO grupoUsuarioDTO)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GrupoUsuario> Atualizar(GrupoUsuario entidade)
+        public Task<GrupoUsuarioDTO> BuscarPorId(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GrupoUsuario> BuscarPorId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<GrupoUsuario>> BuscarTodos(int id)
+        public Task<List<GrupoUsuarioDTO>> BuscarTodos(int id)
         {
             throw new NotImplementedException();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public Task<bool> Remover(int id)

@@ -1,6 +1,11 @@
 ﻿using AutoEscola.API.BLL.Interface;
+using AutoEscola.API.BLL.Interface.Base;
 using AutoEscola.API.Data;
+using AutoEscola.API.Models.DTO.ControleAcesso;
+using AutoEscola.API.Models.Entidade;
+using AutoEscola.API.Models.ViewModel.Usuario;
 using AutoEscola.API.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoEscola.API.BLL
 {
@@ -18,24 +23,82 @@ namespace AutoEscola.API.BLL
             _httpContext = httpContext;
         }
 
-        public Task<IGrupoConfiguracaoAcesso> Adicionar(IGrupoConfiguracaoAcesso entidade)
+        public async Task<GrupoConfiguracaoAcessoDTO> Adicionar(GrupoConfiguracaoAcessoDTO entidade)
+        {
+            var grupoConfiguracaoAcesso = new GrupoConfiguracaoAcesso
+            {
+                GrupoId = entidade.GrupoId,
+                ConfiguracaoAcessoId = entidade.ConfiguracaoAcessoId
+            };
+            await _context.GrupoConfiguracaoAcesso.AddAsync(grupoConfiguracaoAcesso);
+            await _context.SaveChangesAsync();
+
+            return new GrupoConfiguracaoAcessoDTO
+            {
+                GrupoId = grupoConfiguracaoAcesso.GrupoId,
+                ConfiguracaoAcessoId = grupoConfiguracaoAcesso.ConfiguracaoAcessoId
+            };
+        }
+
+        public Task<GrupoConfiguracaoAcessoDTO> Atualizar(GrupoConfiguracaoAcessoDTO entidade)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IGrupoConfiguracaoAcesso> Atualizar(IGrupoConfiguracaoAcesso entidade)
+        public async Task<GrupoConfiguracaoAcessoDTO> BuscarPorId(int usuarioId)
         {
-            throw new NotImplementedException();
+            var acessos = await _context.GrupoConfiguracaoAcesso
+                .Where(g => g.GrupoId == usuarioId)
+                .Select(g => new GrupoConfiguracaoAcessoDTO
+                {
+                    GrupoId = g.GrupoId,
+                    ConfiguracaoAcessoId = g.ConfiguracaoAcessoId
+                })
+                .ToListAsync();
+            if (acessos == null || !acessos.Any())
+            {
+                acessos = new List<GrupoConfiguracaoAcessoDTO>();
+            }
+
+            return acessos?.FirstOrDefault();
         }
 
-        public Task<IGrupoConfiguracaoAcesso> BuscarPorId(int id)
-        {
-            throw new NotImplementedException();
+        public async Task<List<GrupoConfiguracaoAcessoDTO>> BuscarConfigurcaoAcessoGrupo(int grupoId)
+        {  
+            var acessos = await _context.GrupoConfiguracaoAcesso
+                .Where(gca => gca.GrupoId == grupoId)
+                .Select(gca => new GrupoConfiguracaoAcessoDTO
+                {
+                    GrupoId = gca.GrupoId,
+                    ConfiguracaoAcessoId = gca.ConfiguracaoAcessoId
+                })
+                .ToListAsync();
+
+            return acessos;
         }
 
-        public Task<List<IGrupoConfiguracaoAcesso>> BuscarTodos(int id)
+        public async Task<List<GrupoConfiguracaoAcessoDTO>> BuscarTodos(int usuarioId)
         {
-            throw new NotImplementedException();
+            var teste = await _context.GrupoUsuario
+                .Where(c => c.UsuarioId == usuarioId)
+                .ToListAsync();
+
+
+            var acessos = await _context.GrupoConfiguracaoAcesso
+                .Where(g => g.GrupoId == usuarioId)
+                .Select(g => new GrupoConfiguracaoAcessoDTO
+                {
+                    GrupoId = g.GrupoId,
+                    ConfiguracaoAcessoId = g.ConfiguracaoAcessoId
+                })
+                .ToListAsync();
+
+            if (acessos == null || !acessos.Any())
+            {
+                acessos = new List<GrupoConfiguracaoAcessoDTO>();
+            }
+
+            return acessos;
         }
 
         public void Dispose()
@@ -47,5 +110,6 @@ namespace AutoEscola.API.BLL
         {
             throw new NotImplementedException();
         }
+
     }
 }

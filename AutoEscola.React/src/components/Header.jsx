@@ -4,14 +4,18 @@ import { usuarioLogado } from "../services/auth";
 import { useState, useEffect } from "react";
 import { logout } from "../services/auth";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config/api";
 
 export default function Header() {
   const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
+  const [menu, setMenu] = useState([]);
 
   useEffect(() => {
     const updateUsuario = () => {
-      setUsuario(usuarioLogado()); 
+      const usuarioSistema = usuarioLogado();
+      setUsuario(usuarioSistema);
+      carregarMenu(usuarioSistema);
     };
 
     // ✅ executa na inicialização
@@ -31,6 +35,26 @@ export default function Header() {
     });
   }
 
+  async function carregarMenu(usuario) {
+    try {
+      debugger;
+      const response = await fetch(
+        `${API_BASE_URL}/ConfiguracaoAcesso/usuarioId/${usuario.usuarioId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${usuario.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      setMenu(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <header className="header">
       <div className="header-container">
@@ -42,7 +66,7 @@ export default function Header() {
 
         {/* Menu */}
         <nav className="nav-menu">
-          <Link to="/">Home</Link>
+          {/* <Link to="/">Home</Link>
           <Link to="/agendadas">Aulas Agendadas</Link>
           <Link to="/agendaInstrutor">Agenda Instrutor</Link>
           <Link to="/agendarAula">Agendar Aula</Link>
@@ -50,9 +74,13 @@ export default function Header() {
           <Link to="/contato">Fale Conosco</Link>
           <Link to="/Instrutores">Instrutores</Link>
           {/* <Link to="/AnaliseDocumento">Analise Documento</Link> */}
-          <Link to="/cadastro">Cadastre-se</Link>
-          <Link to="/ativar-conta">Ativar Conta</Link>
-
+          {/*<Link to="/cadastro">Cadastre-se</Link>
+          <Link to="/ativar-conta">Ativar Conta</Link> */}
+          {menu.map((item) => (
+            <Link key={item.id} to={item.rota}>
+              {item.titulo}
+            </Link>
+          ))}
           {usuario ? (
             <div className="user-area">
               <span className="user-name">Olá, {usuario.nome}</span>

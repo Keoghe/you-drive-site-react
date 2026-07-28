@@ -20,11 +20,13 @@ namespace AutoEscola.API.Controllers
         private readonly AppDbContext _context;
         private readonly IUsuarios _usuariosBll;
         private readonly IInstrutor _instrutorBll;
+        private readonly IGrupoUsuario _grupoUsuarioBll;
 
-        public UsuariosController(IUsuarios usuariosBll, IInstrutor instrutorBll)
+        public UsuariosController(IUsuarios usuariosBll, IInstrutor instrutorBll, IGrupoUsuario grupoUsuarioBll)
         {
             _usuariosBll = usuariosBll;
             _instrutorBll = instrutorBll;
+            _grupoUsuarioBll = grupoUsuarioBll;
         }
 
         //public UsuariosController(AppDbContext context)
@@ -83,7 +85,11 @@ namespace AutoEscola.API.Controllers
                     Login = usuario.Login,
                     Saldo = usuario.Saldo,
                 };
-
+                var grupoUsuario = new Models.DTO.Grupo.GrupoUsuarioDTO
+                {
+                    UsuarioId = usuario.Id,
+                    GrupoId = (int)TipoUsuario.Condutor
+                };
                 if (cadastroUsuario.TipoUsuario == (int)TipoUsuario.Instrutor)
                 {
 
@@ -93,7 +99,12 @@ namespace AutoEscola.API.Controllers
                     };
 
                     await _instrutorBll.Adicionar(novoInstrutor);
+
+                    grupoUsuario.GrupoId = (int)TipoUsuario.Instrutor;                    
                 }
+
+                await _grupoUsuarioBll.Adicionar(grupoUsuario);
+                 
 
                 return Ok(novoUsuario);
             }
@@ -110,10 +121,10 @@ namespace AutoEscola.API.Controllers
         {
             try
             {
-                var usuario = await _usuariosBll.BuscarUsuarioPorId(usuarioId); 
-               
+                var usuario = await _usuariosBll.BuscarUsuarioPorId(usuarioId);
 
-                if(usuario == null)
+
+                if (usuario == null)
                     throw new Exception("Usuário não encontrado");
 
                 return Ok(usuario);

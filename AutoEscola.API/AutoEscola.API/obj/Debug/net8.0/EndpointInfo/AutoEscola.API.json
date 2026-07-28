@@ -122,6 +122,29 @@
         }
       }
     },
+    "/api/ConfiguracaoAcesso/usuarioId/{usuarioId}": {
+      "get": {
+        "tags": [
+          "ConfiguracaoAcesso"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Documento/upload/ativar/conta/instrutor": {
       "post": {
         "tags": [
@@ -295,6 +318,29 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/GrupoConfiguracaoAcesso/grupoId/{grupoId}": {
+      "get": {
+        "tags": [
+          "GrupoConfiguracaoAcesso"
+        ],
+        "parameters": [
+          {
+            "name": "grupoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
