@@ -4,6 +4,7 @@ using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Instrutor;
+using AutoEscola.API.Models.ViewModel.Paginacao;
 using AutoEscola.API.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -85,58 +86,74 @@ namespace AutoEscola.API.BLL
 
             return instrutores;
         }
-
-        public async Task<List<InstrutorDisponivelCidadeViewModel>> BuscarInstrutorDisponivelCidade(string cidade)
+        public async Task<PaginacaoViewModel<InstrutorDisponivelCidadeViewModel>> BuscarInstrutorDisponivelCidade(string cidade, int pagina = 1, int tamanhoPagina = 10)
         {
+            var query = _context.InstrutorDisponivel
+                .Where(x =>
+                    x.Status == (int)StatusInstrutorAula.DISPONIVEL &&
+                    x.Instrutor.Cidade == cidade);
 
-            var instrutores = await _context
-                                     .InstrutorDisponivel
-                                     .Where(x =>
-                                         x.Status == (int)StatusInstrutorAula.DISPONIVEL &&
-                                         x.Instrutor.Cidade == cidade)
-                                     .Select(x => new
-                                     {
-                                         Disponibilidade = x,
-                                         Veiculo = x.Instrutor.Veiculos
-                                             .FirstOrDefault(v => v.Excluido == (int)Status.ATIVO),
-                                         Documento = x.Instrutor.Usuario.Documentos
-                                             .FirstOrDefault(d => d.Excluido == (int)Status.ATIVO && d.TipoDocumentoId == (int)TipoAnexo.FOTO_SELFIE)
+            var totalRegistros = await query.CountAsync();
 
-                                     })
-                                     .Select(x => new InstrutorDisponivelCidadeViewModel
-                                     {
-                                         UsuarioId = x.Disponibilidade.Instrutor.UsuarioId,
-                                         Nome = x.Disponibilidade.Instrutor.Usuario.Nome,
+            var instrutores = await query
+                .OrderBy(x => x.Id)
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
+                .Select(x => new
+                {
+                    Disponibilidade = x,
+                    Veiculo = x.Instrutor.Veiculos
+                        .FirstOrDefault(v => v.Excluido == (int)Status.ATIVO),
 
-                                         Modelo = x.Veiculo.Modelo,
-                                         Cor = x.Veiculo.Cor,
-                                         Placa = x.Veiculo.Placa,
+                    Documento = x.Instrutor.Usuario.Documentos
+                        .FirstOrDefault(d =>
+                            d.Excluido == (int)Status.ATIVO &&
+                            d.TipoDocumentoId == (int)TipoAnexo.FOTO_SELFIE)
+                })
+                .Select(x => new InstrutorDisponivelCidadeViewModel
+                {
+                    UsuarioId = x.Disponibilidade.Instrutor.UsuarioId,
+                    Nome = x.Disponibilidade.Instrutor.Usuario.Nome,
 
-                                         caminhoSelfie = x.Documento.CaminhoArquivo,
+                    Modelo = x.Veiculo != null ? x.Veiculo.Modelo : null,
+                    Cor = x.Veiculo != null ? x.Veiculo.Cor : null,
+                    Placa = x.Veiculo != null ? x.Veiculo.Placa : null,
 
-                                         Status = x.Disponibilidade.Status,
-                                         Avaliacao = x.Disponibilidade.Instrutor.Avaliacao,
-                                         Bairro = x.Disponibilidade.Instrutor.Bairro,
-                                         Cidade = x.Disponibilidade.Instrutor.Cidade,
-                                         Estado = x.Disponibilidade.Instrutor.Estado,
-                                         Latitude = x.Disponibilidade.Instrutor.Latitude,
-                                         Longitude = x.Disponibilidade.Instrutor.Longitude,
-                                         Nota = x.Disponibilidade.Instrutor.Avaliacao,
-                                         Valor = x.Disponibilidade.Instrutor.ValorHora
-                                     })
-                                     .ToListAsync();
+                    caminhoSelfie = x.Documento != null
+                        ? x.Documento.CaminhoArquivo
+                        : null,
+
+                    Status = x.Disponibilidade.Status,
+                    Avaliacao = x.Disponibilidade.Instrutor.Avaliacao,
+                    Bairro = x.Disponibilidade.Instrutor.Bairro,
+                    Cidade = x.Disponibilidade.Instrutor.Cidade,
+                    Estado = x.Disponibilidade.Instrutor.Estado,
+                    Latitude = x.Disponibilidade.Instrutor.Latitude,
+                    Longitude = x.Disponibilidade.Instrutor.Longitude,
+                    Nota = x.Disponibilidade.Instrutor.Avaliacao,
+                    Valor = x.Disponibilidade.Instrutor.ValorHora
+                })
+                .ToListAsync();
+
             instrutores.ForEach(i =>
             {
-                if (!string.IsNullOrEmpty(i.caminhoSelfie) && File.Exists(i.caminhoSelfie))
+                if (!string.IsNullOrEmpty(i.caminhoSelfie) &&
+                    File.Exists(i.caminhoSelfie))
                 {
                     i.Foto = Convert.ToBase64String(
-                        File.ReadAllBytes(i.caminhoSelfie)
-                    );
+                        File.ReadAllBytes(i.caminhoSelfie));
                 }
             });
 
-            return instrutores;
-        }
+            return new PaginacaoViewModel<InstrutorDisponivelCidadeViewModel>
+            {
+                Pagina = pagina,
+                TotalRegistros = totalRegistros,
+                TotalPaginas = (int)Math.Ceiling(
+                    totalRegistros / (double)tamanhoPagina),
+                Dados = instrutores
+            };
+        } 
 
         public async Task<InstrutorDisponivelDTO> BuscarPorId(int instrutorId)
         {
@@ -161,9 +178,7 @@ namespace AutoEscola.API.BLL
         {
             throw new NotImplementedException();
         }
-
-
-
+         
         public void Dispose()
         {
             //throw new NotImplementedException();

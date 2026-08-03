@@ -103,7 +103,7 @@ namespace AutoEscola.API.BLL
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public Task<bool> Remover(int id)

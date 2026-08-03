@@ -2,6 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { useEffect, useState } from "react";
 import API_BASE_URL from "../config/api";
+import { FaPlus, FaPencilAlt, FaSearch } from "react-icons/fa";
 
 // ================== DADOS ==================
 const instrutores = [
@@ -44,8 +45,11 @@ export default function MapaInstrutores() {
   const [posicaoMapa, setPosicaoMapa] = useState([-23.545, -46.63]);
   const [localizacaoUsuario, setLocalizacaoUsuario] = useState(null);
   const [instrutores, setInstrutores] = useState([]);
+  const [cidadeAluno, setCidadeAluno] = useState("");
 
   const [loading, setLoading] = useState(true);
+
+  const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
 
   async function obterLocalizacaoAtual() {
     if (!navigator.geolocation) {
@@ -62,7 +66,7 @@ export default function MapaInstrutores() {
         setPosicaoMapa([lat, lng]); // centraliza o mapa
 
         const endereco = await buscarDadosEndereco(lat, lng);
-
+        setCidadeAluno(endereco);
         carregarInstrutoresDisponiveis(endereco.cidade);
       },
       (error) => {
@@ -91,19 +95,27 @@ export default function MapaInstrutores() {
       );
 
       const data = await response.json();
-
+      
       const lista = (data.dados || data.content || data).map((instrutor) => ({
         ...instrutor,
         posicao: [Number(instrutor.latitude), Number(instrutor.longitude)],
       }));
       console.log(lista);
-
+ 
       setInstrutores(lista);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
+  }
+
+  async function solicitarAula() {
+    debugger;
+    await carregarInstrutoresDisponiveis(cidadeAluno.cidade);
+    console.log(instrutores);
+    setMostrarModalSolicitacao(false);
+    setLoading(true);
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -218,18 +230,18 @@ export default function MapaInstrutores() {
 
   return (
     <div className="mapa-container">
-      <h2>Instrutores Disponíveis</h2>
-
-      {/* BUSCA CEP */}
-      <div className="busca-cep">
-        <input
-          type="text"
-          placeholder="Digite o CEP"
-          value={cep}
-          onChange={(e) => setCep(e.target.value)}
-        />
-        <button onClick={buscarCep}>Buscar</button>
-      </div>
+      <h2>Instrutores Disponíveis</h2> 
+      <p>
+        <button
+          type="button"
+          className="btn-cartao"
+          onClick={() => {
+            setMostrarModalSolicitacao(true);
+          }}
+        >
+          <FaSearch /> Solicitar Aula
+        </button>
+      </p>
 
       {/* MAPA */}
       <MapContainer
@@ -278,6 +290,43 @@ export default function MapaInstrutores() {
           </Marker>
         ))}
       </MapContainer>
+
+      {mostrarModalSolicitacao && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Aviso Importante</h3>
+            Ao solicitar uma aula, sua solicitação será encaminhada ao instrutor
+            para análise. Após o aceite da solicitação pelo instrutor, a aula
+            será considerada confirmada e o valor correspondente será debitado
+            da sua conta, independentemente da realização de qualquer outra ação
+            posterior.
+            <p>
+              Antes de solicitar uma aula, certifique-se de que possui saldo
+              suficiente e de que concorda com as condições de cobrança.
+            </p>
+            <div className="modal-actions">
+              <button
+                className="btn-cancelar"
+                type="button"
+                onClick={() => setMostrarModalSolicitacao(false)}
+              >
+                Cancelar
+              </button>
+
+              <button className="btn-salvar" type="button" onClick={() => solicitarAula()}>
+                Solicitar Aula
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {loading ? (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <p>Buscando Instrutor...</p>
+        </div>
+      ) : (<div>achou</div>)}
     </div>
   );
 }
