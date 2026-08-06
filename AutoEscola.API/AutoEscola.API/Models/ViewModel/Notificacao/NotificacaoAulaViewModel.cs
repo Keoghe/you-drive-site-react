@@ -1,6 +1,6 @@
 ﻿namespace AutoEscola.API.Models.ViewModel.Notific_acoes
 {
-    public class NotificacaoViewlModel
+    public class NotificacaoAulaViewModel
     {
         public int Id { get; set; }
         public int AlunoId { get; set; }

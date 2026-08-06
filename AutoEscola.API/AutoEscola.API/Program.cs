@@ -110,6 +110,7 @@ builder.Services.AddScoped<ICartao, CartaoBLL>();
 builder.Services.AddScoped<IInstrutorDisponivel, InstrutorDisponivelBLL>();
 builder.Services.AddScoped<IConfiguracaoAcesso, ConfiguracaoAcessoBLL>();
 builder.Services.AddScoped<IGrupoConfiguracaoAcesso, GrupoConfiguracaoAcessoBLL>();
+builder.Services.AddScoped<INotificaoAula, NotificacaoAulaBLL>();
 
 var app = builder.Build();
 
