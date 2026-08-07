@@ -8,32 +8,6 @@ import { useEffect, useState } from "react";
 import API_BASE_URL from "../config/api";
 import { FaPlus, FaPencilAlt, FaSearch } from "react-icons/fa";
 
-// ================== DADOS ==================
-const instrutores = [
-  {
-    id: 1,
-    nome: "Carlos Silva",
-    foto: "/images/instrutores/1.jpg", // ✅ corrigido
-    placa: "ABC-1234",
-    carro: "Onix",
-    cor: "Branco",
-    nota: 5,
-    valor: "R$ 120/h",
-    posicao: [-23.544, -46.629],
-  },
-  {
-    id: 2,
-    nome: "Ana Souza",
-    foto: "/images/instrutores/2.jpg", // ✅ corrigido
-    placa: "XYZ-5678",
-    carro: "HB20",
-    cor: "Prata",
-    nota: 4,
-    valor: "R$ 110/h",
-    posicao: [-23.548, -46.633],
-  },
-];
-
 // ================== ICONE ==================
 const icon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/744/744465.png",
@@ -84,11 +58,10 @@ export default function MapaInstrutores() {
   const [localizacaoUsuario, setLocalizacaoUsuario] = useState(null);
   const [instrutores, setInstrutores] = useState([]);
   const [cidadeAluno, setCidadeAluno] = useState("");
+  const [notificaoAula, setNotificaoAula] = useState("");
   const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
-
-  const [loading, setLoading] = useState(true);
-
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   async function obterLocalizacaoAtual() {
     if (!navigator.geolocation) {
@@ -153,12 +126,10 @@ export default function MapaInstrutores() {
     }
   }
 
-  async function solicitarAula() {
-    debugger;
-    await carregarInstrutoresDisponiveis(cidadeAluno.cidade);
-    console.log(instrutores);
+  async function aceitarAula() {
+     
     setMostrarModalSolicitacao(false);
-    setLoading(true);
+    // setLoading(true);
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -228,10 +199,6 @@ export default function MapaInstrutores() {
 
   // ================== FILTRO ==================
   const instrutoresProximos = [];
-  // instrutores.filter((instrutor) => {
-  //   const [lat, lon] = instrutor.posicao;
-  //   return distancia(lat, lon, posicaoMapa[0], posicaoMapa[1]) < 5;
-  // });
 
   // ================== RENDER ==================
 
@@ -267,24 +234,45 @@ export default function MapaInstrutores() {
     return `data:${mimeType};base64,${base64}`;
   }
 
+  async function carregarNotificacaoAula() {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${API_BASE_URL}/NoticacaoAula/instrutor/${usuarioLogado.usuarioId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      const lista = (data.dados || data.content || data).map((instrutor) => ({
+        ...instrutor,
+        posicao: [Number(instrutor.latitude), Number(instrutor.longitude)],
+      }));
+      console.log(lista);
+      if (lista.length > 0) {
+        setNotificaoAula(lista[0].descricao)
+        setMostrarModalSolicitacao(true);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     obterLocalizacaoAtual();
+    carregarNotificacaoAula();
   }, []);
 
   return (
     <div className="mapa-container">
-      <h2>Instrutores Disponíveis</h2>
-      <p>
-        <button
-          type="button"
-          className="btn-cartao"
-          onClick={() => {
-            setMostrarModalSolicitacao(true);
-          }}
-        >
-          <FaSearch /> Solicitar Aula
-        </button>
-      </p>
+      <h2>Aguardando Aula</h2>
 
       {/* MAPA */}
       <MapContainer
@@ -345,20 +333,11 @@ export default function MapaInstrutores() {
           </Marker>
         ))}
       </MapContainer>
-
       {mostrarModalSolicitacao && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3>Aviso Importante</h3>
-            Ao solicitar uma aula, sua solicitação será encaminhada ao instrutor
-            para análise. Após o aceite da solicitação pelo instrutor, a aula
-            será considerada confirmada e o valor correspondente será debitado
-            da sua conta, independentemente da realização de qualquer outra ação
-            posterior.
-            <p>
-              Antes de solicitar uma aula, certifique-se de que possui saldo
-              suficiente e de que concorda com as condições de cobrança.
-            </p>
+            <h3>Solicitação de Aula Avulsa</h3>
+            {notificaoAula} 
             <div className="modal-actions">
               <button
                 className="btn-cancelar"
@@ -371,22 +350,13 @@ export default function MapaInstrutores() {
               <button
                 className="btn-salvar"
                 type="button"
-                onClick={() => solicitarAula()}
+                onClick={() => aceitarAula()}
               >
-                Solicitar Aula
+                Aceitar Aula
               </button>
             </div>
           </div>
         </div>
-      )}
-
-      {loading ? (
-        <div className="loading-overlay">
-          <div className="spinner"></div>
-          <p>Buscando Instrutor...</p>
-        </div>
-      ) : (
-        <div>achou</div>
       )}
     </div>
   );

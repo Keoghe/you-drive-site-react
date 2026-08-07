@@ -56,7 +56,7 @@ export default function Login() {
         icon: "success",
         confirmButtonColor: "#00c853",
       }).then(() => {
-        navigate("/agendadas"); // ✅ redireciona
+        navigate("/"); // ✅ redireciona
       });
     } catch (error) {
       Swal.fire({

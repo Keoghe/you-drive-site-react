@@ -521,62 +521,47 @@
         }
       }
     },
-    "/adicionar": {
+    "/api/NoticacaoAula/adicionar": {
       "post": {
+        "tags": [
+          "NoticacaoAula"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacaoAulaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacaoAulaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacaoAulaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/NoticacaoAula/{notificacaoId}": {
+      "get": {
         "tags": [
           "NoticacaoAula"
         ],
         "parameters": [
           {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "AlunoId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "InstrutorId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Descricao",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "DataSolicitacao",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "Status",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "Excluido",
-            "in": "query",
+            "name": "notificacaoId",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -590,14 +575,14 @@
         }
       }
     },
-    "/{notificacaoId}": {
+    "/api/NoticacaoAula/instrutor/{instrutorId}": {
       "get": {
         "tags": [
           "NoticacaoAula"
         ],
         "parameters": [
           {
-            "name": "notificacaoId",
+            "name": "instrutorId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1101,6 +1086,40 @@
           "senha": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NotificacaoAulaDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "alunoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "instrutorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "descricao": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSolicitacao": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "excluido": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

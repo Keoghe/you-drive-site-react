@@ -5,10 +5,14 @@ using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.DTO.Notificacao;
 using AutoEscola.API.Models.ViewModel.Instrutor;
 using AutoEscola.API.Models.ViewModel.Notific_acoes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoEscola.API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class NoticacaoAulaController : Controller
     {
         private readonly AppDbContext _context;
@@ -68,6 +72,38 @@ namespace AutoEscola.API.Controllers
                         Status = resultado.Status,
                         Excluido = resultado.Excluido
                     };
+                }
+
+                return Ok(novaNotificacao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("instrutor/{instrutorId}")]
+        public async Task<IActionResult> BuscarNotificacaoInstrutor(int instrutorId)
+        {
+            try
+            {
+                var resultado = await _notificaoAulaBll.BuscarNotificaoInstrutor(instrutorId);
+                var novaNotificacao = new List<NotificacaoAulaViewModel>();
+                if (resultado != null)
+                {
+                    foreach (var item in resultado)
+                    {
+                        novaNotificacao.Add(new NotificacaoAulaViewModel
+                        {
+                            Id = item.Id,
+                            AlunoId = item.AlunoId,
+                            InstrutorId = item.InstrutorId,
+                            Descricao = item.Descricao,
+                            DataSolicitacao = item.DataSolicitacao,
+                            Status = item.Status,
+                            Excluido = item.Excluido
+                        });
+                    } 
                 }
 
                 return Ok(novaNotificacao);

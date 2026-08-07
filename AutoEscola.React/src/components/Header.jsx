@@ -37,7 +37,6 @@ export default function Header() {
 
   async function carregarMenu(usuario) {
     try {
-      debugger;
       const response = await fetch(
         `${API_BASE_URL}/ConfiguracaoAcesso/usuarioId/${usuario.usuarioId}`,
         {

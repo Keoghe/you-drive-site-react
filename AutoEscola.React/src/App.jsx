@@ -11,6 +11,7 @@ import Cadastro from "./pages/Cadastro";
 import AtivarConta from "./pages/AtivarConta";
 import AnaliseDocumento from "./pages/AnaliseDocumento";
 import Instrutores from "./pages/Instrutores";
+import MapaInstrutor from "./pages/MapaInstrutor";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="login" element={<Login />} />
           <Route path="cadastro" element={<Cadastro />} />
           <Route path="ativar-conta" element={<AtivarConta />} />
+          <Route path="mapa-instrutor" element={<MapaInstrutor />} />
           
         </Route>
       </Routes>
