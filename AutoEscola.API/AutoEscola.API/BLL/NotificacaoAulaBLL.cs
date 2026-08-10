@@ -130,5 +130,29 @@ namespace AutoEscola.API.BLL
         {
             throw new NotImplementedException();
         }
+
+        public async Task<NotificacaoAulaViewModel> AtualizarStatusNotificaoInstrutor(AlterarStatusNotificacaoAula alterarStatusNotificacaoAula)
+        {
+            var notificacao = _context.NotificacaoAula.FirstOrDefault(n => n.Id == alterarStatusNotificacaoAula.NotificacaoId);
+
+            if (notificacao != null)
+            {
+                notificacao.Status = alterarStatusNotificacaoAula.Status;
+
+                await _context.SaveChangesAsync(); 
+            }
+
+            return new NotificacaoAulaViewModel
+            {
+                Id = notificacao.Id,
+                AlunoId = notificacao.AlunoId,
+                InstrutorId = notificacao.InstrutorId,
+                Descricao = notificacao.Descricao,
+                DataSolicitacao = notificacao.DataSolicitacao,
+                Status = notificacao.Status,
+                Excluido = notificacao.Excluido
+            };
+
+        }
     }
 }

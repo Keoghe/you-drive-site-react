@@ -299,7 +299,7 @@
   {
     "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
     "Method": "BuscarInstrutoresDisponiveisPorCidade",
-    "RelativePath": "api/InstrutorDisponivel/cidade/{cidade}",
+    "RelativePath": "api/InstrutorDisponivel/cidade/{cidade}/pagina/{pagina}/quantidade/{quantidade}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -308,14 +308,24 @@
         "Name": "cidade",
         "Type": "System.String",
         "IsRequired": true
+      },
+      {
+        "Name": "pagina",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "quantidade",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AutoEscola.API.Controllers.NoticacaoAulaController",
+    "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
     "Method": "BuscarNotificacao",
-    "RelativePath": "api/NoticacaoAula/{notificacaoId}",
+    "RelativePath": "api/NotificacaoAula/{notificacaoId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -329,9 +339,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AutoEscola.API.Controllers.NoticacaoAulaController",
+    "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
     "Method": "AdicionarNotificacao",
-    "RelativePath": "api/NoticacaoAula/adicionar",
+    "RelativePath": "api/NotificacaoAula/adicionar",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -345,9 +355,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "AutoEscola.API.Controllers.NoticacaoAulaController",
+    "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
+    "Method": "AtualizarStatusNotificacao",
+    "RelativePath": "api/NotificacaoAula/atualizar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "alterarStatusNotificacaoAula",
+        "Type": "AutoEscola.API.Models.DTO.Notificacao.AlterarStatusNotificacaoAula",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
     "Method": "BuscarNotificacaoInstrutor",
-    "RelativePath": "api/NoticacaoAula/instrutor/{instrutorId}",
+    "RelativePath": "api/NotificacaoAula/instrutor/{instrutorId}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

@@ -62,7 +62,12 @@ export default function MapaInstrutores() {
   const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const StatusNotificacaoAula = Object.freeze({
+    Pendente: 1,
+    Aceita: 2,
+    Recusada: 3,
+    Excluida: 4,
+  });
   async function obterLocalizacaoAtual() {
     if (!navigator.geolocation) {
       alert("Geolocalização não suportada pelo navegador.");
@@ -127,9 +132,7 @@ export default function MapaInstrutores() {
   }
 
   async function aceitarAula() {
-     
-    setMostrarModalSolicitacao(false);
-    // setLoading(true);
+    setMostrarModalSolicitacao(false); 
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -239,7 +242,7 @@ export default function MapaInstrutores() {
       setLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/NoticacaoAula/instrutor/${usuarioLogado.usuarioId}`,
+        `${API_BASE_URL}/NotificacaoAula/instrutor/${usuarioLogado.usuarioId}`,
         {
           headers: {
             Authorization: `Bearer ${usuarioLogado.token}`,
@@ -253,16 +256,64 @@ export default function MapaInstrutores() {
         ...instrutor,
         posicao: [Number(instrutor.latitude), Number(instrutor.longitude)],
       }));
-      console.log(lista);
+      console.log(lista); 
+      debugger;
       if (lista.length > 0) {
-        setNotificaoAula(lista[0].descricao)
-        setMostrarModalSolicitacao(true);
+        lista.forEach((item) => {
+          const dataSolicitacao = new Date(item.dataSolicitacao);
+          const agora = new Date();
+
+          // Verifica se é do mesmo dia
+          const ehHoje =
+            dataSolicitacao.getDate() === agora.getDate() &&
+            dataSolicitacao.getMonth() === agora.getMonth() &&
+            dataSolicitacao.getFullYear() === agora.getFullYear();
+
+          // Diferença em minutos
+          const diferencaMinutos = agora - dataSolicitacao > 5 * 60 * 1000;
+
+          if (ehHoje && diferencaMinutos < 5) {
+            setNotificaoAula(item.descricao);
+            setMostrarModalSolicitacao(true);
+          } else {
+            finalizarNotificacao(item.id);
+          }
+        });
       }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
+  }
+
+  async function finalizarNotificacao(notificacaoId) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/notificacaoAula/atualizar`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+          body: JSON.stringify({
+            NotificacaoId: notificacaoId,
+            Status: StatusNotificacaoAula.Excluida,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Login inválido");
+      }
+
+      const data = await response.json();
+    } catch (error) {
+    } finally {
+      // setLoading(false);
+    } 
   }
 
   useEffect(() => {
@@ -337,7 +388,7 @@ export default function MapaInstrutores() {
         <div className="modal-overlay">
           <div className="modal">
             <h3>Solicitação de Aula Avulsa</h3>
-            {notificaoAula} 
+            {notificaoAula}
             <div className="modal-actions">
               <button
                 className="btn-cancelar"

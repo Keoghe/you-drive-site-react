@@ -445,7 +445,7 @@
         }
       }
     },
-    "/api/InstrutorDisponivel/cidade/{cidade}": {
+    "/api/InstrutorDisponivel/cidade/{cidade}/pagina/{pagina}/quantidade/{quantidade}": {
       "get": {
         "tags": [
           "InstrutorDisponivel"
@@ -457,6 +457,24 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "pagina",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "quantidade",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -521,10 +539,10 @@
         }
       }
     },
-    "/api/NoticacaoAula/adicionar": {
+    "/api/NotificacaoAula/adicionar": {
       "post": {
         "tags": [
-          "NoticacaoAula"
+          "NotificacaoAula"
         ],
         "requestBody": {
           "content": {
@@ -552,10 +570,10 @@
         }
       }
     },
-    "/api/NoticacaoAula/{notificacaoId}": {
+    "/api/NotificacaoAula/{notificacaoId}": {
       "get": {
         "tags": [
-          "NoticacaoAula"
+          "NotificacaoAula"
         ],
         "parameters": [
           {
@@ -575,10 +593,41 @@
         }
       }
     },
-    "/api/NoticacaoAula/instrutor/{instrutorId}": {
+    "/api/NotificacaoAula/atualizar": {
+      "post": {
+        "tags": [
+          "NotificacaoAula"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlterarStatusNotificacaoAula"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlterarStatusNotificacaoAula"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlterarStatusNotificacaoAula"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/NotificacaoAula/instrutor/{instrutorId}": {
       "get": {
         "tags": [
-          "NoticacaoAula"
+          "NotificacaoAula"
         ],
         "parameters": [
           {
@@ -801,6 +850,20 @@
   },
   "components": {
     "schemas": {
+      "AlterarStatusNotificacaoAula": {
+        "type": "object",
+        "properties": {
+          "notificacaoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "AulaDTO": {
         "type": "object",
         "properties": {
@@ -1104,6 +1167,14 @@
           "instrutorId": {
             "type": "integer",
             "format": "int32"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
           },
           "descricao": {
             "type": "string",

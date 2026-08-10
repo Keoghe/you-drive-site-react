@@ -1,6 +1,7 @@
 ﻿using AutoEscola.API.BLL;
 using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
+using AutoEscola.API.Enum;
 using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.DTO.Notificacao;
 using AutoEscola.API.Models.ViewModel.Instrutor;
@@ -13,12 +14,12 @@ namespace AutoEscola.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class NoticacaoAulaController : Controller
+    public class NotificacaoAulaController : Controller
     {
         private readonly AppDbContext _context;
         private readonly INotificaoAula _notificaoAulaBll;
 
-        public NoticacaoAulaController(INotificaoAula notificaoAula)
+        public NotificacaoAulaController(INotificaoAula notificaoAula)
         {
             _notificaoAulaBll = notificaoAula;
         }
@@ -75,6 +76,21 @@ namespace AutoEscola.API.Controllers
                 }
 
                 return Ok(novaNotificacao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("atualizar")]
+        public async Task<IActionResult> AtualizarStatusNotificacao(AlterarStatusNotificacaoAula alterarStatusNotificacaoAula)
+        {
+            try
+            {
+                var notificacao = await _notificaoAulaBll.AtualizarStatusNotificaoInstrutor(alterarStatusNotificacaoAula);
+              
+                return Ok(notificacao);
             }
             catch (Exception ex)
             {
