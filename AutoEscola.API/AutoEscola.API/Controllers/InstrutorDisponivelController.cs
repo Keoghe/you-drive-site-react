@@ -40,12 +40,12 @@ namespace AutoEscola.API.Controllers
             }
         }
 
-        [HttpGet("cidade/{cidade}")]
-        public async Task<IActionResult> BuscarInstrutoresDisponiveisPorCidade(string cidade,[FromServices] JwtService jwtService)
+        [HttpGet("cidade/{cidade}/pagina/{pagina}/quantidade/{quantidade}")]
+        public async Task<IActionResult> BuscarInstrutoresDisponiveisPorCidade(string cidade,int pagina, int quantidade,[FromServices] JwtService jwtService)
         {
             try
             {
-                var resultado = await _instrutorDisponivelBll.BuscarInstrutorDisponivelCidade(cidade);
+                var resultado = await _instrutorDisponivelBll.BuscarInstrutorDisponivelCidade(cidade,pagina,quantidade);
 
                 return Ok(resultado);
             }

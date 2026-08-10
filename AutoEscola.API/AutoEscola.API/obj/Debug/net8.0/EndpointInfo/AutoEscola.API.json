@@ -445,7 +445,7 @@
         }
       }
     },
-    "/api/InstrutorDisponivel/cidade/{cidade}": {
+    "/api/InstrutorDisponivel/cidade/{cidade}/pagina/{pagina}/quantidade/{quantidade}": {
       "get": {
         "tags": [
           "InstrutorDisponivel"
@@ -457,6 +457,24 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "pagina",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "quantidade",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -1104,6 +1122,14 @@
           "instrutorId": {
             "type": "integer",
             "format": "int32"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
           },
           "descricao": {
             "type": "string",

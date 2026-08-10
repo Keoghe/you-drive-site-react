@@ -85,7 +85,7 @@ export default function MapaInstrutores() {
   const [instrutores, setInstrutores] = useState([]);
   const [cidadeAluno, setCidadeAluno] = useState("");
   const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
-
+  const [paginacaoInstrutores, setPaginacaoInstrutores] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
@@ -118,14 +118,18 @@ export default function MapaInstrutores() {
         maximumAge: 0,
       },
     );
-  }
+  } 
 
-  async function carregarInstrutoresDisponiveis(cidade) {
+  async function carregarInstrutoresDisponiveis(
+    cidade,
+    pagina = 1,
+    quantidade = 10,
+  ) {
     try {
       setLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/instrutorDisponivel/cidade/${cidade}`,
+        `${API_BASE_URL}/instrutorDisponivel/cidade/${cidade}/pagina/${pagina}/quantidade/${quantidade}`,
         {
           headers: {
             Authorization: `Bearer ${usuarioLogado.token}`,
@@ -142,7 +146,7 @@ export default function MapaInstrutores() {
       console.log(lista);
 
       setInstrutores(lista);
-
+      setPaginacaoInstrutores(data);
       if (lista.length > 0) {
         setInstrutorSelecionado(lista[0]);
       }
@@ -153,12 +157,57 @@ export default function MapaInstrutores() {
     }
   }
 
-  async function solicitarAula() {
+  async function solicitarAula(pagina = 1, quantidade = 10) {
     debugger;
-    await carregarInstrutoresDisponiveis(cidadeAluno.cidade);
+    await carregarInstrutoresDisponiveis(
+      cidadeAluno.cidade,
+      pagina,
+      quantidade,
+    );
+
     console.log(instrutores);
     setMostrarModalSolicitacao(false);
     setLoading(true);
+    enviarSolicitacaoAula();
+  }
+
+  async function enviarSolicitacaoAula() {
+    debugger; 
+    console.log('OBTER LOCALIZACAO USUÁRIO'); 
+    for (const instrutor of paginacaoInstrutores.dados) {
+      const notificacao = {
+        AlunoId: usuarioLogado.usuarioId,
+        InstrutorId: instrutor.usuarioId,
+        Latitude: cidadeAluno.latitude,
+        Longitude: cidadeAluno.longitude,
+        Descricao: `Solicitação de Aulas Avulsa no bairro ${cidadeAluno.bairro} - ${cidadeAluno.cidade}`,
+      };
+    console.log('ADICIONAR SOLICITAÇÃO DE NOTIFICAÇÃO');
+
+      const response = await fetch(`${API_BASE_URL}/NoticacaoAula/adicionar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${usuarioLogado.token}`,
+        },
+        body: JSON.stringify(notificacao),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text(); // ✅ pega mensagem da API
+        throw new Error(errorData);
+      }
+      const data = await response.json();
+
+      console.log("Resposta API:", data);
+    };
+
+    // Swal.fire({
+    //   title: "Sucesso!",
+    //   text: "Endereço Atualizado com Sucesso",
+    //   icon: "success",
+    //   confirmButtonColor: "#00c853",
+    // });
   }
 
   async function buscarDadosEndereco(lat, lng) {

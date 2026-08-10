@@ -299,7 +299,7 @@
   {
     "ContainingType": "AutoEscola.API.Controllers.InstrutorDisponivelController",
     "Method": "BuscarInstrutoresDisponiveisPorCidade",
-    "RelativePath": "api/InstrutorDisponivel/cidade/{cidade}",
+    "RelativePath": "api/InstrutorDisponivel/cidade/{cidade}/pagina/{pagina}/quantidade/{quantidade}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -307,6 +307,16 @@
       {
         "Name": "cidade",
         "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "pagina",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "quantidade",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
