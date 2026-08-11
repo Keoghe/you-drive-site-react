@@ -168,46 +168,6 @@ export default function MapaInstrutores() {
     console.log(instrutores);
     setMostrarModalSolicitacao(false);
     setLoading(true);
-    enviarSolicitacaoAula();
-  }
-
-  async function enviarSolicitacaoAula() {
-    debugger; 
-    console.log('OBTER LOCALIZACAO USUÁRIO'); 
-    for (const instrutor of paginacaoInstrutores.dados) {
-      const notificacao = {
-        AlunoId: usuarioLogado.usuarioId,
-        InstrutorId: instrutor.usuarioId,
-        Latitude: cidadeAluno.latitude,
-        Longitude: cidadeAluno.longitude,
-        Descricao: `Solicitação de Aulas Avulsa no bairro ${cidadeAluno.bairro} - ${cidadeAluno.cidade}`,
-      };
-    console.log('ADICIONAR SOLICITAÇÃO DE NOTIFICAÇÃO');
-
-      const response = await fetch(`${API_BASE_URL}/NotificacaoAula/adicionar`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${usuarioLogado.token}`,
-        },
-        body: JSON.stringify(notificacao),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text(); // ✅ pega mensagem da API
-        throw new Error(errorData);
-      }
-      const data = await response.json();
-
-      console.log("Resposta API:", data);
-    };
-
-    // Swal.fire({
-    //   title: "Sucesso!",
-    //   text: "Endereço Atualizado com Sucesso",
-    //   icon: "success",
-    //   confirmButtonColor: "#00c853",
-    // });
   }
 
   async function buscarDadosEndereco(lat, lng) {
