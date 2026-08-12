@@ -9,7 +9,7 @@ namespace AutoEscola.API.BLL.Interface
     {
         Task<NotificacaoAulaViewModel> AdicionarNovaNotificacao(NotificacaoAulaDTO entidade);
 
-        Task<List<NotificacaoAulaDTO>> BuscarNotificaoInstrutor(int instrutorId);
+        Task<List<NotificacaoAulaDTO>> BuscarNotificaoInstrutor(int instrutorId, StatusNotificacaoAula statusNoticacaoAula);
         Task<NotificacaoAulaViewModel> AtualizarStatusNotificaoInstrutor(AlterarStatusNotificacaoAula alterarStatusNotificacaoAula);
     }
 }

@@ -98,12 +98,12 @@ namespace AutoEscola.API.Controllers
             }
         }
 
-        [HttpGet("instrutor/{instrutorId}")]
+        [HttpGet("instrutor/{instrutorId}/pendente")]
         public async Task<IActionResult> BuscarNotificacaoInstrutor(int instrutorId)
         {
             try
             {
-                var resultado = await _notificaoAulaBll.BuscarNotificaoInstrutor(instrutorId);
+                var resultado = await _notificaoAulaBll.BuscarNotificaoInstrutor(instrutorId, StatusNotificacaoAula.Pendente);
                 var novaNotificacao = new List<NotificacaoAulaViewModel>();
                 if (resultado != null)
                 {

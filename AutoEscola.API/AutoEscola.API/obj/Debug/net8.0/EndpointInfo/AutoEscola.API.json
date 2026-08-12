@@ -624,7 +624,7 @@
         }
       }
     },
-    "/api/NotificacaoAula/instrutor/{instrutorId}": {
+    "/api/NotificacaoAula/instrutor/{instrutorId}/pendente": {
       "get": {
         "tags": [
           "NotificacaoAula"

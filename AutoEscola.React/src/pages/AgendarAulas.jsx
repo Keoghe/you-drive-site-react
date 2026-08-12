@@ -118,7 +118,7 @@ export default function MapaInstrutores() {
         maximumAge: 0,
       },
     );
-  } 
+  }
 
   async function carregarInstrutoresDisponiveis(
     cidade,
@@ -157,6 +157,36 @@ export default function MapaInstrutores() {
     }
   }
 
+  async function CriarSolicitacaoAula(instrutorId) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/notificacaoAula/adicionar`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+          body: JSON.stringify({
+            AlunoId: usuarioLogado.usuarioId,
+            InstrutorId: instrutorId,
+            Descricao: `Solicitação de aula do aluno ${usuarioLogado.nome} no bairro ${cidadeAluno.bairro}, cidade ${cidadeAluno.cidade}, estado ${cidadeAluno.estado}.`,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Login inválido");
+      }
+
+      const data = await response.json();
+    } catch (error) {
+    } finally {
+      // setLoading(false);
+    }
+  }
+
   async function solicitarAula(pagina = 1, quantidade = 10) {
     debugger;
     await carregarInstrutoresDisponiveis(
@@ -168,6 +198,10 @@ export default function MapaInstrutores() {
     console.log(instrutores);
     setMostrarModalSolicitacao(false);
     setLoading(true);
+    instrutores.forEach(async (instrutor) => {  
+      const aula = await CriarSolicitacaoAula(instrutor.usuarioId);
+      debugger;
+    });
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -237,10 +271,6 @@ export default function MapaInstrutores() {
 
   // ================== FILTRO ==================
   const instrutoresProximos = [];
-  // instrutores.filter((instrutor) => {
-  //   const [lat, lon] = instrutor.posicao;
-  //   return distancia(lat, lon, posicaoMapa[0], posicaoMapa[1]) < 5;
-  // });
 
   // ================== RENDER ==================
 

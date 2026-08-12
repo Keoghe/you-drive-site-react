@@ -93,25 +93,26 @@ namespace AutoEscola.API.BLL
 
             }).FirstOrDefaultAsync();
 
-            if (notificacao == null) 
+            if (notificacao == null)
                 throw new Exception("Notificação não encontrada.");
-        
+
             return notificacao ?? throw new KeyNotFoundException($"Notificação {notificacaoId} não encontrada.");
         }
 
-        public async Task<List<NotificacaoAulaDTO>> BuscarNotificaoInstrutor(int instrutorId)
+        public async Task<List<NotificacaoAulaDTO>> BuscarNotificaoInstrutor(int instrutorId, StatusNotificacaoAula statusNoticacaoAula)
         {
-            var notificacao = await _context.NotificacaoAula.Where(c => c.InstrutorId == instrutorId).Select(x => new NotificacaoAulaDTO
-            {
-                Id = x.Id,
-                AlunoId = x.AlunoId,
-                DataSolicitacao = x.DataSolicitacao,
-                Descricao = x.Descricao,
-                Excluido = x.Excluido,
-                InstrutorId = x.InstrutorId,
-                Status = x.Status
+            var notificacao = await _context.NotificacaoAula.Where(c => c.InstrutorId == instrutorId && c.Status == (int)statusNoticacaoAula)
+                .Select(x => new NotificacaoAulaDTO
+                {
+                    Id = x.Id,
+                    AlunoId = x.AlunoId,
+                    DataSolicitacao = x.DataSolicitacao,
+                    Descricao = x.Descricao,
+                    Excluido = x.Excluido,
+                    InstrutorId = x.InstrutorId,
+                    Status = x.Status
 
-            }).ToListAsync(); 
+                }).ToListAsync();
 
             return notificacao;
         }
@@ -139,7 +140,7 @@ namespace AutoEscola.API.BLL
             {
                 notificacao.Status = alterarStatusNotificacaoAula.Status;
 
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
             }
 
             return new NotificacaoAulaViewModel

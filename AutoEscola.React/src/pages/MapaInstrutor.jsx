@@ -4,7 +4,7 @@ import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
 import L from "leaflet";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import API_BASE_URL from "../config/api";
 import { FaPlus, FaPencilAlt, FaSearch } from "react-icons/fa";
 
@@ -59,6 +59,7 @@ export default function MapaInstrutores() {
   const [instrutores, setInstrutores] = useState([]);
   const [cidadeAluno, setCidadeAluno] = useState("");
   const [notificaoAula, setNotificaoAula] = useState("");
+  const [notificaoAulaId, setNotificaoAulaId] = useState("");
   const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -67,7 +68,9 @@ export default function MapaInstrutores() {
     Aceita: 2,
     Recusada: 3,
     Excluida: 4,
-  });
+  }); 
+  const timeoutRef = useRef(null);
+
   async function obterLocalizacaoAtual() {
     if (!navigator.geolocation) {
       alert("Geolocalização não suportada pelo navegador.");
@@ -98,12 +101,16 @@ export default function MapaInstrutores() {
     );
   }
 
-  async function carregarInstrutoresDisponiveis(cidade) {
+  async function carregarInstrutoresDisponiveis(
+    cidade,
+    pagina = 1,
+    quantidade = 10,
+  ) {
     try {
       setLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/instrutorDisponivel/cidade/${cidade}`,
+        `${API_BASE_URL}/instrutorDisponivel/cidade/${cidade}/pagina/${pagina}/quantidade/${quantidade}`,
         {
           headers: {
             Authorization: `Bearer ${usuarioLogado.token}`,
@@ -132,7 +139,7 @@ export default function MapaInstrutores() {
   }
 
   async function aceitarAula() {
-    setMostrarModalSolicitacao(false); 
+    setMostrarModalSolicitacao(false);
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -242,7 +249,7 @@ export default function MapaInstrutores() {
       setLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/NotificacaoAula/instrutor/${usuarioLogado.usuarioId}`,
+        `${API_BASE_URL}/NotificacaoAula/instrutor/${usuarioLogado.usuarioId}/pendente`,
         {
           headers: {
             Authorization: `Bearer ${usuarioLogado.token}`,
@@ -256,10 +263,10 @@ export default function MapaInstrutores() {
         ...instrutor,
         posicao: [Number(instrutor.latitude), Number(instrutor.longitude)],
       }));
-      console.log(lista); 
+      console.log(lista);
       debugger;
       if (lista.length > 0) {
-        lista.forEach((item) => {
+        for (const item of lista) {
           const dataSolicitacao = new Date(item.dataSolicitacao);
           const agora = new Date();
 
@@ -274,16 +281,24 @@ export default function MapaInstrutores() {
 
           if (ehHoje && diferencaMinutos < 5) {
             setNotificaoAula(item.descricao);
+            setNotificaoAulaId(item.id);
             setMostrarModalSolicitacao(true);
+            setLoading(false);
+
+            break;
           } else {
             finalizarNotificacao(item.id);
-          }
-        });
+          } 
+        };
+      }else{
+        setTimeout(() => {
+          carregarNotificacaoAula();
+        }, 5000);
       }
     } catch (error) {
       console.error(error);
+      
     } finally {
-      setLoading(false);
     }
   }
 
@@ -313,12 +328,13 @@ export default function MapaInstrutores() {
     } catch (error) {
     } finally {
       // setLoading(false);
-    } 
+    }
   }
 
   useEffect(() => {
     obterLocalizacaoAtual();
     carregarNotificacaoAula();
+ 
   }, []);
 
   return (
@@ -326,64 +342,72 @@ export default function MapaInstrutores() {
       <h2>Aguardando Aula</h2>
 
       {/* MAPA */}
-      <MapContainer
-        center={posicaoMapa}
-        zoom={14}
-        className="map"
-        key={posicaoMapa.toString()}
-      >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {/* SUA LOCALIZAÇÃO */}
-        <Marker position={posicaoMapa} icon={iconUsuario}>
-          <Popup>
-            <strong>Você está aqui</strong>
-          </Popup>
-        </Marker>
+      {loading ? (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <p>Buscando Aula...</p>
+        </div>
+      ) : (
+        <MapContainer
+          center={posicaoMapa}
+          zoom={14}
+          className="map"
+          key={posicaoMapa.toString()}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {instrutorSelecionado && (
-          <RoutingMachine
-            origem={posicaoMapa}
-            destino={instrutorSelecionado.posicao}
-          />
-        )}
-
-        {instrutores.map((instrutor) => (
-          <Marker
-            key={instrutor.usuarioId}
-            position={instrutor.posicao}
-            icon={icon}
-            eventHandlers={{
-              click: () => {
-                setInstrutorSelecionado(instrutor);
-              },
-            }}
-          >
+          {/* SUA LOCALIZAÇÃO */}
+          <Marker position={posicaoMapa} icon={iconUsuario}>
             <Popup>
-              <div className="card-instrutor">
-                <img src={obterSrcImagem(instrutor.foto)} alt="instrutor" />
-
-                <h4>{instrutor.nome}</h4>
-
-                <p>
-                  <strong>Placa:</strong> {instrutor.placa}
-                </p>
-                <p>
-                  <strong>Carro:</strong> {instrutor.carro} ({instrutor.cor})
-                </p>
-
-                <p>
-                  <strong>Nota:</strong> {"⭐".repeat(instrutor.nota)}
-                </p>
-
-                <p>
-                  <strong>Valor:</strong> {instrutor.valor}
-                </p>
-              </div>
+              <strong>Você está aqui</strong>
             </Popup>
           </Marker>
-        ))}
-      </MapContainer>
+
+          {instrutorSelecionado && (
+            <RoutingMachine
+              origem={posicaoMapa}
+              destino={instrutorSelecionado.posicao}
+            />
+          )}
+
+          {instrutores.map((instrutor) => (
+            <Marker
+              key={instrutor.usuarioId}
+              position={instrutor.posicao}
+              icon={icon}
+              eventHandlers={{
+                click: () => {
+                  setInstrutorSelecionado(instrutor);
+                },
+              }}
+            >
+              <Popup>
+                <div className="card-instrutor">
+                  <img src={obterSrcImagem(instrutor.foto)} alt="instrutor" />
+
+                  <h4>{instrutor.nome}</h4>
+
+                  <p>
+                    <strong>Placa:</strong> {instrutor.placa}
+                  </p>
+                  <p>
+                    <strong>Carro:</strong> {instrutor.carro} ({instrutor.cor})
+                  </p>
+
+                  <p>
+                    <strong>Nota:</strong> {"⭐".repeat(instrutor.nota)}
+                  </p>
+
+                  <p>
+                    <strong>Valor:</strong> {instrutor.valor}
+                  </p>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      )}
       {mostrarModalSolicitacao && (
         <div className="modal-overlay">
           <div className="modal">
@@ -393,7 +417,10 @@ export default function MapaInstrutores() {
               <button
                 className="btn-cancelar"
                 type="button"
-                onClick={() => setMostrarModalSolicitacao(false)}
+                onClick={() => {
+                  setMostrarModalSolicitacao(false);
+                  finalizarNotificacao(notificaoAulaId);
+                  carregarNotificacaoAula();}}
               >
                 Cancelar
               </button>

@@ -373,7 +373,7 @@
   {
     "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
     "Method": "BuscarNotificacaoInstrutor",
-    "RelativePath": "api/NotificacaoAula/instrutor/{instrutorId}",
+    "RelativePath": "api/NotificacaoAula/instrutor/{instrutorId}/pendente",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
