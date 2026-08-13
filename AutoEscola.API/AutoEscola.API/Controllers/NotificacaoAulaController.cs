@@ -114,6 +114,8 @@ namespace AutoEscola.API.Controllers
                             Id = item.Id,
                             AlunoId = item.AlunoId,
                             InstrutorId = item.InstrutorId,
+                            Latitude = item.Latitude,
+                            Longitude = item.Longitude,
                             Descricao = item.Descricao,
                             DataSolicitacao = item.DataSolicitacao,
                             Status = item.Status,

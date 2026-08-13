@@ -82,7 +82,7 @@ export default function MapaInstrutores() {
   const usuarioLogado = JSON.parse(localStorage.getItem("usuario"));
   const [posicaoMapa, setPosicaoMapa] = useState([-23.545, -46.63]);
   const [localizacaoUsuario, setLocalizacaoUsuario] = useState(null);
-  const [instrutores, setInstrutores] = useState([]);
+  const [alunoAvulso, setAlunoAvulso] = useState([]);
   const [cidadeAluno, setCidadeAluno] = useState("");
   const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
   const [paginacaoInstrutores, setPaginacaoInstrutores] = useState([]);
@@ -159,6 +159,7 @@ export default function MapaInstrutores() {
 
   async function CriarSolicitacaoAula(instrutorId) {
     try {
+      debugger;
       const response = await fetch(
         `${API_BASE_URL}/notificacaoAula/adicionar`,
         {
@@ -169,6 +170,8 @@ export default function MapaInstrutores() {
           },
           body: JSON.stringify({
             AlunoId: usuarioLogado.usuarioId,
+            Latitude: cidadeAluno.latitude,
+            Longitude: cidadeAluno.longitude,
             InstrutorId: instrutorId,
             Descricao: `Solicitação de aula do aluno ${usuarioLogado.nome} no bairro ${cidadeAluno.bairro}, cidade ${cidadeAluno.cidade}, estado ${cidadeAluno.estado}.`,
           }),

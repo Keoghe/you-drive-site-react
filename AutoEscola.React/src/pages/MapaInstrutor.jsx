@@ -57,18 +57,20 @@ export default function MapaInstrutores() {
   const [posicaoMapa, setPosicaoMapa] = useState([-23.545, -46.63]);
   const [localizacaoUsuario, setLocalizacaoUsuario] = useState(null);
   const [instrutores, setInstrutores] = useState([]);
+  const [alunoAvulso, setAlunoAvulso] = useState([]);
   const [cidadeAluno, setCidadeAluno] = useState("");
   const [notificaoAula, setNotificaoAula] = useState("");
   const [notificaoAulaId, setNotificaoAulaId] = useState("");
-  const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
+  const [alunoSelecionado, setAlunoSelecionado] = useState([]);
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
   const [loading, setLoading] = useState(true);
+
   const StatusNotificacaoAula = Object.freeze({
     Pendente: 1,
     Aceita: 2,
     Recusada: 3,
     Excluida: 4,
-  }); 
+  });
   const timeoutRef = useRef(null);
 
   async function obterLocalizacaoAtual() {
@@ -84,10 +86,10 @@ export default function MapaInstrutores() {
 
         setLocalizacaoUsuario([lat, lng]);
         setPosicaoMapa([lat, lng]); // centraliza o mapa
-
+        /* 
         const endereco = await buscarDadosEndereco(lat, lng);
         setCidadeAluno(endereco);
-        carregarInstrutoresDisponiveis(endereco.cidade);
+        carregarInstrutoresDisponiveis(endereco.cidade); */
       },
       (error) => {
         console.error("Erro ao obter localização:", error);
@@ -129,7 +131,8 @@ export default function MapaInstrutores() {
       setInstrutores(lista);
 
       if (lista.length > 0) {
-        setInstrutorSelecionado(lista[0]);
+        debugger;
+        setAlunoSelecionado(lista[0]);
       }
     } catch (error) {
       console.error(error);
@@ -139,7 +142,39 @@ export default function MapaInstrutores() {
   }
 
   async function aceitarAula() {
-    setMostrarModalSolicitacao(false);
+     try {
+      const response = await fetch(
+        `${API_BASE_URL}/notificacaoAula/atualizar`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+          body: JSON.stringify({
+            NotificacaoId: notificaoAulaId,
+            Status: StatusNotificacaoAula.Aceita,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Ocorrreu um erro ao aceitar a aula.");
+      }
+
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    }finally {
+      alunoSelecionado.posicao = [
+        Number(alunoAvulso.latitude),
+        Number(alunoAvulso.longitude),
+      ];
+      debugger; 
+      setAlunoSelecionado(alunoSelecionado);
+      setMostrarModalSolicitacao(false);
+    }
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -284,20 +319,19 @@ export default function MapaInstrutores() {
             setNotificaoAulaId(item.id);
             setMostrarModalSolicitacao(true);
             setLoading(false);
-
+            setAlunoAvulso(item);
             break;
           } else {
             finalizarNotificacao(item.id);
-          } 
-        };
-      }else{
+          }
+        }
+      } else {
         setTimeout(() => {
           carregarNotificacaoAula();
         }, 5000);
       }
     } catch (error) {
       console.error(error);
-      
     } finally {
     }
   }
@@ -334,7 +368,6 @@ export default function MapaInstrutores() {
   useEffect(() => {
     obterLocalizacaoAtual();
     carregarNotificacaoAula();
- 
   }, []);
 
   return (
@@ -364,21 +397,21 @@ export default function MapaInstrutores() {
             </Popup>
           </Marker>
 
-          {instrutorSelecionado && (
+          {alunoSelecionado && (
             <RoutingMachine
               origem={posicaoMapa}
-              destino={instrutorSelecionado.posicao}
+              destino={alunoSelecionado.posicao}
             />
           )}
 
-          {instrutores.map((instrutor) => (
+          {/* {instrutores.map((instrutor) => (
             <Marker
               key={instrutor.usuarioId}
               position={instrutor.posicao}
               icon={icon}
               eventHandlers={{
                 click: () => {
-                  setInstrutorSelecionado(instrutor);
+                  setAlunoSelecionado(instrutor);
                 },
               }}
             >
@@ -405,7 +438,7 @@ export default function MapaInstrutores() {
                 </div>
               </Popup>
             </Marker>
-          ))}
+          ))} */}
         </MapContainer>
       )}
       {mostrarModalSolicitacao && (
@@ -420,7 +453,8 @@ export default function MapaInstrutores() {
                 onClick={() => {
                   setMostrarModalSolicitacao(false);
                   finalizarNotificacao(notificaoAulaId);
-                  carregarNotificacaoAula();}}
+                  carregarNotificacaoAula();
+                }}
               >
                 Cancelar
               </button>

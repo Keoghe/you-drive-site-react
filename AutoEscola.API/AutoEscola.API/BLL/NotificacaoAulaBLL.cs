@@ -60,6 +60,8 @@ namespace AutoEscola.API.BLL
             {
                 AlunoId = notificacaoAula.AlunoId,
                 InstrutorId = notificacaoAula.InstrutorId,
+                Latitude = notificacaoAula.Latitude,
+                Longitude = notificacaoAula.Longitude,
                 Descricao = notificacaoAula.Descricao,
                 DataSolicitacao = DateTime.Now,
                 Status = (int)StatusNotificacao.Pendente,
@@ -106,6 +108,8 @@ namespace AutoEscola.API.BLL
                 {
                     Id = x.Id,
                     AlunoId = x.AlunoId,
+                    Latitude = x.Latitude,
+                    Longitude = x.Longitude,
                     DataSolicitacao = x.DataSolicitacao,
                     Descricao = x.Descricao,
                     Excluido = x.Excluido,

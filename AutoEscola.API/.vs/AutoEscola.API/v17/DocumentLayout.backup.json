@@ -11,14 +11,6 @@
       "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\controllers\\notificacaoaulacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\controllers\\instrutordisponivelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\controllers\\instrutordisponivelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\models\\dto\\notificacao\\alterarstatusnotificacaoaula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\models\\dto\\notificacao\\alterarstatusnotificacaoaula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|e:\\projetos osas\\repositorio\\projeto-you-drive\\autoescola.api\\autoescola.api\\enum\\statusnotificacaoaula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{53A69565-90A6-49D8-844B-23591F80C239}|AutoEscola.API\\AutoEscola.API.csproj|solutionrelative:autoescola.api\\enum\\statusnotificacaoaula.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -30,52 +22,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 15,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{6a22fc8f-6c1e-5388-aa3d-9dc8ddb2d262}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:132:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cf577b8c-4134-11d2-83e5-00c04f9902c1}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{6324226f-61b6-4f28-92ee-18d4b5fe1e48}"
@@ -83,31 +31,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "InstrutorDisponivelController.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\InstrutorDisponivelController.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Controllers\\InstrutorDisponivelController.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\InstrutorDisponivelController.cs",
-              "RelativeToolTip": "AutoEscola.API\\Controllers\\InstrutorDisponivelController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAAC8AAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-11T11:16:53.531Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AlterarStatusNotificacaoAula.cs",
-              "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\DTO\\Notificacao\\AlterarStatusNotificacaoAula.cs",
-              "RelativeDocumentMoniker": "AutoEscola.API\\Models\\DTO\\Notificacao\\AlterarStatusNotificacaoAula.cs",
-              "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Models\\DTO\\Notificacao\\AlterarStatusNotificacaoAula.cs",
-              "RelativeToolTip": "AutoEscola.API\\Models\\DTO\\Notificacao\\AlterarStatusNotificacaoAula.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-11T11:03:33.13Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "StatusNotificacaoAula.cs",
               "DocumentMoniker": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Enum\\StatusNotificacaoAula.cs",
               "RelativeDocumentMoniker": "AutoEscola.API\\Enum\\StatusNotificacaoAula.cs",
@@ -125,7 +48,7 @@
               "RelativeDocumentMoniker": "AutoEscola.API\\BLL\\NotificacaoAulaBLL.cs",
               "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\BLL\\NotificacaoAulaBLL.cs",
               "RelativeToolTip": "AutoEscola.API\\BLL\\NotificacaoAulaBLL.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD8AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-06T10:43:00.192Z",
               "EditorCaption": ""
@@ -138,7 +61,7 @@
               "RelativeDocumentMoniker": "AutoEscola.API\\Controllers\\NotificacaoAulaController.cs",
               "ToolTip": "E:\\PROJETOS OSAS\\repositorio\\PROJETO-YOU-DRIVE\\AutoEscola.API\\AutoEscola.API\\Controllers\\NotificacaoAulaController.cs",
               "RelativeToolTip": "AutoEscola.API\\Controllers\\NotificacaoAulaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAUwCAAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-06T10:38:16.857Z",
               "EditorCaption": ""
