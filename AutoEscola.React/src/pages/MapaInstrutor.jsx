@@ -16,9 +16,9 @@ const icon = new L.Icon({
   popupAnchor: [0, -30],
 });
 
-function RoutingMachine({ origem, destino }) {
+function RoutingMachine({ origem, destino, aluno }) {
   const map = useMap();
-
+debugger;
   useEffect(() => {
     if (!origem || !destino) return;
 
@@ -40,12 +40,30 @@ function RoutingMachine({ origem, destino }) {
           },
         ],
       },
+      createMarker: (i, wp) => {
+        const marker = L.marker(wp.latLng);
+        // Apenas o marcador de destino
+        if (i === 1 && aluno) {
+          marker.bindPopup(`
+          <div>
+          <h4>${aluno.nome}</h4>
+          </div>
+          `);
+        }else{
+          marker.bindPopup(`
+          <div>
+          <h4>Você está aqui!</h4>
+          </div>
+          `);
+        }
+        return marker;
+      },
     }).addTo(map);
 
     return () => {
       map.removeControl(routingControl);
     };
-  }, [map, origem, destino]);
+  }, [map, origem, destino, aluno]);
 
   return null;
 }
@@ -86,10 +104,6 @@ export default function MapaInstrutores() {
 
         setLocalizacaoUsuario([lat, lng]);
         setPosicaoMapa([lat, lng]); // centraliza o mapa
-        /* 
-        const endereco = await buscarDadosEndereco(lat, lng);
-        setCidadeAluno(endereco);
-        carregarInstrutoresDisponiveis(endereco.cidade); */
       },
       (error) => {
         console.error("Erro ao obter localização:", error);
@@ -103,46 +117,8 @@ export default function MapaInstrutores() {
     );
   }
 
-  async function carregarInstrutoresDisponiveis(
-    cidade,
-    pagina = 1,
-    quantidade = 10,
-  ) {
-    try {
-      setLoading(true);
-
-      const response = await fetch(
-        `${API_BASE_URL}/instrutorDisponivel/cidade/${cidade}/pagina/${pagina}/quantidade/${quantidade}`,
-        {
-          headers: {
-            Authorization: `Bearer ${usuarioLogado.token}`,
-          },
-        },
-      );
-
-      const data = await response.json();
-
-      const lista = (data.dados || data.content || data).map((instrutor) => ({
-        ...instrutor,
-        posicao: [Number(instrutor.latitude), Number(instrutor.longitude)],
-      }));
-      console.log(lista);
-
-      setInstrutores(lista);
-
-      if (lista.length > 0) {
-        debugger;
-        setAlunoSelecionado(lista[0]);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function aceitarAula() {
-     try {
+    try {
       const response = await fetch(
         `${API_BASE_URL}/notificacaoAula/atualizar`,
         {
@@ -166,12 +142,12 @@ export default function MapaInstrutores() {
       const data = await response.json();
     } catch (error) {
       console.error(error);
-    }finally {
+    } finally {
       alunoSelecionado.posicao = [
         Number(alunoAvulso.latitude),
         Number(alunoAvulso.longitude),
       ];
-      debugger; 
+      debugger;
       setAlunoSelecionado(alunoSelecionado);
       setMostrarModalSolicitacao(false);
     }
@@ -240,10 +216,7 @@ export default function MapaInstrutores() {
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
-  }
-
-  // ================== FILTRO ==================
-  const instrutoresProximos = [];
+  } 
 
   // ================== RENDER ==================
 
@@ -318,6 +291,7 @@ export default function MapaInstrutores() {
             setNotificaoAula(item.descricao);
             setNotificaoAulaId(item.id);
             setMostrarModalSolicitacao(true);
+            buscarDadosAluno(item.alunoId);
             setLoading(false);
             setAlunoAvulso(item);
             break;
@@ -365,6 +339,31 @@ export default function MapaInstrutores() {
     }
   }
 
+  async function buscarDadosAluno(alunoId) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/Usuarios/buscar-dados/minha-conta/${alunoId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Nenhum Aluno foi encontrado");
+      }
+
+      const data = await response.json();
+      alunoSelecionado.dados = data;
+    } catch (error) {
+    } finally {
+      // setLoading(false);
+    }
+  }
+
   useEffect(() => {
     obterLocalizacaoAtual();
     carregarNotificacaoAula();
@@ -401,6 +400,8 @@ export default function MapaInstrutores() {
             <RoutingMachine
               origem={posicaoMapa}
               destino={alunoSelecionado.posicao}
+              aluno={alunoSelecionado.dados}
+
             />
           )}
 
