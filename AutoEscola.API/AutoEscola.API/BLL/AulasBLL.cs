@@ -45,7 +45,7 @@ namespace AutoEscola.API.BLL
         {
             throw new NotImplementedException();
         }
-         
+
         public Task<AulaDTO> BuscarPorId(int id)
         {
             throw new NotImplementedException();
@@ -69,9 +69,9 @@ namespace AutoEscola.API.BLL
                 {
                     Id = a.Id,
                     UsuarioId = a.UsuarioId,
-                    InstrutorId = a.InstrutorId, 
+                    InstrutorId = a.InstrutorId,
                     PromocaoId = a.PromocaoId,
-                    DataAula =  a.DataAula.HasValue ? a.DataAula.Value : null,
+                    DataAula = a.DataAula.HasValue ? a.DataAula.Value : null,
                     HoraInicio = a.HoraInicio.HasValue ? TimeOnly.Parse(a.HoraInicio.Value.ToString("HH:mm:ss")) : (TimeOnly?)null,
                     HoraFim = a.HoraFim.HasValue ? TimeOnly.Parse(a.HoraFim.Value.ToString("HH:mm:ss")) : (TimeOnly?)null,
                     ValorAulaId = a.ValorAulaId,
@@ -83,7 +83,7 @@ namespace AutoEscola.API.BLL
             return aulas;
         }
 
-        public async Task<List<AulaDTO>> BuscarAulasMes(int usuarioId, int mes )
+        public async Task<List<AulaDTO>> BuscarAulasMes(int usuarioId, int mes, TipoUsuario tipoUsuario)
         {
 
             var usuario = await _context.Usuarios
@@ -96,9 +96,18 @@ namespace AutoEscola.API.BLL
             }
 
             var aulas = await _context.Aulas
-                .Where(a => a.UsuarioId == usuarioId && a.Excluido == (int)Status.ATIVO 
-                && a.DataAula.HasValue && a.DataAula.Value.Month == mes
-                )
+                //.Where(a => a.UsuarioId == usuarioId && a.Excluido == (int)Status.ATIVO 
+                //&& a.DataAula.HasValue && a.DataAula.Value.Month == mes
+                //)
+                .Where(a =>
+                        (
+                            ((int)tipoUsuario == 1 && a.UsuarioId == usuarioId) ||
+                            ((int)tipoUsuario == 2 && a.InstrutorId == usuarioId)
+                        )
+                        && a.Excluido == (int)Status.ATIVO
+                        && a.DataAula.HasValue
+                        && a.DataAula.Value.Month == mes
+                    )
                 .Select(a => new AulaDTO
                 {
                     Id = a.Id,
@@ -131,7 +140,7 @@ namespace AutoEscola.API.BLL
                 HoraFim = novaAula.HoraFim,
                 ValorAulaId = novaAula.ValorAulaId,
                 ValorFinal = novaAula.ValorFinal,
-                Status = "ATIVO",
+                Status = (int)StatusAula.PENDENTE,
                 Excluido = (int)Status.ATIVO
             };
 
@@ -183,7 +192,7 @@ namespace AutoEscola.API.BLL
                 if (novaAula == null)
                 {
                     throw new Exception("Instrutor informado não está ativo");
-                } 
+                }
             }
             catch (Exception)
             {

@@ -18,7 +18,7 @@ const icon = new L.Icon({
 
 function RoutingMachine({ origem, destino, aluno }) {
   const map = useMap();
-debugger;
+
   useEffect(() => {
     if (!origem || !destino) return;
 
@@ -49,7 +49,7 @@ debugger;
           <h4>${aluno.nome}</h4>
           </div>
           `);
-        }else{
+        } else {
           marker.bindPopup(`
           <div>
           <h4>Você está aqui!</h4>
@@ -150,6 +150,50 @@ export default function MapaInstrutores() {
       debugger;
       setAlunoSelecionado(alunoSelecionado);
       setMostrarModalSolicitacao(false);
+      const dadoAula = {
+        usuarioId: alunoAvulso.alunoId,
+        InstrutorId: usuarioLogado.usuarioId,
+        PromocaoId: 1,
+        ValorAulaId: 2
+      };
+
+      gravarAgendaAula(dadoAula);
+    }
+  }
+
+  async function gravarAgendaAula(dadoAula) {
+    try {
+      let horaAtual = new Date().toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      const response = await fetch(`${API_BASE_URL}/aulas/cadastrar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${usuarioLogado.token}`,
+        },
+        body: JSON.stringify({
+          UsuarioId: dadoAula.usuarioId,
+          InstrutorId: dadoAula.InstrutorId,
+          DataAula: new Date().toISOString().split("T")[0],
+          PromocaoId: dadoAula.PromocaoId,
+          HoraInicio: horaAtual,
+          HoraFim: horaAtual,
+          ValorAulaId: dadoAula.ValorAulaId,
+        }),
+      });
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Ocorrreu um erro ao aceitar a aula.");
+      }
+
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    } finally {
     }
   }
 
@@ -216,7 +260,7 @@ export default function MapaInstrutores() {
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
-  } 
+  }
 
   // ================== RENDER ==================
 
@@ -401,7 +445,6 @@ export default function MapaInstrutores() {
               origem={posicaoMapa}
               destino={alunoSelecionado.posicao}
               aluno={alunoSelecionado.dados}
-
             />
           )}
 

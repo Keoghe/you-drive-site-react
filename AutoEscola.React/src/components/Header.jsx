@@ -37,6 +37,34 @@ export default function Header() {
 
   async function carregarMenu(usuario) {
     try {
+      if (usuario == null) {
+        setMenu([
+          {
+            id: 2,
+            titulo: "Home",
+            rota: "/",
+            icone: "VAZIO",
+            ordem: 1,
+          },
+          {
+            id: 7,
+            titulo: "Fale Conosco",
+            rota: "/contato",
+            icone: "VAZIO",
+            ordem: 2,
+          },
+          {
+            id: 9,
+            titulo: "Cadastre-se",
+            rota: "/cadastro",
+            icone: "VAZIO",
+            ordem: 3,
+          } 
+        ]);
+
+        return;
+      }
+
       const response = await fetch(
         `${API_BASE_URL}/ConfiguracaoAcesso/usuarioId/${usuario.usuarioId}`,
         {
@@ -47,7 +75,8 @@ export default function Header() {
       );
 
       const data = await response.json();
-
+      debugger;
+      console.log("Menu carregado:", data);
       setMenu(data);
     } catch (error) {
       console.error(error);

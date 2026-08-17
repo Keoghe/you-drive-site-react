@@ -36,7 +36,7 @@
         }
       }
     },
-    "/api/Aulas/usuarioId/{usuarioId}/mes/{mes}": {
+    "/api/Aulas/usuarioId/{usuarioId}/mes/{mes}/tipoUsuario/{tipoUsuario}": {
       "get": {
         "tags": [
           "Aulas"
@@ -58,6 +58,14 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "tipoUsuario",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TipoUsuario"
             }
           }
         ],
@@ -903,8 +911,8 @@
             "nullable": true
           },
           "status": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           },
           "valorFinal": {
             "type": "number",
@@ -1194,6 +1202,15 @@
           }
         },
         "additionalProperties": false
+      },
+      "TipoUsuario": {
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "UsuarioDTO": {
         "type": "object",

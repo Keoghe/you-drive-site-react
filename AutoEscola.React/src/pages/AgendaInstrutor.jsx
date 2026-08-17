@@ -24,6 +24,11 @@ export default function AulasAgendadas() {
     2: { descricao: "Cancelada", cor: "#e74c3c" },
     3: { descricao: "Iniciada", cor: "#3498db" },
   };
+
+  const TipoUsuario = { 
+    INSTRUTOR: 2
+  };
+
   const [dataSelecionada, setDataSelecionada] = useState(new Date());
   const [mostrarModalAtivacao, setMostrarModalAtivacao] = useState(false);
   const [mostrarModalDesativacao, setMostrarModalDesativacao] = useState(false);
@@ -56,9 +61,9 @@ export default function AulasAgendadas() {
   async function carregarAulas(mes) {
     try {
       setLoading(true);
-
+debugger;
       const response = await fetch(
-        `${API_BASE_URL}/aulas/usuarioId/${usuarioLogado.usuarioId}/mes/${mes}`, // ajuste sua rota
+        `${API_BASE_URL}/aulas/usuarioId/${usuarioLogado.usuarioId}/mes/${mes}/tipoUsuario/${TipoUsuario.INSTRUTOR}`, // ajuste sua rota
         {
           headers: {
             Authorization: `Bearer ${usuarioLogado.token}`,

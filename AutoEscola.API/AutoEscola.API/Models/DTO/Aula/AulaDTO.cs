@@ -17,7 +17,7 @@
 
         public TimeOnly? HoraFim { get; set; }
 
-        public string? Status { get; set; }
+        public int Status { get; set; }
 
         public decimal? ValorFinal { get; set; }
 

@@ -18,7 +18,7 @@
   {
     "ContainingType": "AutoEscola.API.Controllers.AulasController",
     "Method": "BuscarAulasUsuario",
-    "RelativePath": "api/Aulas/usuarioId/{usuarioId}/mes/{mes}",
+    "RelativePath": "api/Aulas/usuarioId/{usuarioId}/mes/{mes}/tipoUsuario/{tipoUsuario}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -31,6 +31,11 @@
       {
         "Name": "mes",
         "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "tipoUsuario",
+        "Type": "System.String",
         "IsRequired": true
       }
     ],
