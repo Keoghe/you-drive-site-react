@@ -7,9 +7,11 @@ namespace AutoEscola.API.BLL.Interface
 {
     public interface INotificaoAula : IBaseBLL<NotificacaoAulaDTO>
     {
-        Task<NotificacaoAulaViewModel> AdicionarNovaNotificacao(NotificacaoAulaDTO entidade);
-
+        Task<NotificacaoAulaViewModel> AdicionarNovaNotificacao(NotificacaoAulaDTO entidade); 
         Task<List<NotificacaoAulaDTO>> BuscarNotificaoInstrutor(int instrutorId, StatusNotificacaoAula statusNoticacaoAula);
-        Task<NotificacaoAulaViewModel> AtualizarStatusNotificaoInstrutor(AlterarStatusNotificacaoAula alterarStatusNotificacaoAula);
+        Task<List<NotificacaoAulaDTO>> BuscarNotificaoAluno(int alunoId);
+        Task<NotificacaoAulaViewModel> AtualizarStatusNotificaoInstrutor(AlterarStatusNotificacaoAulaDTO alterarStatusNotificacaoAula);
+        Task<NotificacaoAulaViewModel> AtualizarPosicaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario);
+        
     }
 }

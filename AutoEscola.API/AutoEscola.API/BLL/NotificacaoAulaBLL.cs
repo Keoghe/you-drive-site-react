@@ -60,8 +60,10 @@ namespace AutoEscola.API.BLL
             {
                 AlunoId = notificacaoAula.AlunoId,
                 InstrutorId = notificacaoAula.InstrutorId,
-                Latitude = notificacaoAula.Latitude,
-                Longitude = notificacaoAula.Longitude,
+                LatitudeAluno = notificacaoAula.LatitudeAluno,
+                LongitudeAluno = notificacaoAula.LongitudeAluno,
+                LatitudeInstrutor = notificacaoAula.LatitudeInstrutor,
+                LongitudeInstrutor = notificacaoAula.LongitudeInstrutor,
                 Descricao = notificacaoAula.Descricao,
                 DataSolicitacao = DateTime.Now,
                 Status = (int)StatusNotificacao.Pendente,
@@ -108,8 +110,10 @@ namespace AutoEscola.API.BLL
                 {
                     Id = x.Id,
                     AlunoId = x.AlunoId,
-                    Latitude = x.Latitude,
-                    Longitude = x.Longitude,
+                    LatitudeAluno = x.LatitudeAluno,
+                    LongitudeAluno = x.LongitudeAluno,
+                    LatitudeInstrutor = x.LatitudeInstrutor,
+                    LongitudeInstrutor = x.LongitudeInstrutor,
                     DataSolicitacao = x.DataSolicitacao,
                     Descricao = x.Descricao,
                     Excluido = x.Excluido,
@@ -120,6 +124,38 @@ namespace AutoEscola.API.BLL
 
             return notificacao;
         }
+        public async Task<List<NotificacaoAulaDTO>> BuscarNotificaoAluno(int alunoId)
+        {
+            var inicioDia = DateTime.Today;
+
+            var fimDia = inicioDia.AddDays(1);
+
+            var notificacao = await _context.NotificacaoAula.Where(c => c.AlunoId == alunoId && 
+                                                                   c.DataSolicitacao >= inicioDia && 
+                                                                   c.DataSolicitacao < fimDia &&
+                                                                   (c.Status == (int)StatusNotificacaoAula.PENDENTE || c.Status == (int)StatusNotificacaoAula.ACEITA)
+
+
+                                                                   )
+                .Select(x => new NotificacaoAulaDTO
+                {
+                    Id = x.Id,
+                    AlunoId = x.AlunoId,
+                    LatitudeAluno = x.LatitudeAluno,
+                    LongitudeAluno = x.LongitudeAluno,
+                    LatitudeInstrutor = x.LatitudeInstrutor,
+                    LongitudeInstrutor = x.LongitudeInstrutor,
+                    DataSolicitacao = x.DataSolicitacao,
+                    Descricao = x.Descricao,
+                    Excluido = x.Excluido,
+                    InstrutorId = x.InstrutorId,
+                    Status = x.Status
+
+                }).ToListAsync();
+
+            return notificacao;
+        }
+
 
         public Task<List<NotificacaoAulaDTO>> BuscarTodos(int id)
         {
@@ -136,14 +172,51 @@ namespace AutoEscola.API.BLL
             throw new NotImplementedException();
         }
 
-        public async Task<NotificacaoAulaViewModel> AtualizarStatusNotificaoInstrutor(AlterarStatusNotificacaoAula alterarStatusNotificacaoAula)
+        public async Task<NotificacaoAulaViewModel> AtualizarStatusNotificaoInstrutor(AlterarStatusNotificacaoAulaDTO alterarStatusNotificacaoAula)
         {
             var notificacao = _context.NotificacaoAula.FirstOrDefault(n => n.Id == alterarStatusNotificacaoAula.NotificacaoId);
 
+            if (notificacao != null && (notificacao.Status != (int)StatusNotificacaoAula.CANCELADA || notificacao.Status != (int)StatusNotificacaoAula.RECUSADA))
+            {
+                notificacao.Status = alterarStatusNotificacaoAula.Status; 
+
+                await _context.SaveChangesAsync();
+            }
+
+            return new NotificacaoAulaViewModel
+            {
+                Id = notificacao.Id,
+                AlunoId = notificacao.AlunoId,
+                InstrutorId = notificacao.InstrutorId,
+                Descricao = notificacao.Descricao,
+                DataSolicitacao = notificacao.DataSolicitacao,
+                Status = notificacao.Status,
+                Excluido = notificacao.Excluido
+            };
+        }
+
+        public async Task<NotificacaoAulaViewModel> AtualizarPosicaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario)
+        {
+            var notificacao = _context.NotificacaoAula.FirstOrDefault(n => n.Id == atualizarPosicaoUsuario.NotificacaoId);
+
             if (notificacao != null)
             {
-                notificacao.Status = alterarStatusNotificacaoAula.Status;
-
+                if(atualizarPosicaoUsuario.LatitudeInstrutor != 0)
+                {
+                    notificacao.LatitudeInstrutor = atualizarPosicaoUsuario.LatitudeInstrutor;
+                }
+                if(atualizarPosicaoUsuario.LongitudeInstrutor != 0)
+                {
+                    notificacao.LongitudeInstrutor = atualizarPosicaoUsuario.LongitudeInstrutor;
+                }
+                if(atualizarPosicaoUsuario.LatitudeAluno != 0)
+                {
+                    notificacao.LatitudeAluno = atualizarPosicaoUsuario.LatitudeAluno;
+                }
+                if(atualizarPosicaoUsuario.LongitudeAluno != 0)
+                {
+                    notificacao.LongitudeAluno = atualizarPosicaoUsuario.LongitudeAluno;
+                }
                 await _context.SaveChangesAsync();
             }
 

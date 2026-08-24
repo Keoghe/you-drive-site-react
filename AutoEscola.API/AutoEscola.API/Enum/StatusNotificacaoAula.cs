@@ -2,9 +2,10 @@
 {
     public enum StatusNotificacaoAula
     {
-        Pendente = 1,
-        Aceita = 2,
-        Recusada = 3,
-        Excluida = 4
+        PENDENTE = 1,
+        ACEITA = 2,
+        RECUSADA = 3,
+        EXCLUIDA = 4,
+        CANCELADA = 5
     }
 }

@@ -361,6 +361,22 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
+    "Method": "BuscarNotificacaoAluno",
+    "RelativePath": "api/NotificacaoAula/aluno/{alunoId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "alunoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
     "Method": "AtualizarStatusNotificacao",
     "RelativePath": "api/NotificacaoAula/atualizar",
     "HttpMethod": "POST",
@@ -369,7 +385,23 @@
     "Parameters": [
       {
         "Name": "alterarStatusNotificacaoAula",
-        "Type": "AutoEscola.API.Models.DTO.Notificacao.AlterarStatusNotificacaoAula",
+        "Type": "AutoEscola.API.Models.DTO.Notificacao.AlterarStatusNotificacaoAulaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
+    "Method": "AtualizarLicalizacaoUsuario",
+    "RelativePath": "api/NotificacaoAula/atualizar/localizacao",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "atualizarPosicaoUsuario",
+        "Type": "AutoEscola.API.Models.DTO.Notificacao.AtualizarPosicaoUsuarioDTO",
         "IsRequired": true
       }
     ],

@@ -610,17 +610,48 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlterarStatusNotificacaoAula"
+                "$ref": "#/components/schemas/AlterarStatusNotificacaoAulaDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlterarStatusNotificacaoAula"
+                "$ref": "#/components/schemas/AlterarStatusNotificacaoAulaDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AlterarStatusNotificacaoAula"
+                "$ref": "#/components/schemas/AlterarStatusNotificacaoAulaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/NotificacaoAula/atualizar/localizacao": {
+      "post": {
+        "tags": [
+          "NotificacaoAula"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarPosicaoUsuarioDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarPosicaoUsuarioDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizarPosicaoUsuarioDTO"
               }
             }
           }
@@ -640,6 +671,29 @@
         "parameters": [
           {
             "name": "instrutorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/NotificacaoAula/aluno/{alunoId}": {
+      "get": {
+        "tags": [
+          "NotificacaoAula"
+        ],
+        "parameters": [
+          {
+            "name": "alunoId",
             "in": "path",
             "required": true,
             "schema": {
@@ -858,7 +912,7 @@
   },
   "components": {
     "schemas": {
-      "AlterarStatusNotificacaoAula": {
+      "AlterarStatusNotificacaoAulaDTO": {
         "type": "object",
         "properties": {
           "notificacaoId": {
@@ -868,6 +922,32 @@
           "status": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AtualizarPosicaoUsuarioDTO": {
+        "type": "object",
+        "properties": {
+          "notificacaoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "latitudeAluno": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitudeAluno": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitudeInstrutor": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitudeInstrutor": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -1176,11 +1256,19 @@
             "type": "integer",
             "format": "int32"
           },
-          "latitude": {
+          "latitudeAluno": {
             "type": "number",
             "format": "double"
           },
-          "longitude": {
+          "longitudeAluno": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitudeInstrutor": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitudeInstrutor": {
             "type": "number",
             "format": "double"
           },

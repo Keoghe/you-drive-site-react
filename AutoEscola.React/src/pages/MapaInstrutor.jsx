@@ -6,7 +6,7 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import L from "leaflet";
 import { useEffect, useState, useRef } from "react";
 import API_BASE_URL from "../config/api";
-import { FaPlus, FaPencilAlt, FaSearch } from "react-icons/fa";
+import { FaPlus, FaPencilAlt, FaSearch, FaTrash } from "react-icons/fa";
 
 // ================== ICONE ==================
 const icon = new L.Icon({
@@ -81,44 +81,54 @@ export default function MapaInstrutores() {
   const [notificaoAulaId, setNotificaoAulaId] = useState("");
   const [alunoSelecionado, setAlunoSelecionado] = useState([]);
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
+  const [mostrarModalCancelamentoAula, setMostrarModalCancelamentoAula] =
+    useState(false);
   const [loading, setLoading] = useState(true);
-
+  const statusDeslocamentoRef = useRef(true);
   const StatusNotificacaoAula = Object.freeze({
     Pendente: 1,
     Aceita: 2,
     Recusada: 3,
     Excluida: 4,
+    Cancelado: 5,
   });
   const timeoutRef = useRef(null);
 
-  async function obterLocalizacaoAtual() {
-    if (!navigator.geolocation) {
-      alert("Geolocalização não suportada pelo navegador.");
-      return;
-    }
+  function obterLocalizacaoAtual() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject("Geolocalização não suportada.");
+        return;
+      }
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
 
-        setLocalizacaoUsuario([lat, lng]);
-        setPosicaoMapa([lat, lng]); // centraliza o mapa
-      },
-      (error) => {
-        console.error("Erro ao obter localização:", error);
-        alert("Não foi possível obter sua localização.");
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      },
-    );
+          const novaPosicao = [lat, lng];
+
+          setLocalizacaoUsuario(novaPosicao);
+          setPosicaoMapa(novaPosicao);
+
+          resolve(novaPosicao);
+        },
+        (error) => {
+          console.error("Erro ao obter localização:", error);
+          reject(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        },
+      );
+    });
   }
 
-  async function aceitarAula() {
+  async function aceitarAula(cadastrarAula = false) {
     try {
+      debugger;
       const response = await fetch(
         `${API_BASE_URL}/notificacaoAula/atualizar`,
         {
@@ -144,22 +154,108 @@ export default function MapaInstrutores() {
       console.error(error);
     } finally {
       alunoSelecionado.posicao = [
-        Number(alunoAvulso.latitude),
-        Number(alunoAvulso.longitude),
+        Number(alunoAvulso.latitudeAluno),
+        Number(alunoAvulso.longitudeAluno),
       ];
-      debugger;
+
       setAlunoSelecionado(alunoSelecionado);
       setMostrarModalSolicitacao(false);
       const dadoAula = {
         usuarioId: alunoAvulso.alunoId,
         InstrutorId: usuarioLogado.usuarioId,
         PromocaoId: 1,
-        ValorAulaId: 2
+        ValorAulaId: 2,
       };
 
-      gravarAgendaAula(dadoAula);
+      if (cadastrarAula) gravarAgendaAula(dadoAula);
     }
   }
+
+  async function atualizarLocalizacaoInstrutor(
+    posicaoAtual = localizacaoUsuario,
+  ) {
+    try {
+      debugger;
+      const response = await fetch(
+        `${API_BASE_URL}/notificacaoAula/atualizar/localizacao`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+          body: JSON.stringify({
+            NotificacaoId: notificaoAulaId,
+            LatitudeInstrutor: posicaoAtual[0],
+            LongitudeInstrutor: posicaoAtual[1],
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Ocorrreu um erro ao aceitar a aula.");
+      }
+
+      const data = await response.json();
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  }
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function acompanharDeslocamento() {
+    while (statusDeslocamentoRef.current) {
+      debugger;
+      const posicaoAtual = await obterLocalizacaoAtual();
+
+      const proximidade = distancia(
+        posicaoAtual[0],
+        posicaoAtual[1],
+        alunoSelecionado.posicao[0],
+        alunoSelecionado.posicao[1],
+      );
+
+      console.log("Distância até o aluno:", proximidade, "km");
+
+      if (proximidade <= 0.1) {
+        alert("Você chegou ao local do aluno!");
+        break;
+      }
+
+      await delay(5000);
+
+      if (!statusDeslocamentoRef.current) {
+        break;
+      }
+      await atualizarLocalizacaoInstrutor(posicaoAtual);
+    }
+  }
+
+  // async function acompanharDeslocamento() {
+
+  //   const proximidade = distancia(
+  //     posicaoMapa[0],
+  //     posicaoMapa[1],
+  //     alunoSelecionado.posicao[0],
+  //     alunoSelecionado.posicao[1],
+  //   );
+
+  //   console.log("Distância até o aluno:", proximidade, "km");
+
+  //   if (proximidade <= 0.1) {
+  //     alert("Você chegou ao local do aluno!");
+  //     return;
+  //   }
+
+  //   setTimeout(() => {
+  //     await obterLocalizacaoAtual();
+  //     await aceitarAula();
+  //     acompanharDeslocamento();
+  //   }, 5000);
+  // }
 
   async function gravarAgendaAula(dadoAula) {
     try {
@@ -246,6 +342,8 @@ export default function MapaInstrutores() {
   }
 
   // ================== DISTÂNCIA ==================
+  //Essa função calcula a distância entre dois pontos geográficos (latitude e longitude) usando a Fórmula de Haversine, que considera a curvatura da Terra.
+  //Ela retorna a distância em quilômetros.
   function distancia(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -316,7 +414,7 @@ export default function MapaInstrutores() {
         posicao: [Number(instrutor.latitude), Number(instrutor.longitude)],
       }));
       console.log(lista);
-      debugger;
+
       if (lista.length > 0) {
         for (const item of lista) {
           const dataSolicitacao = new Date(item.dataSolicitacao);
@@ -340,7 +438,7 @@ export default function MapaInstrutores() {
             setAlunoAvulso(item);
             break;
           } else {
-            finalizarNotificacao(item.id);
+            alterarStatusNotificacao(item.id, StatusNotificacaoAula.Excluida);
           }
         }
       } else {
@@ -354,7 +452,11 @@ export default function MapaInstrutores() {
     }
   }
 
-  async function finalizarNotificacao(notificacaoId) {
+  async function alterarStatusNotificacao(
+    notificacaoId,
+    status = StatusNotificacaoAula.Excluida,
+  ) {
+    debugger;
     try {
       const response = await fetch(
         `${API_BASE_URL}/notificacaoAula/atualizar`,
@@ -366,7 +468,7 @@ export default function MapaInstrutores() {
           },
           body: JSON.stringify({
             NotificacaoId: notificacaoId,
-            Status: StatusNotificacaoAula.Excluida,
+            Status: status,
           }),
         },
       );
@@ -408,6 +510,12 @@ export default function MapaInstrutores() {
     }
   }
 
+  async function iniciarDeslocamento() {
+    await aceitarAula(true);
+    statusDeslocamentoRef.current = true;
+    await acompanharDeslocamento();
+  }
+
   useEffect(() => {
     obterLocalizacaoAtual();
     carregarNotificacaoAula();
@@ -415,9 +523,21 @@ export default function MapaInstrutores() {
 
   return (
     <div className="mapa-container">
-      <h2>Aguardando Aula</h2>
+      <h2>Aula Avulsa</h2>
 
       {/* MAPA */}
+      <div className="container-botao">
+        <button
+          type="button"
+          className="btn-solicitar-aula"
+          onClick={() => {
+            setMostrarModalCancelamentoAula(true);
+          }}
+        >
+          <FaTrash />
+          <span>Cancelar Aula</span>
+        </button>
+      </div>
 
       {loading ? (
         <div className="loading-overlay">
@@ -496,7 +616,10 @@ export default function MapaInstrutores() {
                 type="button"
                 onClick={() => {
                   setMostrarModalSolicitacao(false);
-                  finalizarNotificacao(notificaoAulaId);
+                  alterarStatusNotificacao(
+                    notificaoAulaId,
+                    StatusNotificacaoAula.Recusada,
+                  );
                   carregarNotificacaoAula();
                 }}
               >
@@ -506,9 +629,55 @@ export default function MapaInstrutores() {
               <button
                 className="btn-salvar"
                 type="button"
-                onClick={() => aceitarAula()}
+                onClick={iniciarDeslocamento}
               >
                 Aceitar Aula
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mostrarModalCancelamentoAula && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Cancelar Aula</h3>
+
+            <p className="modal-texto">
+              Tem certeza que deseja cancelar esta aula?
+            </p>
+
+            <p className="modal-alerta">
+              <strong>Atenção:</strong> ao cancelar a aula, você não receberá
+              qualquer valor referente ao deslocamento realizado até o local de
+              encontro do aluno.
+            </p>
+
+            <div className="modal-actions">
+              <button
+                className="btn-cancelar"
+                type="button"
+                onClick={() => {
+                  setMostrarModalCancelamentoAula(false);
+                }}
+              >
+                Não, Voltar
+              </button>
+
+              <button
+                className="btn-salvar"
+                type="button"
+                onClick={() => {
+                  alterarStatusNotificacao(
+                    notificaoAulaId,
+                    StatusNotificacaoAula.Cancelado,
+                  );
+                  statusDeslocamentoRef.current = false;
+                  setMostrarModalCancelamentoAula(false);
+                  carregarNotificacaoAula();
+                }}
+              >
+                Sim, Cancelar Aula
               </button>
             </div>
           </div>

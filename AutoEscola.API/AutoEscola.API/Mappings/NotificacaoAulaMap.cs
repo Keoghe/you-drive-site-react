@@ -20,11 +20,17 @@ public class NotificacaoAulaMap : IEntityTypeConfiguration<NotificacaoAula>
         builder.Property(c => c.InstrutorId)
             .HasColumnName("instrutor_id");
 
-        builder.Property(i => i.Latitude)
-            .HasColumnName("latitude");
+        builder.Property(i => i.LatitudeAluno)
+            .HasColumnName("LatitudeAluno");
 
-        builder.Property(i => i.Longitude)
-            .HasColumnName("longitude");
+        builder.Property(i => i.LongitudeAluno)
+            .HasColumnName("LongitudeAluno");
+
+        builder.Property(i => i.LatitudeInstrutor)
+           .HasColumnName("LatitudeInstrutor");
+
+        builder.Property(i => i.LongitudeInstrutor)
+            .HasColumnName("LongitudeInstrutor");
 
         builder.Property(c => c.Descricao)
             .HasColumnName("descricao")

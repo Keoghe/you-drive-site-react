@@ -126,7 +126,7 @@ namespace AutoEscola.API.BLL
             return aulas;
         }
 
-        public async Task<Aula> CriarAula(AulaDTO novaAula)
+        public async Task<AulaDTO> CriarAula(AulaDTO novaAula)
         {
             await ValidarDadosAula(novaAula);
 
@@ -147,7 +147,9 @@ namespace AutoEscola.API.BLL
             await _context.Aulas.AddAsync(aula);
             await _context.SaveChangesAsync();
 
-            return aula;
+            novaAula.Id = aula.Id;
+
+            return novaAula;
         }
 
         public void Dispose()

@@ -9,30 +9,30 @@ import API_BASE_URL from "../config/api";
 import { FaPlus, FaPencilAlt, FaSearch } from "react-icons/fa";
 
 // ================== DADOS ==================
-const instrutores = [
-  {
-    id: 1,
-    nome: "Carlos Silva",
-    foto: "/images/instrutores/1.jpg", // ✅ corrigido
-    placa: "ABC-1234",
-    carro: "Onix",
-    cor: "Branco",
-    nota: 5,
-    valor: "R$ 120/h",
-    posicao: [-23.544, -46.629],
-  },
-  {
-    id: 2,
-    nome: "Ana Souza",
-    foto: "/images/instrutores/2.jpg", // ✅ corrigido
-    placa: "XYZ-5678",
-    carro: "HB20",
-    cor: "Prata",
-    nota: 4,
-    valor: "R$ 110/h",
-    posicao: [-23.548, -46.633],
-  },
-];
+// const instrutores = [
+//   {
+//     id: 1,
+//     nome: "Carlos Silva",
+//     foto: "/images/instrutores/1.jpg", // ✅ corrigido
+//     placa: "ABC-1234",
+//     carro: "Onix",
+//     cor: "Branco",
+//     nota: 5,
+//     valor: "R$ 120/h",
+//     posicao: [-23.544, -46.629],
+//   },
+//   {
+//     id: 2,
+//     nome: "Ana Souza",
+//     foto: "/images/instrutores/2.jpg", // ✅ corrigido
+//     placa: "XYZ-5678",
+//     carro: "HB20",
+//     cor: "Prata",
+//     nota: 4,
+//     valor: "R$ 110/h",
+//     posicao: [-23.548, -46.633],
+//   },
+// ];
 
 // ================== ICONE ==================
 const icon = new L.Icon({
@@ -85,6 +85,7 @@ export default function MapaInstrutores() {
   const [alunoAvulso, setAlunoAvulso] = useState([]);
   const [cidadeAluno, setCidadeAluno] = useState("");
   const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
+  const [instrutores, setInstrutores] = useState(null);
   const [paginacaoInstrutores, setPaginacaoInstrutores] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -106,6 +107,7 @@ export default function MapaInstrutores() {
 
         const endereco = await buscarDadosEndereco(lat, lng);
         setCidadeAluno(endereco);
+        debugger;
         carregarInstrutoresDisponiveis(endereco.cidade);
       },
       (error) => {
@@ -147,9 +149,9 @@ export default function MapaInstrutores() {
 
       setInstrutores(lista);
       setPaginacaoInstrutores(data);
-      if (lista.length > 0) {
-        setInstrutorSelecionado(lista[0]);
-      }
+      // if (lista.length > 0) {
+      //   setInstrutorSelecionado(lista[0]);
+      // }
     } catch (error) {
       console.error(error);
     } finally {
@@ -160,6 +162,10 @@ export default function MapaInstrutores() {
   async function CriarSolicitacaoAula(instrutorId) {
     try {
       debugger;
+      if (CriarSolicitacaoAula == undefined) {
+        console.log("Nenhum instrutor disponível para solicitar aula.");
+        return;
+      }
       const response = await fetch(
         `${API_BASE_URL}/notificacaoAula/adicionar`,
         {
@@ -170,8 +176,8 @@ export default function MapaInstrutores() {
           },
           body: JSON.stringify({
             AlunoId: usuarioLogado.usuarioId,
-            Latitude: cidadeAluno.latitude,
-            Longitude: cidadeAluno.longitude,
+            LatitudeAluno: cidadeAluno.latitude,
+            LongitudeAluno: cidadeAluno.longitude,
             InstrutorId: instrutorId,
             Descricao: `Solicitação de aula do aluno ${usuarioLogado.nome} no bairro ${cidadeAluno.bairro}, cidade ${cidadeAluno.cidade}, estado ${cidadeAluno.estado}.`,
           }),
@@ -198,13 +204,55 @@ export default function MapaInstrutores() {
       quantidade,
     );
 
-    console.log(instrutores);
+    console.log(instrutorSelecionado);
     setMostrarModalSolicitacao(false);
     setLoading(true);
-    instrutores.forEach(async (instrutor) => {  
+    instrutores.forEach(async (instrutor) => {
       const aula = await CriarSolicitacaoAula(instrutor.usuarioId);
       debugger;
     });
+  }
+
+  async function buscarAulaSolicitada() {
+    const response = await fetch(
+      `${API_BASE_URL}/notificacaoAula/aluno/${usuarioLogado.usuarioId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${usuarioLogado.token}`,
+        },
+      },
+    );
+    const data = await response.json();
+    const instrutorTeste = {
+      avaliacao: 4,
+      bairro: "Centro",
+      caminhoSelfie:
+        "C:\\Users\\joelm\\Downloads\\arquivos\\6_123.412.341-23\\FOTO_SELFIE.png",
+      cidade: "Ferraz de Vasconcelos",
+      cor: "PRATA",
+      estado: "São Paulo",
+      foto: "iVBORw0KGgoAAAANSUhEUgAAAn8AAAJ/CAIAAACGLCKsAAAAA",
+      latitude: -23.544489,
+      longitude: -46.3613345,
+      modelo: "Celta",
+      nome: "Instrutor 01",
+      nota: 4,
+      placa: "ALZ-5374",
+      posicao: [data[0].latitudeInstrutor, data[0].longitudeInstrutor],
+      status: 0,
+      usuarioId: 6,
+      valor: 250,
+    };
+    debugger;
+    setInstrutorSelecionado(instrutorTeste);
+    setPosicaoMapa([data[0].latitudeAluno, data[0].longitudeAluno]);
+    
+    
+    console.log("Instrutor de data:", data);
+    console.log("Instrutor de Teste:", instrutorTeste);
+    console.log("Origem:", posicaoMapa); 
+    console.log("Destino:", instrutorSelecionado?.posicao);
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -311,6 +359,7 @@ export default function MapaInstrutores() {
 
   useEffect(() => {
     obterLocalizacaoAtual();
+    buscarAulaSolicitada();
   }, []);
 
   return (
@@ -351,7 +400,7 @@ export default function MapaInstrutores() {
           />
         )}
 
-        {instrutores.map((instrutor) => (
+        {/* {instrutores.map((instrutor) => (
           <Marker
             key={instrutor.usuarioId}
             position={instrutor.posicao}
@@ -385,7 +434,7 @@ export default function MapaInstrutores() {
               </div>
             </Popup>
           </Marker>
-        ))}
+        ))} */}
       </MapContainer>
 
       {mostrarModalSolicitacao && (
@@ -428,7 +477,7 @@ export default function MapaInstrutores() {
           <p>Buscando Instrutor...</p>
         </div>
       ) : (
-        <div>achou</div>
+        <div></div>
       )}
     </div>
   );

@@ -84,7 +84,7 @@ namespace AutoEscola.API.Controllers
         }
 
         [HttpPost("atualizar")]
-        public async Task<IActionResult> AtualizarStatusNotificacao(AlterarStatusNotificacaoAula alterarStatusNotificacaoAula)
+        public async Task<IActionResult> AtualizarStatusNotificacao(AlterarStatusNotificacaoAulaDTO alterarStatusNotificacaoAula)
         {
             try
             {
@@ -97,13 +97,25 @@ namespace AutoEscola.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        [HttpPost("atualizar/localizacao")]
+        public async Task<IActionResult> AtualizarLicalizacaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario)
+        {
+            try
+            {
+                var notificacao = await _notificaoAulaBll.AtualizarPosicaoUsuario(atualizarPosicaoUsuario);
+                return Ok(notificacao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpGet("instrutor/{instrutorId}/pendente")]
         public async Task<IActionResult> BuscarNotificacaoInstrutor(int instrutorId)
         {
             try
             {
-                var resultado = await _notificaoAulaBll.BuscarNotificaoInstrutor(instrutorId, StatusNotificacaoAula.Pendente);
+                var resultado = await _notificaoAulaBll.BuscarNotificaoInstrutor(instrutorId, StatusNotificacaoAula.PENDENTE);
                 var novaNotificacao = new List<NotificacaoAulaViewModel>();
                 if (resultado != null)
                 {
@@ -114,14 +126,52 @@ namespace AutoEscola.API.Controllers
                             Id = item.Id,
                             AlunoId = item.AlunoId,
                             InstrutorId = item.InstrutorId,
-                            Latitude = item.Latitude,
-                            Longitude = item.Longitude,
+                            LatitudeAluno = item.LatitudeAluno,
+                            LongitudeAluno = item.LongitudeAluno,
+                            LatitudeInstrutor = item.LatitudeInstrutor,
+                            LongitudeInstrutor = item.LongitudeInstrutor,
                             Descricao = item.Descricao,
                             DataSolicitacao = item.DataSolicitacao,
                             Status = item.Status,
                             Excluido = item.Excluido
                         });
                     } 
+                }
+
+                return Ok(novaNotificacao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("aluno/{alunoId}")]
+        public async Task<IActionResult> BuscarNotificacaoAluno(int alunoId)
+        {
+            try
+            {
+                var resultado = await _notificaoAulaBll.BuscarNotificaoAluno(alunoId);
+                var novaNotificacao = new List<NotificacaoAulaViewModel>();
+                if (resultado != null)
+                {
+                    foreach (var item in resultado)
+                    {
+                        novaNotificacao.Add(new NotificacaoAulaViewModel
+                        {
+                            Id = item.Id,
+                            AlunoId = item.AlunoId,
+                            InstrutorId = item.InstrutorId,
+                            LatitudeAluno = item.LatitudeAluno,
+                            LongitudeAluno = item.LongitudeAluno,
+                            LatitudeInstrutor = item.LatitudeInstrutor,
+                            LongitudeInstrutor = item.LongitudeInstrutor,
+                            Descricao = item.Descricao,
+                            DataSolicitacao = item.DataSolicitacao,
+                            Status = item.Status,
+                            Excluido = item.Excluido
+                        });
+                    }
                 }
 
                 return Ok(novaNotificacao);

@@ -7,7 +7,7 @@ namespace AutoEscola.API.BLL.Interface
 {
     public interface IAulas : IBaseBLL<AulaDTO>
     {
-        Task<Aula> CriarAula(AulaDTO novaAula);
+        Task<AulaDTO> CriarAula(AulaDTO novaAula);
         Task<Aula> BuscarAulaPorId(int AulaId);
         Task<List<Aula>> BuscarAulas();
         Task<bool> AtualizarAulaPorId(AulaDTO AulaId);

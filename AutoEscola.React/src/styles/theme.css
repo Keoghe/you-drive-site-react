@@ -723,6 +723,47 @@ body {
   transform: scale(1.2);
 }
 
+.container-botao {
+  width: 100%;
+}
+
+.btn-solicitar-aula {
+  width: 100%;
+  min-height: 70px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  background: #f01010;
+  color: #fff;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+  transition: all 0.2s ease;
+}
+
+.btn-solicitar-aula:hover {
+  background: #c5242c;
+}
+
+.btn-solicitar-aula:active {
+  transform: scale(0.98);
+}
+
+.btn-solicitar-aula svg {
+  font-size: 24px;
+}
+
 /* CSS PARA A TELA DE AGENDAR AULAS FOCADO NO MAPA - FIM*/
 
 /* CSS TELA DE DADOS CADASTRAIS CONTA.JSX*/

@@ -75,7 +75,7 @@ export default function Header() {
       );
 
       const data = await response.json();
-      debugger;
+       
       console.log("Menu carregado:", data);
       setMenu(data);
     } catch (error) {
