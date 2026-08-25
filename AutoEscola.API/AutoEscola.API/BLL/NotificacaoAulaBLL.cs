@@ -1,6 +1,7 @@
 ﻿using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
 using AutoEscola.API.Enum;
+using AutoEscola.API.Models.DTO.Aula;
 using AutoEscola.API.Models.DTO.Notificacao;
 using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Notific_acoes;
@@ -156,7 +157,6 @@ namespace AutoEscola.API.BLL
             return notificacao;
         }
 
-
         public Task<List<NotificacaoAulaDTO>> BuscarTodos(int id)
         {
             throw new NotImplementedException();
@@ -232,5 +232,6 @@ namespace AutoEscola.API.BLL
             };
 
         }
+         
     }
 }

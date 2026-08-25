@@ -2,6 +2,7 @@
 using AutoEscola.API.BLL.Interface;
 using AutoEscola.API.Data;
 using AutoEscola.API.Enum;
+using AutoEscola.API.Models.DTO.Aula;
 using AutoEscola.API.Models.DTO.Instrutor;
 using AutoEscola.API.Models.DTO.Notificacao;
 using AutoEscola.API.Models.ViewModel.Instrutor;
@@ -110,6 +111,8 @@ namespace AutoEscola.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+         
+
         [HttpGet("instrutor/{instrutorId}/pendente")]
         public async Task<IActionResult> BuscarNotificacaoInstrutor(int instrutorId)
         {

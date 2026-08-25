@@ -87,9 +87,20 @@ export default function MapaInstrutores() {
   const [instrutorSelecionado, setInstrutorSelecionado] = useState(null);
   const [instrutores, setInstrutores] = useState(null);
   const [paginacaoInstrutores, setPaginacaoInstrutores] = useState([]);
+  const [aulaCadastrada, setAulaCadastrada] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
+  const [cancelarSolicitacaoAula, setCancelarSolicitacaoAula] = useState(false);
+
+  const [mensagemCancelamento, setMensagemCancelamento] = useState("");
+  let mensagemCancelamentoPadrao = `Ao cancelar a aula após a confirmação do instrutor, será cobrada uma
+            taxa correspondente a 10% do valor da aula. Essa cobrança ocorre
+            porque o instrutor já aceitou realizar a aula e pode estar em
+            deslocamento até o local combinado, gerando custos e despesas
+            relacionados ao deslocamento.`;
+
+  let mensagemCancelamentoAluna = `O instrutor já aceitou a aula, o cancelamento gerará um custo de 10% do valor da aula. <p>Tem certeza que deseja cancelar?</>`;
 
   async function obterLocalizacaoAtual() {
     if (!navigator.geolocation) {
@@ -190,7 +201,37 @@ export default function MapaInstrutores() {
       }
 
       const data = await response.json();
+      console.log(data);
+      setAulaCadastrada(data);
     } catch (error) {
+      console.error("Erro ao criar solicitação de aula:", error);
+    } finally {
+      // setLoading(false);
+    }
+  }
+
+  async function CancelarSolicitacaoAula(instrutorId) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/notificacaoAula/${aulaCadastrada.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Login inválido");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setAulaCadastrada(data);
+    } catch (error) {
+      console.error("Erro ao criar solicitação de aula:", error);
     } finally {
       // setLoading(false);
     }
@@ -247,11 +288,10 @@ export default function MapaInstrutores() {
     debugger;
     setInstrutorSelecionado(instrutorTeste);
     setPosicaoMapa([data[0].latitudeAluno, data[0].longitudeAluno]);
-    
-    
+
     console.log("Instrutor de data:", data);
     console.log("Instrutor de Teste:", instrutorTeste);
-    console.log("Origem:", posicaoMapa); 
+    console.log("Origem:", posicaoMapa);
     console.log("Destino:", instrutorSelecionado?.posicao);
   }
 
@@ -471,8 +511,51 @@ export default function MapaInstrutores() {
         </div>
       )}
 
+      {cancelarSolicitacaoAula && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Atenção: cancelamento da aula</h3>
+            {mensagemCancelamento}
+            <div className="modal-actions">
+              <button
+                className="btn-cancelar"
+                type="button"
+                onClick={() => {
+                  setCancelarSolicitacaoAula(false);
+                  setLoading(true);
+                }}
+              >
+                Cancelar
+              </button>
+
+              <button
+                className="btn-salvar"
+                type="button"
+                onClick={() => {
+                  console.log("Aula cancelada");
+                  setCancelarSolicitacaoAula(false);
+                  setLoading(false);
+                }}
+              >
+                Solicitar Aula
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="loading-overlay">
+          <button
+            className="close-button"
+            onClick={() => {
+              setLoading(false);
+              setCancelarSolicitacaoAula(true);
+              setMensagemCancelamento(mensagemCancelamentoPadrao);
+            }}
+          >
+            ✕
+          </button>
           <div className="spinner"></div>
           <p>Buscando Instrutor...</p>
         </div>
