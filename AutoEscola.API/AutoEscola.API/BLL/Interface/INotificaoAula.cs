@@ -12,6 +12,7 @@ namespace AutoEscola.API.BLL.Interface
         Task<List<NotificacaoAulaDTO>> BuscarNotificaoInstrutor(int instrutorId, StatusNotificacaoAula statusNoticacaoAula);
         Task<List<NotificacaoAulaDTO>> BuscarNotificaoAluno(int alunoId);
         Task<NotificacaoAulaViewModel> AtualizarStatusNotificaoInstrutor(AlterarStatusNotificacaoAulaDTO alterarStatusNotificacaoAula);
-        Task<NotificacaoAulaViewModel> AtualizarPosicaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario); 
+        Task<NotificacaoAulaViewModel> AtualizarPosicaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario);
+        Task<CancelamentoNotificacaoAulaViewModel> CancelarAulaAluno(NotificacaoAulaDTO notificacaoAula);
     }
 }

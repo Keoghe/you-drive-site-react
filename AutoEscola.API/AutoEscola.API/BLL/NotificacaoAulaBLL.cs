@@ -86,7 +86,7 @@ namespace AutoEscola.API.BLL
 
         public async Task<NotificacaoAulaDTO> BuscarPorId(int notificacaoId)
         {
-            var notificacao = await _context.NotificacaoAula.Where(c => c.Id == notificacaoId).Select(x => new NotificacaoAulaDTO
+            var notificacao = await _context.NotificacaoAula.Where(c => c.Id == notificacaoId && c.Excluido == (int)StatusRegistroBanco.ATIVO).Select(x => new NotificacaoAulaDTO
             {
                 Id = x.Id,
                 AlunoId = x.AlunoId,
@@ -131,8 +131,8 @@ namespace AutoEscola.API.BLL
 
             var fimDia = inicioDia.AddDays(1);
 
-            var notificacao = await _context.NotificacaoAula.Where(c => c.AlunoId == alunoId && 
-                                                                   c.DataSolicitacao >= inicioDia && 
+            var notificacao = await _context.NotificacaoAula.Where(c => c.AlunoId == alunoId &&
+                                                                   c.DataSolicitacao >= inicioDia &&
                                                                    c.DataSolicitacao < fimDia &&
                                                                    (c.Status == (int)StatusNotificacaoAula.PENDENTE || c.Status == (int)StatusNotificacaoAula.ACEITA)
 
@@ -178,7 +178,7 @@ namespace AutoEscola.API.BLL
 
             if (notificacao != null && (notificacao.Status != (int)StatusNotificacaoAula.CANCELADA || notificacao.Status != (int)StatusNotificacaoAula.RECUSADA))
             {
-                notificacao.Status = alterarStatusNotificacaoAula.Status; 
+                notificacao.Status = alterarStatusNotificacaoAula.Status;
 
                 await _context.SaveChangesAsync();
             }
@@ -197,23 +197,23 @@ namespace AutoEscola.API.BLL
 
         public async Task<NotificacaoAulaViewModel> AtualizarPosicaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario)
         {
-            var notificacao = _context.NotificacaoAula.FirstOrDefault(n => n.Id == atualizarPosicaoUsuario.NotificacaoId);
+            var notificacao = await BuscarPorId(atualizarPosicaoUsuario.NotificacaoId);
 
             if (notificacao != null)
             {
-                if(atualizarPosicaoUsuario.LatitudeInstrutor != 0)
+                if (atualizarPosicaoUsuario.LatitudeInstrutor != 0)
                 {
                     notificacao.LatitudeInstrutor = atualizarPosicaoUsuario.LatitudeInstrutor;
                 }
-                if(atualizarPosicaoUsuario.LongitudeInstrutor != 0)
+                if (atualizarPosicaoUsuario.LongitudeInstrutor != 0)
                 {
                     notificacao.LongitudeInstrutor = atualizarPosicaoUsuario.LongitudeInstrutor;
                 }
-                if(atualizarPosicaoUsuario.LatitudeAluno != 0)
+                if (atualizarPosicaoUsuario.LatitudeAluno != 0)
                 {
                     notificacao.LatitudeAluno = atualizarPosicaoUsuario.LatitudeAluno;
                 }
-                if(atualizarPosicaoUsuario.LongitudeAluno != 0)
+                if (atualizarPosicaoUsuario.LongitudeAluno != 0)
                 {
                     notificacao.LongitudeAluno = atualizarPosicaoUsuario.LongitudeAluno;
                 }
@@ -232,6 +232,34 @@ namespace AutoEscola.API.BLL
             };
 
         }
-         
+
+        public async Task<CancelamentoNotificacaoAulaViewModel> CancelarAulaAluno(NotificacaoAulaDTO notificacaoAula)
+        {
+            var notificacao = await BuscarPorId(notificacaoAula.Id);
+            var notificacaoCancelada = new CancelamentoNotificacaoAulaViewModel();
+
+            switch (notificacaoAula.Status)
+            {
+                case (int)StatusNotificacaoAula.ACEITA:
+                    notificacaoCancelada.Mensagem = "Será cobrada a taxa de cancelamento, pois a aula já foi aceita por um instrutor"; 
+                    break;
+                case (int)StatusNotificacaoAula.RECUSADA:
+                case (int)StatusNotificacaoAula.CANCELADA:
+                case (int)StatusNotificacaoAula.EXCLUIDA:
+                    notificacaoCancelada.Mensagem = "Não será cobrada a taxa de cancelamento, pois a aula não foi aceita por um instrutor";
+                    break;
+                default:
+                    notificacaoCancelada.Mensagem = "Não será cobrada a taxa de cancelamento, pois a aula não foi aceita por um instrutor";
+                    break;
+            }
+
+            var notificaoAtualizada = await AtualizarStatusNotificaoInstrutor(new AlterarStatusNotificacaoAulaDTO { NotificacaoId = notificacao.Id, Status = (int)StatusNotificacaoAula.CANCELADA });
+
+            notificacaoCancelada.Id = notificaoAtualizada.Id; 
+            notificacaoCancelada.Status = (int)StatusNotificacaoAula.CANCELADA;
+
+            return notificacaoCancelada;
+
+        }
     }
 }

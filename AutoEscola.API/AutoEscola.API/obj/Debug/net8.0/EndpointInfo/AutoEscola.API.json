@@ -663,6 +663,37 @@
         }
       }
     },
+    "/api/NotificacaoAula/aluno/cancelar": {
+      "post": {
+        "tags": [
+          "NotificacaoAula"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacaoAulaDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacaoAulaDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacaoAulaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/NotificacaoAula/instrutor/{instrutorId}/pendente": {
       "get": {
         "tags": [

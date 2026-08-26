@@ -377,6 +377,22 @@
   },
   {
     "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
+    "Method": "CancelarAulaAluno",
+    "RelativePath": "api/NotificacaoAula/aluno/cancelar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "notificacaoAluno",
+        "Type": "AutoEscola.API.Models.DTO.Notificacao.NotificacaoAulaDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AutoEscola.API.Controllers.NotificacaoAulaController",
     "Method": "AtualizarStatusNotificacao",
     "RelativePath": "api/NotificacaoAula/atualizar",
     "HttpMethod": "POST",

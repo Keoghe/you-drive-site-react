@@ -92,6 +92,7 @@ export default function MapaInstrutores() {
 
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
   const [cancelarSolicitacaoAula, setCancelarSolicitacaoAula] = useState(false);
+  const [solicitacaoAulaCancelada, setSolicitacaoAulaCancelada] = useState(false);
 
   const [mensagemCancelamento, setMensagemCancelamento] = useState("");
   let mensagemCancelamentoPadrao = `Ao cancelar a aula após a confirmação do instrutor, será cobrada uma
@@ -203,6 +204,7 @@ export default function MapaInstrutores() {
       const data = await response.json();
       console.log(data);
       setAulaCadastrada(data);
+      console.log("aulaCadastrada" + aulaCadastrada);
     } catch (error) {
       console.error("Erro ao criar solicitação de aula:", error);
     } finally {
@@ -210,15 +212,21 @@ export default function MapaInstrutores() {
     }
   }
 
-  async function CancelarSolicitacaoAula(instrutorId) {
+  async function CancelarSolicitacaoAula() {
     try {
+      debugger;
       const response = await fetch(
-        `${API_BASE_URL}/notificacaoAula/${aulaCadastrada.id}`,
+        `${API_BASE_URL}/notificacaoAula/aluno/cancelar`,
         {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${usuarioLogado.token}`,
           },
+          body: JSON.stringify({
+            Id: aulaCadastrada.id,
+            AlunoId: usuarioLogado.usuarioId,
+          }),
         },
       );
 
@@ -229,11 +237,13 @@ export default function MapaInstrutores() {
 
       const data = await response.json();
       console.log(data);
-      setAulaCadastrada(data);
+      
+      setMensagemCancelamento(data.mensagem);
+      setSolicitacaoAulaCancelada(true);
     } catch (error) {
       console.error("Erro ao criar solicitação de aula:", error);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   }
 
@@ -525,7 +535,7 @@ export default function MapaInstrutores() {
                   setLoading(true);
                 }}
               >
-                Cancelar
+                Fechar
               </button>
 
               <button
@@ -534,10 +544,31 @@ export default function MapaInstrutores() {
                 onClick={() => {
                   console.log("Aula cancelada");
                   setCancelarSolicitacaoAula(false);
-                  setLoading(false);
+                  CancelarSolicitacaoAula();
                 }}
               >
-                Solicitar Aula
+                Cancelar Aula
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {solicitacaoAulaCancelada && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Atenção: cancelamento da aula</h3>
+            {mensagemCancelamento}
+            <div className="modal-actions">
+                
+              <button
+                className="btn-salvar"
+                type="button"
+                onClick={() => { 
+                  setSolicitacaoAulaCancelada(false); 
+                }}
+              >
+                Fechar
               </button>
             </div>
           </div>

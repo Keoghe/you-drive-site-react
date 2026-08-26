@@ -98,6 +98,7 @@ namespace AutoEscola.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpPost("atualizar/localizacao")]
         public async Task<IActionResult> AtualizarLicalizacaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario)
         {
@@ -111,7 +112,22 @@ namespace AutoEscola.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-         
+
+        [HttpPost("aluno/cancelar")]
+        public async Task<IActionResult> CancelarAulaAluno(NotificacaoAulaDTO notificacaoAluno)
+        {
+            try
+            {
+                var notificacao = await _notificaoAulaBll.CancelarAulaAluno(notificacaoAluno);
+
+                return Ok(notificacao);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpGet("instrutor/{instrutorId}/pendente")]
         public async Task<IActionResult> BuscarNotificacaoInstrutor(int instrutorId)
