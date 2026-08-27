@@ -71,6 +71,10 @@ namespace AutoEscola.API.Controllers
                         InstrutorId = resultado.InstrutorId,
                         Descricao = resultado.Descricao,
                         DataSolicitacao = resultado.DataSolicitacao,
+                        LatitudeAluno = resultado.LatitudeAluno,
+                        LongitudeAluno = resultado.LongitudeAluno,
+                        LatitudeInstrutor = resultado.LatitudeInstrutor,
+                        LongitudeInstrutor = resultado.LongitudeInstrutor,
                         Status = resultado.Status,
                         Excluido = resultado.Excluido
                     };

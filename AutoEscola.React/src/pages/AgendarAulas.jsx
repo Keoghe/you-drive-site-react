@@ -92,7 +92,15 @@ export default function MapaInstrutores() {
 
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
   const [cancelarSolicitacaoAula, setCancelarSolicitacaoAula] = useState(false);
-  const [solicitacaoAulaCancelada, setSolicitacaoAulaCancelada] = useState(false);
+  const [solicitacaoAulaCancelada, setSolicitacaoAulaCancelada] =
+    useState(false);
+  const StatusNotificacaoAula = Object.freeze({
+    Pendente: 1,
+    Aceita: 2,
+    Recusada: 3,
+    Excluida: 4,
+    Cancelado: 5,
+  });
 
   const [mensagemCancelamento, setMensagemCancelamento] = useState("");
   let mensagemCancelamentoPadrao = `Ao cancelar a aula após a confirmação do instrutor, será cobrada uma
@@ -102,6 +110,7 @@ export default function MapaInstrutores() {
             relacionados ao deslocamento.`;
 
   let mensagemCancelamentoAluna = `O instrutor já aceitou a aula, o cancelamento gerará um custo de 10% do valor da aula. <p>Tem certeza que deseja cancelar?</>`;
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   async function obterLocalizacaoAtual() {
     if (!navigator.geolocation) {
@@ -205,6 +214,7 @@ export default function MapaInstrutores() {
       console.log(data);
       setAulaCadastrada(data);
       console.log("aulaCadastrada" + aulaCadastrada);
+      await buscarNotificacaoAulaSolicitada(data.id);
     } catch (error) {
       console.error("Erro ao criar solicitação de aula:", error);
     } finally {
@@ -237,7 +247,7 @@ export default function MapaInstrutores() {
 
       const data = await response.json();
       console.log(data);
-      
+
       setMensagemCancelamento(data.mensagem);
       setSolicitacaoAulaCancelada(true);
     } catch (error) {
@@ -264,6 +274,30 @@ export default function MapaInstrutores() {
     });
   }
 
+  async function buscarNotificacaoAulaSolicitada(notificacaoId) {
+    while (true) {
+      const response = await fetch(
+        `${API_BASE_URL}/notificacaoAula/${notificacaoId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      console.log("AULA SOLICITADA >>>", data);
+
+      if (data && data.status !== StatusNotificacaoAula.Pendente) {
+        setLoading(false);
+        break;
+      }
+      await delay(5000);
+    }
+  }
+
   async function buscarAulaSolicitada() {
     const response = await fetch(
       `${API_BASE_URL}/notificacaoAula/aluno/${usuarioLogado.usuarioId}`,
@@ -274,35 +308,10 @@ export default function MapaInstrutores() {
         },
       },
     );
-    const data = await response.json();
-    const instrutorTeste = {
-      avaliacao: 4,
-      bairro: "Centro",
-      caminhoSelfie:
-        "C:\\Users\\joelm\\Downloads\\arquivos\\6_123.412.341-23\\FOTO_SELFIE.png",
-      cidade: "Ferraz de Vasconcelos",
-      cor: "PRATA",
-      estado: "São Paulo",
-      foto: "iVBORw0KGgoAAAANSUhEUgAAAn8AAAJ/CAIAAACGLCKsAAAAA",
-      latitude: -23.544489,
-      longitude: -46.3613345,
-      modelo: "Celta",
-      nome: "Instrutor 01",
-      nota: 4,
-      placa: "ALZ-5374",
-      posicao: [data[0].latitudeInstrutor, data[0].longitudeInstrutor],
-      status: 0,
-      usuarioId: 6,
-      valor: 250,
-    };
-    debugger;
-    setInstrutorSelecionado(instrutorTeste);
-    setPosicaoMapa([data[0].latitudeAluno, data[0].longitudeAluno]);
+    const data = await response.json(); 
 
-    console.log("Instrutor de data:", data);
-    console.log("Instrutor de Teste:", instrutorTeste);
-    console.log("Origem:", posicaoMapa);
-    console.log("Destino:", instrutorSelecionado?.posicao);
+    setPosicaoMapa([data[0].latitudeAluno, data[0].longitudeAluno]); 
+    setInstrutorSelecionado([data[0].latitudeInstrutor, data[0].longitudeInstrutor]); 
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -446,7 +455,7 @@ export default function MapaInstrutores() {
         {instrutorSelecionado && (
           <RoutingMachine
             origem={posicaoMapa}
-            destino={instrutorSelecionado.posicao}
+            destino={instrutorSelecionado}
           />
         )}
 
@@ -560,12 +569,11 @@ export default function MapaInstrutores() {
             <h3>Atenção: cancelamento da aula</h3>
             {mensagemCancelamento}
             <div className="modal-actions">
-                
               <button
                 className="btn-salvar"
                 type="button"
-                onClick={() => { 
-                  setSolicitacaoAulaCancelada(false); 
+                onClick={() => {
+                  setSolicitacaoAulaCancelada(false);
                 }}
               >
                 Fechar

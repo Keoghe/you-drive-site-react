@@ -93,6 +93,7 @@ export default function MapaInstrutores() {
     Cancelado: 5,
   });
   const timeoutRef = useRef(null);
+   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   function obterLocalizacaoAtual() {
     return new Promise((resolve, reject) => {
@@ -171,9 +172,7 @@ export default function MapaInstrutores() {
     }
   }
 
-  async function atualizarLocalizacaoInstrutor(
-    posicaoAtual = localizacaoUsuario,
-  ) {
+  async function atualizarLocalizacaoInstrutor(posicaoAtual = localizacaoUsuario) {
     try {
       debugger;
       const response = await fetch(
@@ -203,9 +202,7 @@ export default function MapaInstrutores() {
     } finally {
     }
   }
-
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
+  
   async function acompanharDeslocamento() {
     while (statusDeslocamentoRef.current) {
       debugger;
@@ -232,30 +229,7 @@ export default function MapaInstrutores() {
       }
       await atualizarLocalizacaoInstrutor(posicaoAtual);
     }
-  }
-
-  // async function acompanharDeslocamento() {
-
-  //   const proximidade = distancia(
-  //     posicaoMapa[0],
-  //     posicaoMapa[1],
-  //     alunoSelecionado.posicao[0],
-  //     alunoSelecionado.posicao[1],
-  //   );
-
-  //   console.log("Distância até o aluno:", proximidade, "km");
-
-  //   if (proximidade <= 0.1) {
-  //     alert("Você chegou ao local do aluno!");
-  //     return;
-  //   }
-
-  //   setTimeout(() => {
-  //     await obterLocalizacaoAtual();
-  //     await aceitarAula();
-  //     acompanharDeslocamento();
-  //   }, 5000);
-  // }
+  } 
 
   async function gravarAgendaAula(dadoAula) {
     try {
