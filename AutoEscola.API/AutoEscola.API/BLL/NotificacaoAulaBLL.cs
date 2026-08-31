@@ -7,6 +7,7 @@ using AutoEscola.API.Models.Entidade;
 using AutoEscola.API.Models.ViewModel.Notific_acoes;
 using AutoEscola.API.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace AutoEscola.API.BLL
 {
@@ -192,6 +193,10 @@ namespace AutoEscola.API.BLL
                 Id = notificacao.Id,
                 AlunoId = notificacao.AlunoId,
                 InstrutorId = notificacao.InstrutorId,
+                LatitudeAluno = notificacao.LatitudeAluno,
+                LongitudeAluno = notificacao.LongitudeAluno,
+                LatitudeInstrutor = notificacao.LatitudeInstrutor,
+                LongitudeInstrutor = notificacao.LongitudeInstrutor,
                 Descricao = notificacao.Descricao,
                 DataSolicitacao = notificacao.DataSolicitacao,
                 Status = notificacao.Status,
@@ -201,7 +206,7 @@ namespace AutoEscola.API.BLL
 
         public async Task<NotificacaoAulaViewModel> AtualizarPosicaoUsuario(AtualizarPosicaoUsuarioDTO atualizarPosicaoUsuario)
         {
-            var notificacao = await BuscarPorId(atualizarPosicaoUsuario.NotificacaoId);
+            var notificacao = _context.NotificacaoAula.FirstOrDefault(c => c.Id == atualizarPosicaoUsuario.NotificacaoId);
 
             if (notificacao != null)
             {
@@ -223,17 +228,25 @@ namespace AutoEscola.API.BLL
                 }
                 await _context.SaveChangesAsync();
             }
-
-            return new NotificacaoAulaViewModel
+            else
             {
-                Id = notificacao.Id,
-                AlunoId = notificacao.AlunoId,
-                InstrutorId = notificacao.InstrutorId,
-                Descricao = notificacao.Descricao,
-                DataSolicitacao = notificacao.DataSolicitacao,
-                Status = notificacao.Status,
-                Excluido = notificacao.Excluido
-            };
+                throw new Exception($"Nenhuma Notificação Encontrada para o Id {atualizarPosicaoUsuario.NotificacaoId}");
+            }
+
+                return new NotificacaoAulaViewModel
+                {
+                    Id = notificacao.Id,
+                    AlunoId = notificacao.AlunoId,
+                    InstrutorId = notificacao.InstrutorId,
+                    LatitudeAluno = notificacao.LatitudeAluno,
+                    LongitudeAluno = notificacao.LongitudeAluno,
+                    LatitudeInstrutor = notificacao.LatitudeInstrutor,
+                    LongitudeInstrutor = notificacao.LongitudeInstrutor,
+                    Descricao = notificacao.Descricao,
+                    DataSolicitacao = notificacao.DataSolicitacao,
+                    Status = notificacao.Status,
+                    Excluido = notificacao.Excluido
+                };
 
         }
 

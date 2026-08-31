@@ -93,7 +93,7 @@ export default function MapaInstrutores() {
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
   const [cancelarSolicitacaoAula, setCancelarSolicitacaoAula] = useState(false);
   const [solicitacaoAulaCancelada, setSolicitacaoAulaCancelada] =
-    useState(false);
+    useState(false); 
   const StatusNotificacaoAula = Object.freeze({
     Pendente: 1,
     Aceita: 2,
@@ -275,6 +275,7 @@ export default function MapaInstrutores() {
   }
 
   async function buscarNotificacaoAulaSolicitada(notificacaoId) {
+    debugger;
     while (true) {
       const response = await fetch(
         `${API_BASE_URL}/notificacaoAula/${notificacaoId}`,
@@ -291,12 +292,28 @@ export default function MapaInstrutores() {
       console.log("AULA SOLICITADA >>>", data);
 
       if (data && data.status !== StatusNotificacaoAula.Pendente) {
+        const proximidade = distancia(
+          data.latitudeAluno,
+          data.longitudeAluno,
+          data.latitudeInstrutor,
+          data.longitudeInstrutor,
+        );
+
         setLoading(false);
-        break;
+        setInstrutorSelecionado([
+          data.latitudeInstrutor,
+          data.longitudeInstrutor,
+        ]);
+
+        if (proximidade <= 0.1) {
+          alert("Você chegou ao local do aluno!");
+          break;
+        }
       }
       await delay(5000);
     }
   }
+ 
 
   async function buscarAulaSolicitada() {
     const response = await fetch(
@@ -308,10 +325,17 @@ export default function MapaInstrutores() {
         },
       },
     );
-    const data = await response.json(); 
-
-    setPosicaoMapa([data[0].latitudeAluno, data[0].longitudeAluno]); 
-    setInstrutorSelecionado([data[0].latitudeInstrutor, data[0].longitudeInstrutor]); 
+    const data = await response.json();
+    debugger;
+    if (data) {
+      setPosicaoMapa([data[0].latitudeAluno, data[0].longitudeAluno]);
+      setInstrutorSelecionado([
+        data[0].latitudeInstrutor,
+        data[0].longitudeInstrutor,
+      ]);
+      await delay(10000);
+      buscarNotificacaoAulaSolicitada(data[0].id);
+    }
   }
 
   async function buscarDadosEndereco(lat, lng) {
@@ -453,10 +477,7 @@ export default function MapaInstrutores() {
         </Marker>
 
         {instrutorSelecionado && (
-          <RoutingMachine
-            origem={posicaoMapa}
-            destino={instrutorSelecionado}
-          />
+          <RoutingMachine origem={posicaoMapa} destino={instrutorSelecionado} />
         )}
 
         {/* {instrutores.map((instrutor) => (
