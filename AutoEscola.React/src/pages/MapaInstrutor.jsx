@@ -542,42 +542,7 @@ export default function MapaInstrutores() {
               aluno={alunoSelecionado.dados}
             />
           )}
-
-          {/* {instrutores.map((instrutor) => (
-            <Marker
-              key={instrutor.usuarioId}
-              position={instrutor.posicao}
-              icon={icon}
-              eventHandlers={{
-                click: () => {
-                  setAlunoSelecionado(instrutor);
-                },
-              }}
-            >
-              <Popup>
-                <div className="card-instrutor">
-                  <img src={obterSrcImagem(instrutor.foto)} alt="instrutor" />
-
-                  <h4>{instrutor.nome}</h4>
-
-                  <p>
-                    <strong>Placa:</strong> {instrutor.placa}
-                  </p>
-                  <p>
-                    <strong>Carro:</strong> {instrutor.carro} ({instrutor.cor})
-                  </p>
-
-                  <p>
-                    <strong>Nota:</strong> {"⭐".repeat(instrutor.nota)}
-                  </p>
-
-                  <p>
-                    <strong>Valor:</strong> {instrutor.valor}
-                  </p>
-                </div>
-              </Popup>
-            </Marker>
-          ))} */}
+ 
         </MapContainer>
       )}
       {mostrarModalSolicitacao && (

@@ -6,33 +6,7 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import L from "leaflet";
 import { useEffect, useState } from "react";
 import API_BASE_URL from "../config/api";
-import { FaPlus, FaPencilAlt, FaSearch } from "react-icons/fa";
-
-// ================== DADOS ==================
-// const instrutores = [
-//   {
-//     id: 1,
-//     nome: "Carlos Silva",
-//     foto: "/images/instrutores/1.jpg", // ✅ corrigido
-//     placa: "ABC-1234",
-//     carro: "Onix",
-//     cor: "Branco",
-//     nota: 5,
-//     valor: "R$ 120/h",
-//     posicao: [-23.544, -46.629],
-//   },
-//   {
-//     id: 2,
-//     nome: "Ana Souza",
-//     foto: "/images/instrutores/2.jpg", // ✅ corrigido
-//     placa: "XYZ-5678",
-//     carro: "HB20",
-//     cor: "Prata",
-//     nota: 4,
-//     valor: "R$ 110/h",
-//     posicao: [-23.548, -46.633],
-//   },
-// ];
+import { FaPlus, FaPencilAlt, FaSearch, FaTrash } from "react-icons/fa";
 
 // ================== ICONE ==================
 const icon = new L.Icon({
@@ -88,12 +62,20 @@ export default function MapaInstrutores() {
   const [instrutores, setInstrutores] = useState(null);
   const [paginacaoInstrutores, setPaginacaoInstrutores] = useState([]);
   const [aulaCadastrada, setAulaCadastrada] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   const [mostrarModalSolicitacao, setMostrarModalSolicitacao] = useState(false);
   const [cancelarSolicitacaoAula, setCancelarSolicitacaoAula] = useState(false);
+  const [mostrarBotaoSolicitarAula, setMostrarBotaoSolicitarAula] =
+    useState(false);
+  const [mostrarBotaoCancelar, setMostrarBotaoCancelar] = useState(false);
+  const [mostrarModalCancelamentoAula, setMostrarModalCancelamentoAula] =
+    useState(false);
   const [solicitacaoAulaCancelada, setSolicitacaoAulaCancelada] =
-    useState(false); 
+    useState(false);
+  const [notificaoAulaId, setNotificaoAulaId] = useState("");
+
   const StatusNotificacaoAula = Object.freeze({
     Pendente: 1,
     Aceita: 2,
@@ -300,6 +282,8 @@ export default function MapaInstrutores() {
         );
 
         setLoading(false);
+        setMostrarBotaoSolicitarAula(false);
+
         setInstrutorSelecionado([
           data.latitudeInstrutor,
           data.longitudeInstrutor,
@@ -307,13 +291,14 @@ export default function MapaInstrutores() {
 
         if (proximidade <= 0.1) {
           alert("Você chegou ao local do aluno!");
+          setMostrarBotaoCancelar(true);
+
           break;
         }
       }
       await delay(5000);
     }
   }
- 
 
   async function buscarAulaSolicitada() {
     const response = await fetch(
@@ -327,14 +312,24 @@ export default function MapaInstrutores() {
     );
     const data = await response.json();
     debugger;
-    if (data) {
+    if (
+      data &&
+      data.length > 0 &&
+      data[0].status === StatusNotificacaoAula.Pendente
+    ) {
       setPosicaoMapa([data[0].latitudeAluno, data[0].longitudeAluno]);
       setInstrutorSelecionado([
         data[0].latitudeInstrutor,
         data[0].longitudeInstrutor,
       ]);
+      setMostrarBotaoCancelar(true);
+      setMostrarBotaoSolicitarAula(false);
+      notificaoAulaId = data[0].id;
       await delay(10000);
       buscarNotificacaoAulaSolicitada(data[0].id);
+    } else {
+      setMostrarBotaoCancelar(false);
+      setMostrarBotaoSolicitarAula(true);
     }
   }
 
@@ -440,6 +435,39 @@ export default function MapaInstrutores() {
     return `data:${mimeType};base64,${base64}`;
   }
 
+  async function alterarStatusNotificacao(
+    notificacaoId,
+    status = StatusNotificacaoAula.Excluida,
+  ) {
+    debugger;
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/notificacaoAula/atualizar`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${usuarioLogado.token}`,
+          },
+          body: JSON.stringify({
+            NotificacaoId: notificacaoId,
+            Status: status,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        const erro = await response.text();
+        throw new Error(erro || "Login inválido");
+      }
+
+      const data = await response.json();
+    } catch (error) {
+    } finally {
+      // setLoading(false);
+    }
+  }
+
   useEffect(() => {
     obterLocalizacaoAtual();
     buscarAulaSolicitada();
@@ -447,18 +475,35 @@ export default function MapaInstrutores() {
 
   return (
     <div className="mapa-container">
-      <h2>Instrutores Disponíveis</h2>
+      <h2>Aula Avulsa</h2>
       <p>
-        <button
-          type="button"
-          className="btn-cartao"
-          onClick={() => {
-            setMostrarModalSolicitacao(true);
-          }}
-        >
-          <FaSearch /> Solicitar Aula
-        </button>
+        {mostrarBotaoSolicitarAula && (
+          <button
+            type="button"
+            className="btn-cartao"
+            onClick={() => {
+              setMostrarModalSolicitacao(true);
+            }}
+          >
+            <FaSearch /> Solicitar Aula
+          </button>
+        )}
       </p>
+
+      <div className="container-botao">
+        {mostrarBotaoCancelar && (
+          <button
+            type="button"
+            className="btn-solicitar-aula"
+            onClick={() => {
+              setMostrarModalCancelamentoAula(true);
+            }}
+          >
+            <FaTrash />
+            <span>Cancelar Aula</span>
+          </button>
+        )}
+      </div>
 
       {/* MAPA */}
       <MapContainer
@@ -479,42 +524,6 @@ export default function MapaInstrutores() {
         {instrutorSelecionado && (
           <RoutingMachine origem={posicaoMapa} destino={instrutorSelecionado} />
         )}
-
-        {/* {instrutores.map((instrutor) => (
-          <Marker
-            key={instrutor.usuarioId}
-            position={instrutor.posicao}
-            icon={icon}
-            eventHandlers={{
-              click: () => {
-                setInstrutorSelecionado(instrutor);
-              },
-            }}
-          >
-            <Popup>
-              <div className="card-instrutor">
-                <img src={obterSrcImagem(instrutor.foto)} alt="instrutor" />
-
-                <h4>{instrutor.nome}</h4>
-
-                <p>
-                  <strong>Placa:</strong> {instrutor.placa}
-                </p>
-                <p>
-                  <strong>Carro:</strong> {instrutor.carro} ({instrutor.cor})
-                </p>
-
-                <p>
-                  <strong>Nota:</strong> {"⭐".repeat(instrutor.nota)}
-                </p>
-
-                <p>
-                  <strong>Valor:</strong> {instrutor.valor}
-                </p>
-              </div>
-            </Popup>
-          </Marker>
-        ))} */}
       </MapContainer>
 
       {mostrarModalSolicitacao && (
@@ -621,6 +630,52 @@ export default function MapaInstrutores() {
         </div>
       ) : (
         <div></div>
+      )}
+
+      {mostrarModalCancelamentoAula && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Cancelar Aula</h3>
+
+            <p className="modal-texto">
+              Tem certeza que deseja cancelar esta aula?
+            </p>
+
+            <p className="modal-alerta">
+              <strong>Atenção:</strong> ao cancelar a aula, você poderá ter o
+              custo de 10% do valor da aula, pois o instrutor já aceitou a
+              solicitação e pode estar em deslocamento até o local combinado.
+            </p>
+
+            <div className="modal-actions">
+              <button
+                className="btn-cancelar"
+                type="button"
+                onClick={() => {
+                  setMostrarModalCancelamentoAula(false);
+                }}
+              >
+                Não, Voltar
+              </button>
+
+              <button
+                className="btn-salvar"
+                type="button"
+                onClick={() => {
+                  alterarStatusNotificacao(
+                    notificaoAulaId,
+                    StatusNotificacaoAula.Cancelado,
+                  );
+                  setMostrarModalCancelamentoAula(false);
+                  setMostrarBotaoCancelar(false);
+                  setMostrarBotaoSolicitarAula(true);
+                }}
+              >
+                Sim, Cancelar Aula
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
